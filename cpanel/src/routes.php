@@ -18,7 +18,7 @@ return function (App $app) {
         foreach($result as $tag) {
             $tags = array_merge($tags, array(array('tag' => $tag['name'])));
         }
-        return $container->renderer->render($response, 'tags/index.phtml', array(
+        return $container->renderer->render($response, 'tags.phtml', array(
             'tags' => count($tags) == 0 ? '[]' : json_encode($tags)
         ));
     })->setName('tag-list');
