@@ -15,6 +15,10 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+DROP DATABASE IF EXISTS `tourism`;
+CREATE DATABASE `tourism`;
+USE `tourism`;
+
 --
 -- Table structure for table `classification`
 --
@@ -210,11 +214,17 @@ DROP TABLE IF EXISTS `topictag`;
 CREATE TABLE `topictag` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) NOT NULL,
-  `enabled` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+CREATE USER 'tourism_user'@'localhost' IDENTIFIED BY 'u&e6uaAz-b#^Lj7m';
+GRANT SELECT,INSERT,UPDATE,DELETE ON tourism.* TO 'tourism_user'@'localhost';
+
+CREATE USER 'tourism_user'@'%' IDENTIFIED BY 'u&e6uaAz-b#^Lj7m';
+GRANT SELECT,INSERT,UPDATE,DELETE ON tourism.* TO 'tourism_user'@'%';
+
+FLUSH PRIVILEGES;
 --
 -- Dumping routines for database 'tourism'
 --
