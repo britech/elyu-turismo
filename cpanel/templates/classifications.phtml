@@ -1,0 +1,37 @@
+<h2>Manage Classifications</h2>
+<div class="chips"></div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".chips").chips({
+            data: <?=$classifications?>,
+            placeholder: 'Classification',
+            secondaryPlaceholder: 'Classification',
+            onChipAdd: function(e, chip) {
+                let text = chip.childNodes[0].textContent;
+                $.ajax({
+                    url: '/api/classification/add',
+                    method: 'POST',
+                    data: { classification: text }
+                }).done(function(data, status, xhr) {
+                    M.toast({ html: data.message });
+                }).fail(function(xhr, status, err) {
+                    console.error(err);
+                    this.deleteChip(this.options.data.length-1);
+                    M.toast({ html: 'Something went wrong. Try again later' })
+                });
+            },
+            onChipDelete: function(e, chip) {
+                let text = chip.childNodes[0].textContent;
+                $.ajax({
+                    url: `/api/classification/${text}`,
+                    method: 'DELETE'
+                }).done(function(data, status, xhr) {
+                    M.toast({ html: data.message });
+                }).fail(function(xhr, status, err) {
+                    console.error(err);
+                    M.toast({ html: 'Something went wrong. Try again later' })
+                });
+            }
+        })
+    });
+</script>

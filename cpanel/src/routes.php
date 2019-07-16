@@ -44,4 +44,37 @@ return function (App $app) {
             return $response->withJson(['message' => "Something went wrong, {$tag} has not been deleted"], 500);
         }
     });
+
+    $app->get('/classifications', function(Request $request, Response $response, array $args) use ($container) {
+        $result = $container->classificationService->getClassifications();
+        $classifications = array();
+        foreach($result as $tag) {
+            $classifications = array_merge($classifications, array(array('tag' => $tag['name'])));
+        }
+        return $container->renderer->render($response, 'classifications.phtml', array(
+            'classifications' => count($classifications) == 0 ? '[]' : json_encode($classifications)
+        ));
+    });
+
+    $app->post('/api/classification/add', function(Request $request, Response $response, array $args) use ($container, $logger) {
+        list('classification' => $classification) = $request->getParsedBody();
+        try {
+            $container->classificationService->insertClassification($classification);
+            return $response->withJson(['message' => "{$classification} has been added to available tourist place classifications"], 200);
+        } catch (\PDOException $ex) {
+            $logger->error($ex);
+            return $response->withJson(['message' => "Something went wrong, {$classification} has not been added."], 500);
+        }
+    });
+
+    $app->delete('/api/classification/{name}', function(Request $request, Response $response, array $args) use ($container, $logger) {
+        list('name' => $name) = $args;
+        try {
+            $container->classificationService->deleteClassificationByName($name);
+            return $response->withJson(['message' => "{$name} has been deleted"], 200);
+        } catch(\PDOException $ex) {
+            $logger->error($ex);
+            return $response->withJson(['message' => "Something went wrong, {$name} has not been deleted"], 500);
+        }
+    });
 };
