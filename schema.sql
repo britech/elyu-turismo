@@ -29,7 +29,8 @@ DROP TABLE IF EXISTS `classification`;
 CREATE TABLE `classification` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `classification_UN` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -119,10 +120,12 @@ DROP TABLE IF EXISTS `poifee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poifee` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `placeofinterest` int(11) NOT NULL,
   `description` varchar(300) NOT NULL,
   `amount` decimal(10,2) DEFAULT '0.00',
   `enabled` tinyint(4) DEFAULT '1',
+  PRIMARY KEY (`id`),
   KEY `poifee_fk` (`placeofinterest`),
   CONSTRAINT `poifee_fk` FOREIGN KEY (`placeofinterest`) REFERENCES `placeofinterest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -136,12 +139,14 @@ DROP TABLE IF EXISTS `poirating`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poirating` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `placeofinterest` int(11) NOT NULL,
   `rating` tinyint(4) NOT NULL,
   `guest` varchar(50) DEFAULT NULL,
   `comments` text,
   `status` varchar(50) DEFAULT 'for_review',
   `dateadded` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
   KEY `poirating_fk` (`placeofinterest`),
   KEY `poirating_fk_1` (`guest`),
   CONSTRAINT `poirating_fk` FOREIGN KEY (`placeofinterest`) REFERENCES `placeofinterest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -157,6 +162,7 @@ DROP TABLE IF EXISTS `poischedule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poischedule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `placeofinterest` int(11) NOT NULL,
   `startingtime` time NOT NULL,
   `closingtime` time NOT NULL,
@@ -164,6 +170,7 @@ CREATE TABLE `poischedule` (
   `day` varchar(100) DEFAULT NULL,
   `notes` varchar(1000) DEFAULT NULL,
   `enabled` tinyint(4) DEFAULT '1',
+  PRIMARY KEY (`id`),
   KEY `poischedule_fk` (`placeofinterest`),
   CONSTRAINT `poischedule_fk` FOREIGN KEY (`placeofinterest`) REFERENCES `placeofinterest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -214,7 +221,8 @@ DROP TABLE IF EXISTS `topictag`;
 CREATE TABLE `topictag` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `topictag_UN` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
