@@ -20,7 +20,8 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "gov\\pglu\\tourism\\dao\\": "src/data/"
+            "gov\\pglu\\tourism\\dao\\": "src/data/",
+            "gov\\pglu\\tourism\\util\\": "src/utils/"
         }
     },
     "config": {
