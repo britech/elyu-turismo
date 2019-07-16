@@ -6,6 +6,7 @@ use Slim\Http\Response;
 
 return function (App $app) {
     $container = $app->getContainer();
+    $renderer = $container->renderer;
     $logger = $container->logger;
 
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
@@ -76,5 +77,13 @@ return function (App $app) {
             $logger->error($ex);
             return $response->withJson(['message' => "Something went wrong, {$name} has not been deleted"], 500);
         }
+    });
+
+    $app->get('/poi', function(Request $request, Response $response, array $args) use ($renderer) {
+        return $renderer->render($response, 'poi/index.phtml', $args);
+    });
+
+    $app->get('/poi/add', function(Request $request, Response $response, array $args) use($renderer) {
+        return $renderer->render($response, 'poi/create.phtml', $args);
     });
 };
