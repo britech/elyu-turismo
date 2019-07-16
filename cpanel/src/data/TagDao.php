@@ -13,4 +13,9 @@ interface TagDao {
      * @return array The available tags
      */
     public function getTags();
+
+    /**
+     * @param String $name
+     */
+    public function deleteTagByName($name);
 }

@@ -37,4 +37,16 @@ class TagDaoImpl implements TagDao {
             throw $ex;
         }     
     }
+
+    public function deleteTagByName($name) {
+        try {
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare('DELETE FROM topictag WHERE name=:name');
+            $statement->execute(array('name' => $name));
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollback();
+            throw $ex;
+        }
+    }
 }
