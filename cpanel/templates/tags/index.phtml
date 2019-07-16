@@ -1,28 +1,37 @@
 <h2>Manage Tags</h2>
-<form method="post" action="/tag/add">
-    <div class="input-field col l10">
-        <input id="tag" type="text" class="validate" name="tag" required>
-        <label for="tag">Tag Title</label>
-    </div>
-    <div class="input-field col l2">
-        <button class="btn waves-effect waves-light" type="submit" name="action">add
-            <i class="material-icons right">add</i>
-        </button>
-    </div>
-</form>
-<table>
-    <thead>
-        <tr>
-            <td>Name</td>
-            <td>Actions</td>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($tags as $tag): ?>
-        <tr>
-            <td><?php echo $tag['name']; ?></td>
-            <td>&nbsp;</td>
-        </tr>
-        <?php endforeach;?>
-    </tbody>
-</table>
+<div class="chips"></div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".chips").chips({
+            data: <?=$tags?>,
+            placeholder: 'Tag Title',
+            secondaryPlaceholder: 'Tag Title',
+            onChipAdd: function(e, chip) {
+                let text = chip.childNodes[0].textContent;
+                $.ajax({
+                    url: '/api/tag/add',
+                    method: 'POST',
+                    data: { tag: text }
+                }).done(function(data, status, xhr) {
+                    M.toast({ html: data.message });
+                }).fail(function(xhr, status, err) {
+                    console.error(err);
+                    this.deleteChip(this.options.data.length-1);
+                    M.toast({ html: 'Something went wrong. Try again later' })
+                });
+            },
+            onChipDelete: function(e, chip) {
+                let text = chip.childNodes[0].textContent;
+                $.ajax({
+                    url: `/api/tag/${text}`,
+                    method: 'DELETE'
+                }).done(function(data, status, xhr) {
+                    M.toast({ html: data.message });
+                }).fail(function(xhr, status, err) {
+                    console.error(err);
+                    M.toast({ html: 'Something went wrong. Try again later' })
+                });
+            }
+        })
+    });
+</script>
