@@ -18,7 +18,6 @@ COPY --chown=www-data cpanel/src ./src
 COPY --chown=www-data cpanel/templates ./templates
 COPY --chown=www-data cpanel/composer.json ./composer.json
 COPY --chown=www-data cpanel/composer.lock ./composer.lock
-COPY --chown=www-data cpanel/schema.sql ./schema.sql
 
 RUN composer dump-autoload\
     && composer install\
