@@ -6,6 +6,7 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Monolog\Handler\RotatingFileHandler;
 use gov\pglu\tourism\dao\TagDaoImpl;
+use gov\pglu\tourism\dao\ClassificationDaoImpl;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -47,5 +48,10 @@ return function (App $app) {
     // Tourism Tags Layer
     $container['tagService'] = function($c) {
         return new TagDaoImpl($c->database);
+    };
+
+    // Tourist Place Classification Service Layer
+    $container['classificationService'] = function($c) {
+        return new ClassificationDaoImpl($c->database);
     };
 };
