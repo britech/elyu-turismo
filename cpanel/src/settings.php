@@ -21,8 +21,8 @@ return [
 
         'database' => [
             'dsn' => 'mysql:host=database;dbname=tourism',
-            'username' => 'root',
-            'password' => 'Xv&kV!pe6Bwa-#h^'
+            'username' => 'tourism_user',
+            'password' => 'u&e6uaAz-b#^Lj7m'
         ]
     ],
 ];
