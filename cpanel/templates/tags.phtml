@@ -1,5 +1,6 @@
 <h2>Manage Tags</h2>
 <div class="chips"></div>
+<input type="hidden" value='<?=$tagsBackend?>' id="tags"/>
 <script type="text/javascript">
     $(document).ready(function() {
         $(".chips").chips({
@@ -14,6 +15,7 @@
                     data: { tag: text }
                 }).done(function(data, status, xhr) {
                     M.toast({ html: data.message });
+                    $("#tags").val(data.tags);
                 }).fail(function(xhr, status, err) {
                     console.error(err);
                     this.deleteChip(this.options.data.length-1);
@@ -22,11 +24,18 @@
             },
             onChipDelete: function(e, chip) {
                 let text = chip.childNodes[0].textContent;
+                let rawData = $("#tags").val();
+                let result = JSON.parse(rawData).filter(tag => tag.name == text);
+
                 $.ajax({
-                    url: `/api/tag/${text}`,
-                    method: 'DELETE'
+                    url: `/api/tag/${result[0].id}`,
+                    method: 'DELETE',
+                    data: {
+                        tag: text
+                    }
                 }).done(function(data, status, xhr) {
                     M.toast({ html: data.message });
+                    $("#tags").val(data.tags);
                 }).fail(function(xhr, status, err) {
                     console.error(err);
                     M.toast({ html: 'Something went wrong. Try again later' })
