@@ -15,7 +15,7 @@ interface TagDao {
     public function getTags();
 
     /**
-     * @param String $name
+     * @param mixed $id
      */
-    public function deleteTagByName($name);
+    public function deleteTag($id);
 }
