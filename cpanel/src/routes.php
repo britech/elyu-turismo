@@ -3,6 +3,7 @@
 use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use gov\pglu\tourism\util\ApplicationUtils;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -15,31 +16,32 @@ return function (App $app) {
 
     $app->get('/tags', function(Request $request, Response $response, array $args) use ($container) {
         $result = $container->tagService->getTags();
-        $tags = array();
-        foreach($result as $tag) {
-            $tags = array_merge($tags, array(array('tag' => $tag['name'])));
-        }
+
         return $container->renderer->render($response, 'tags.phtml', array(
-            'tags' => count($tags) == 0 ? '[]' : json_encode($tags)
+            'tags' => ApplicationUtils::convertArrayToTagData($result, 'name'),
+            'tagsBackend' => json_encode($result)
         ));
     })->setName('tag-list');
     
     $app->post('/api/tag/add', function(Request $request, Response $response, array $args) use ($container, $logger) {
         list('tag' => $tag) = $request->getParsedBody();
+        $tagService = $container->tagService;
         try {
-            $container->tagService->insertTag($tag);
-            return $response->withJson(['message' => "{$tag} has been added to available tags"], 200);
+            $tagService->insertTag($tag);
+            return $response->withJson(['message' => "{$tag} has been added to available tags", 'tags' => json_encode($tagService->getTags())], 200);
         } catch (\PDOException $ex) {
             $logger->error($ex);
             return $response->withJson(['message' => "Something went wrong, {$tag} has not been added."], 500);
         }
     });
 
-    $app->delete('/api/tag/{tag}', function(Request $request, Response $response, array $args) use ($container, $logger) {
-        list('tag' => $tag) = $args;
+    $app->delete('/api/tag/{id}', function(Request $request, Response $response, array $args) use ($container, $logger) {
+        list('id' => $id) = $args;
+        list('tag' => $tag) = $request->getParsedBody();
+        $tagService = $container->tagService;
         try {
-            $container->tagService->deleteTagByName($tag);
-            return $response->withJson(['message' => "{$tag} has been deleted"], 200);
+            $tagService->deleteTag($id);
+            return $response->withJson(['message' => "{$tag} has been deleted", 'tags' => json_encode($tagService->getTags())], 200);
         } catch(\PDOException $ex) {
             $logger->error($ex);
             return $response->withJson(['message' => "Something went wrong, {$tag} has not been deleted"], 500);
@@ -83,7 +85,15 @@ return function (App $app) {
         return $renderer->render($response, 'poi/index.phtml', $args);
     });
 
-    $app->get('/poi/add', function(Request $request, Response $response, array $args) use($renderer) {
+    $app->get('/poi/add', function(Request $request, Response $response, array $args) use($renderer, $container) {
+        $classifications = $container->classificationService->getClassifications();
+        $tags = $container->tagService->getTags();
+
+        $args = array_merge($args, [ 'circuits' => ApplicationUtils::TOURISM_CIRCUITS, 
+            'classifications' => ApplicationUtils::convertArrayToAutocompleteData($classifications, 'name'),
+            'classificationsBackend' => json_encode($classifications),
+            'tags' => ApplicationUtils::convertArrayToAutocompleteData($tags, 'name'),
+            'tagsBackend' => json_encode($tags) ]);
         return $renderer->render($response, 'poi/create.phtml', $args);
     });
 };
