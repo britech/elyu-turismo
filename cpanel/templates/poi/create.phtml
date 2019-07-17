@@ -4,31 +4,56 @@
 
 <div class="col l8">
     <div class="section">
-        <h3><i class="material-icons">add_location</i>&nbsp;Declare a Tourist Location</h3>
+        <h3>Declare a Tourist Location</h3>
     </div>
     <div class="row">
         <form action="/poi/add" method="post" class="col l12">
             <div class="input-field">
-                <input name="name" type="text" class="validate"/>
+                <input name="name" type="text" class="validate" required/>
                 <label>Name</label>
             </div>
-            <div class="input-field">
-                <input name="address" type="text" class="validate"/>
-                <label>Address</label>
+            <div class="row">
+                <div class="input-field col l8">
+                    <textarea id="address" class="materialize-textarea validate" required></textarea>
+                    <label>Address</label>
+                </div>
+                <div class="input-field col l4">
+                    <select name="town" class="validate" required>
+                        <option value="" disabled selected>Select town</option>
+                        <?php foreach($circuits as $circuit => $towns): ?>
+                            <optgroup label="<?=$circuit?>">
+                                <?php foreach($towns as $town): ?>
+                                    <option value="<?=$town?>"><?=$town?></option>
+                                <?php endforeach;?>
+                            </optgroup>
+                        <?php endforeach;?>
+                    </select>
+                    <label>Tourism Ciruit and Town</label>
+                </div>
             </div>
             <div class="row">
                 <div class="input-field col l6">
-                    <input name="latitude" type="text" class="validate"/>
+                    <input name="latitude" type="text" class="validate" required/>
                     <label>Latitude</label>
                 </div>
                 <div class="input-field col l6">
-                    <input name="longitude" type="text" class="validate"/>
+                    <input name="longitude" type="text" class="validate" required/>
                     <label>Longitude</label>
                 </div>
             </div>
             <div class="row">
-                
+                <div class="input-field col l6">
+                    <p>Classifications</p>
+                    <div id="tourist-classification"></div>
+                    <input type="hidden" name="classifications"/>
+                </div>
+                <div class="input-field col l6">
+                    <p>Topic Tags</p>
+                    <div id="tourist-tags"></div>
+                    <input type="hidden" name="topicTags"/>
+                </div>
             </div>
+            <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add_location</i></button>
         </form>
     </div>
 </div>
@@ -36,3 +61,37 @@
 <div class="col l2">
     &nbsp;
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('select').formSelect();
+
+        $("#tourist-classification").chips({
+            placeholder: 'Classification',
+            secondaryPlaceholder: 'Classification',
+            autocompleteOptions: {
+                data: <?=$classifications?>
+            },
+            onChipAdd: function(e, chip) {
+                console.log(this.chipsData);
+            },
+            onChipDelete: function(e, chip) {
+                console.log(this.chipsData);
+            }
+        })
+
+        $("#tourist-tags").chips({
+            placeholder: 'Topic Tags',
+            secondaryPlaceholder: 'Topic Tags',
+            autocompleteOptions: {
+                data: <?=$tags?>
+            },
+            onChipAdd: function(e, chip) {
+                console.log(this.chipsData);
+            },
+            onChipDelete: function(e, chip) {
+                console.log(this.chipsData);
+            }
+        })
+    });
+</script>
