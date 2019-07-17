@@ -27,6 +27,7 @@ services:
       - '3306:3306'
     environment:
       - "MYSQL_ROOT_PASSWORD=Xv&kV!pe6Bwa-#h^"
+      - "MYSQL_DATABASE=tourism"
       - "TZ=Asia/Manila"
 volumes:
   tourism_db:

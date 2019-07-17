@@ -15,10 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP DATABASE IF EXISTS `tourism`;
-CREATE DATABASE `tourism`;
-USE `tourism`;
-
 --
 -- Table structure for table `classification`
 --
@@ -61,7 +57,7 @@ DROP TABLE IF EXISTS `placeofinterest`;
 CREATE TABLE `placeofinterest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(1000) NOT NULL,
-  `description` text NOT NULL,
+  `description` text DEFAULT NULL,
   `address` varchar(1000) NOT NULL,
   `town` varchar(100) NOT NULL,
   `latitude` varchar(100) NOT NULL,
