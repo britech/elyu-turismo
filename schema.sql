@@ -63,7 +63,7 @@ CREATE TABLE `placeofinterest` (
   `latitude` varchar(100) NOT NULL,
   `longitude` varchar(100) NOT NULL,
   `arenabled` tinyint(4) DEFAULT '0',
-  `displayable` tinyint(4) DEFAULT '1',
+  `displayable` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
