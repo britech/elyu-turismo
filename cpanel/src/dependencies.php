@@ -7,6 +7,7 @@ use Monolog\Processor\UidProcessor;
 use Monolog\Handler\RotatingFileHandler;
 use gov\pglu\tourism\dao\TagDaoImpl;
 use gov\pglu\tourism\dao\ClassificationDaoImpl;
+use gov\pglu\tourism\dao\PoiManagementDaoImpl;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -53,5 +54,10 @@ return function (App $app) {
     // Tourist Place Classification Service Layer
     $container['classificationService'] = function($c) {
         return new ClassificationDaoImpl($c->database);
+    };
+
+    // POI Management Service
+    $container['poiManagementService'] = function($c) {
+        return new PoiManagementDaoImpl($c->database);
     };
 };
