@@ -58,6 +58,7 @@ CREATE TABLE `placeofinterest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(1000) NOT NULL,
   `description` text DEFAULT NULL,
+  `commuterGuide` text DEFAULT NULL,
   `address` varchar(1000) NOT NULL,
   `town` varchar(100) NOT NULL,
   `latitude` varchar(100) NOT NULL,
