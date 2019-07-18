@@ -83,7 +83,7 @@ return function (App $app) {
 
     $app->get('/poi', function(Request $request, Response $response, array $args) use ($renderer) {
         return $renderer->render($response, 'poi/index.phtml', $args);
-    });
+    })->setName('poi-list');
 
     $app->get('/poi/add', function(Request $request, Response $response, array $args) use($renderer, $container) {
         $classifications = $container->classificationService->getClassifications();
@@ -95,5 +95,23 @@ return function (App $app) {
             'tags' => ApplicationUtils::convertArrayToAutocompleteData($tags, 'name'),
             'tagsBackend' => json_encode($tags) ]);
         return $renderer->render($response, 'poi/create.phtml', $args);
+    });
+
+    $app->post('/poi/add', function(Request $request, Response $response, array $args) use ($container, $app) {
+        $inputs = [];
+        foreach ($request->getParsedBody() as $key => $value) {
+            if (strcasecmp('topicTags', $key) == 0 || strcasecmp('classifications', $key) == 0) {
+                $inputs = array_merge($inputs, array($key => json_decode($value)));
+            } else {
+                $inputs = array_merge($inputs, array($key => $value));
+            }
+        }
+        try {
+            $container->poiManagementService->createPoi($inputs);
+        } catch(\PDOException $ex) {
+            $container->logger->error($ex);
+        }
+
+        return $response->withRedirect($container->router->pathFor('poi-list'));
     });
 };
