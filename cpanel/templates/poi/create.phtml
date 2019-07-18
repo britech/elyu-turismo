@@ -14,7 +14,7 @@
             </div>
             <div class="row">
                 <div class="input-field col l8">
-                    <textarea id="address" class="materialize-textarea validate" required></textarea>
+                    <textarea name="address" class="materialize-textarea validate" required></textarea>
                     <label>Address</label>
                 </div>
                 <div class="input-field col l4">
@@ -46,11 +46,13 @@
                     <p>Classifications</p>
                     <div id="tourist-classification"></div>
                     <input type="hidden" name="classifications"/>
+                    <input type="hidden" id="classificationsBackend" value='<?=$classificationsBackend?>'/>
                 </div>
                 <div class="input-field col l6">
                     <p>Topic Tags</p>
                     <div id="tourist-tags"></div>
                     <input type="hidden" name="topicTags"/>
+                    <input type="hidden" id="tagsBackend" value='<?=$tagsBackend?>'/>
                 </div>
             </div>
             <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add_location</i></button>
@@ -73,10 +75,24 @@
                 data: <?=$classifications?>
             },
             onChipAdd: function(e, chip) {
-                console.log(this.chipsData);
+                let rawData = $("#classificationsBackend").val();
+                let data = JSON.parse(rawData);
+                let classifications = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    classifications.push(result[0]);
+                }
+                $("[name=classifications]").val(JSON.stringify(classifications));
             },
             onChipDelete: function(e, chip) {
-                console.log(this.chipsData);
+                let rawData = $("#classificationsBackend").val();
+                let data = JSON.parse(rawData);
+                let classifications = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    classifications.push(result[0]);
+                }
+                $("[name=classifications]").val(JSON.stringify(classifications));
             }
         })
 
@@ -87,10 +103,24 @@
                 data: <?=$tags?>
             },
             onChipAdd: function(e, chip) {
-                console.log(this.chipsData);
+                let rawData = $("#tagsBackend").val();
+                let data = JSON.parse(rawData);
+                let tags = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    tags.push(result[0]);
+                }
+                $("[name=topicTags]").val(JSON.stringify(tags));
             },
             onChipDelete: function(e, chip) {
-                console.log(this.chipsData);
+                let rawData = $("#tagsBackend").val();
+                let data = JSON.parse(rawData);
+                let tags = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    tags.push(result[0]);
+                }
+                $("[name=topicTags]").val(JSON.stringify(tags));
             }
         })
     });
