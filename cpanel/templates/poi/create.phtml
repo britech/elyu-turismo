@@ -7,7 +7,7 @@
         <h3>Declare a Tourist Location</h3>
     </div>
     <div class="row">
-        <form action="/poi/add" method="post" class="col l12">
+        <form method="post" class="col l12" name="poiForm">
             <div class="input-field">
                 <input name="name" type="text" class="validate" required/>
                 <label>Name</label>
@@ -67,6 +67,41 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('select').formSelect();
+
+        $("[name=poiForm]").submit(function() {
+            event.preventDefault();
+            $.ajax({
+                url: '/api/poi/add',
+                method: 'POST',
+                data: {
+                    name: $("[name=name]").val(),
+                    address: $("[name=address]").val(),
+                    town: $("[name=town]").val(),
+                    latitude: $("[name=latitude]").val(),
+                    longitude: $("[name=longitude]").val(),
+                    classifications: $("[name=classifications]").val(),
+                    topicTags: $("[name=topicTags]").val()
+                }
+            }).done(function(data, status, xhr) {
+                console.log(data);
+                M.toast({ 
+                    html: data.message,
+                    displayLength: 500,
+                    completeCallback: function() {
+                        window.location = `/poi/${data.id}`
+                    }
+                });
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                M.toast({ 
+                    html: 'Something went wrong. Try again later',
+                    displayLength: 2000,
+                    completeCallback: function() {
+                        window.location = "/poi"
+                    }
+                })
+            });
+        });
 
         $("#tourist-classification").chips({
             placeholder: 'Classification',

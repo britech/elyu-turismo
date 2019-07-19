@@ -105,7 +105,27 @@ return function (App $app) {
             } else {
                 $inputs = array_merge($inputs, array($key => $value));
             }
+    $app->post('/api/poi/add', function(Request $request, Response $response, array $args) use ($logger, $container) {
+        $body = $request->getParsedBody();
+        $inputs = array_filter($body, function($key) {
+            return strcasecmp('topicTags', $key) !=0 && strcasecmp('classifications', $key);
+        }, ARRAY_FILTER_USE_KEY);
+
+        list('topicTags' => $rawTags, 'classifications' => $rawClassifications, 'name' => $name) = $body;
+        $inputs = array_merge($inputs, array('topicTags' => json_decode($rawTags)));
+        $inputs = array_merge($inputs, array('classifications' => json_decode($rawClassifications)));
+
+        $logger->debug("Inserting the entry => ".json_encode($inputs));
+        
+        try {
+            $id = $container->poiManagementService->createPoi($inputs);
+            return $response->withJson(array('message' => "Tourist Location {$name} has been added", 'id' => $id), 200);
+        } catch (\PDOException $ex) {
+            $logger->error($ex);
+            return $response->withJson(array('message' => "Tourist Location {$name} cannot be added. Try again later"), 500);
         }
+    });
+
         try {
             $container->poiManagementService->createPoi($inputs);
         } catch(\PDOException $ex) {
