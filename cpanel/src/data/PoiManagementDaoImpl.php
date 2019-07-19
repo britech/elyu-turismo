@@ -35,6 +35,7 @@ class PoiManagementDaoImpl implements PoiManagementDao {
             }
 
             $this->pdo->commit();
+            return $poiId;
         } catch (\PDOException $ex) {
             $this->pdo->rollBack();
             throw $ex;
