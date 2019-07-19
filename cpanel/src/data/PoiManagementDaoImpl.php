@@ -41,4 +41,57 @@ class PoiManagementDaoImpl implements PoiManagementDao {
             throw $ex;
         }
     }
+
+    public function getPoi($id) {
+        $query = <<< QUERY
+        SELECT poi.name,
+            description,
+            commuterguide,
+            address,
+            town,
+            latitude,
+            longitude,
+            arEnabled,
+            displayable,
+            GROUP_CONCAT(DISTINCT(CONCAT(classification.id, '=', classification.name)) SEPARATOR '|') as classifications,
+            GROUP_CONCAT(DISTINCT(CONCAT(tag.id, '=', tag.name)) SEPARATOR '|') as topicTags
+        FROM placeofinterest poi
+            JOIN poiclassification poic ON poic.placeofinterest = poi.id
+            JOIN classification classification ON classification.id = poic.classification
+            JOIN poitag poit ON poit.placeofinterest = poi.id
+            JOIN topictag tag ON tag.id = poit.tag
+        WHERE poi.id = :id
+QUERY;
+
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute(['id' => $id]);
+
+            $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            if (count($rows) == 0) {
+                return null;
+            }
+
+            list($attributes) = $rows;
+
+            $resultMap = array_filter($attributes, function($key) {
+                return strcasecmp('classifications', $key) != 0 && strcasecmp('topicTags', $key) != 0;
+            }, ARRAY_FILTER_USE_KEY);
+
+            list('classifications' => $rawClassifications, 'topicTags' => $rawTags) = $attributes;
+            $resultMap = array_merge($resultMap, ['classifications' => $this->createObjectMapArray($rawClassifications)]);
+            $resultMap = array_merge($resultMap, ['topicTags' => $this->createObjectMapArray($rawTags)]);
+
+            return $resultMap;
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
+    private function createObjectMapArray($entries) {
+        return array_map(function($val) {
+            list($id, $name) = explode('=', $val);
+            return ['id' => $id, 'name' => $name];
+        }, explode('|', $entries));
+    }
 }
