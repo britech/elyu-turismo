@@ -118,12 +118,14 @@ return function (App $app) {
         }
     });
 
+    $app->get('/poi/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
         try {
-            $container->poiManagementService->createPoi($inputs);
-        } catch(\PDOException $ex) {
+            $result = $container->poiManagementService->getPoi($id);
+            print_r($result);
+            die();
+        } catch (\PDOException $ex) {
             $container->logger->error($ex);
         }
-
-        return $response->withRedirect($container->router->pathFor('poi-list'));
-    });
+    })->setName('poi-info');
 };
