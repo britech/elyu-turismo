@@ -97,14 +97,6 @@ return function (App $app) {
         return $renderer->render($response, 'poi/create.phtml', $args);
     });
 
-    $app->post('/poi/add', function(Request $request, Response $response, array $args) use ($container, $app) {
-        $inputs = [];
-        foreach ($request->getParsedBody() as $key => $value) {
-            if (strcasecmp('topicTags', $key) == 0 || strcasecmp('classifications', $key) == 0) {
-                $inputs = array_merge($inputs, array($key => json_decode($value)));
-            } else {
-                $inputs = array_merge($inputs, array($key => $value));
-            }
     $app->post('/api/poi/add', function(Request $request, Response $response, array $args) use ($logger, $container) {
         $body = $request->getParsedBody();
         $inputs = array_filter($body, function($key) {
