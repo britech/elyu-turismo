@@ -20,7 +20,7 @@ COPY --chown=www-data cpanel/composer.json ./composer.json
 COPY --chown=www-data cpanel/composer.lock ./composer.lock
 
 RUN composer dump-autoload\
-    && composer install\
+    && composer install --no-dev\
     && chown -hR www-data:www-data /var/www/html/cpanel/vendor
 
 RUN a2enmod rewrite
