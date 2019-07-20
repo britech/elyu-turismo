@@ -122,14 +122,24 @@ return function (App $app) {
         }
     });
 
-    $app->get('/poi/{id}', function(Request $request, Response $response, array $args) use ($container) {
+    $app->get('/poi/{id}', function(Request $request, Response $response, array $args) use ($container, $app) {
         list('id' => $id) = $args;
+        $renderer = $container->poiRenderer;
+        $flash = $container->flash;
         try {
             $result = $container->poiManagementService->getPoi($id);
-            print_r($result);
-            die();
+            if (count($result) == 0) {
+                $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Place of interest not found!');
+                return $response->withRedirect($container->router->pathFor('poi-list'));
+            } else {
+                list('town' => $town) = $result;
+                $args = array_merge($args, [ 'id' => $id, 'result' => $result, 'tourismCircuit' => ApplicationUtils::getTourismCircuit($town) ]);
+                return $renderer->render($response, 'poi/info.phtml', $args);
+            }
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while loading Tourist Location info. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
         }
     })->setName('poi-info');
 };

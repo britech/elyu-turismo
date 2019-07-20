@@ -1,0 +1,71 @@
+<a class="waves-effect waves-light btn" href="<?="/poi/edit/{$id}"?>"><i class="material-icons left">edit</i>edit</a>
+<table class="striped" style="margin-top: 10px;">
+    <tbody>
+        <tr>
+            <th style="width: 25%">Name</th>
+            <td><?= $result['name']; ?></td>
+        </tr>
+        <tr>
+            <th>Tourism Circuit</th>
+            <td><?= $tourismCircuit; ?></td>
+        </tr>
+        <tr>
+            <th>Town</th>
+            <td><?= $result['town']; ?></td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td>
+                <?= $result['address']; ?>
+                <br />
+                <?= "Latitude: {$result['latitude']}" ?>
+                <br />
+                <?= "Longitude: {$result['longitude']}" ?>
+            </td>
+        </tr>
+        <tr>
+            <th>Classifications</th>
+            <td>
+                <?php foreach ($result['classifications'] as $classification) : ?>
+                    <div class="chip blue lighten-2"><?= $classification['name'] ?></div>
+                <?php endforeach; ?>
+            </td>
+        </tr>
+        <tr>
+            <th>Tags</th>
+            <td>
+                <?php foreach ($result['topicTags'] as $tag) : ?>
+                    <div class="chip red lighten-2"><?= $tag['name'] ?></div>
+                <?php endforeach; ?>
+            </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>
+                <div id="description" style="width: 100%"></div>
+            </td>
+        </tr>
+        <tr>
+            <th>Commuter's Guide</th>
+            <td>
+                <div id="commuterGuide" style="width: 100%"></div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        let descriptionView = new Quill('#description', {
+            theme: 'bubble'
+        })
+        descriptionView.disable();
+        descriptionView.setContents(<?= $result['descriptionwysiwyg']; ?>);
+
+        let commuterGuideView = new Quill('#commuterGuide', {
+            theme: 'bubble'
+        })
+        commuterGuideView.disable();
+        commuterGuideView.setContents(<?= $result['commuterguide']; ?>);
+    });
+</script>
