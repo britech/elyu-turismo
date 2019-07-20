@@ -25,6 +25,19 @@ final class ApplicationUtils {
         return count($result) == 0 ? '[]' : json_encode($result);
     }
 
+    /**
+     * @param array $map
+     * @param String $keyName
+     */
+    public static function convertTagResultToBackendReferences(array $map, $keyName) {
+        $result = [];
+        foreach($map as $key => $value) {
+            list($keyName => $reference) = $value;
+            $result = array_merge($result, array($reference));
+        }
+        return count($result) == 0 ? '[]' : json_encode($result);
+    }
+
     public static function convertArrayToAutocompleteData(array $map, $keyName) {
         $result = [];
         foreach($map as $entry) {
