@@ -163,7 +163,7 @@
             },
             placeholder: 'Compose a guide on how to travel on this location...'
         });
-        commuterGuideField.setContents(<?= $result['commuterguidewysiwg'] ?>);
+        commuterGuideField.setContents(<?= $result['commuterguidewysiwyg'] ?>);
 
         $("[name=poiForm]").submit(function() {
             event.preventDefault();
