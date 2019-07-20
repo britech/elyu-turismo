@@ -142,4 +142,76 @@ return function (App $app) {
             return $response->withRedirect($container->router->pathFor('poi-list'));
         }
     })->setName('poi-info');
+
+    $app->get('/poi/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        $renderer = $container->poiRenderer;
+        $flash = $container->flash;
+        try {
+            $classifications = $container->classificationService->getClassifications();
+            $tags = $container->tagService->getTags();
+            $result = $container->poiManagementService->getPoi($id);
+
+            if (count($result) == 0) {
+                $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Place of interest not found!');
+                return $response->withRedirect($container->router->pathFor('poi-list'));
+            } else {
+                list('classifications' => $assignedClassifications, 'topicTags' => $assignedTags) = $result;
+
+                $args = array_merge($args, [ 'id' => $id, 
+                    'result' => $result, 
+                    'circuits' => ApplicationUtils::TOURISM_CIRCUITS ,
+                    'classifications' => ApplicationUtils::convertArrayToAutocompleteData($classifications, 'name'),
+                    'classificationsBackend' => json_encode($classifications),
+                    'assignedClassifications' => ApplicationUtils::convertArrayToTagData($assignedClassifications, 'name'),
+                    'assignedClassificationsBackend' => ApplicationUtils::convertTagResultToBackendReferences($assignedClassifications, 'id'),
+                    'tags' => ApplicationUtils::convertArrayToAutocompleteData($tags, 'name'),
+                    'tagsBackend' => json_encode($tags),
+                    'assignedTags' => ApplicationUtils::convertArrayToTagData($assignedTags, 'name'),
+                    'assignedTagsBackend' => ApplicationUtils::convertTagResultToBackendReferences($assignedTags, 'id'), ]
+                );
+                return $renderer->render($response, 'poi/edit_poi.phtml', $args);
+            }
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while loading Tourist Location info. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    });
+
+    $app->post('/api/poi/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+
+        $body = $request->getParsedBody();
+        $inputs = array_filter($body, function($key) {
+            return strcasecmp('topicTags', $key) !=0 && strcasecmp('classifications', $key) != 0 
+                && strcasecmp('commuterguidewysiwyg', $key) != 0
+                && strcasecmp('commuterguide', $key) != 0
+                && strcasecmp('descriptionwysiwyg', $key)  != 0
+                && strcasecmp('description', $key)  != 0;
+        }, ARRAY_FILTER_USE_KEY);
+
+        list('topicTags' => $rawTags, 'classifications' => $rawClassifications, 
+            'descriptionwysiwyg' => $rawDescriptionWysiwyg, 
+            'description' => $rawDescription,
+            'commuterguidewysiwyg' => $rawCommuterWysiWyg,
+            'commuterguide' => $rawCommuterGuide) = $body;
+
+        $inputs = array_merge($inputs, [ 'topicTags' => json_decode($rawTags),
+            'classifications' => json_decode($rawClassifications),
+            'descriptionwysiwyg' => strlen(trim($rawDescriptionWysiwyg)) == 0 ? null : json_encode(json_decode($rawDescriptionWysiwyg, true)),
+            'description' => strlen(trim($rawDescription)) == 0 ? null : $rawDescription,
+            'commuterguidewysiwyg' => strlen(trim($rawCommuterWysiWyg)) == 0 ? null : json_encode(json_decode($rawCommuterWysiWyg, true)),
+            'commuterguide' => strlen(trim($rawCommuterGuide)) == 0 ? null : $rawCommuterGuide,
+        ]);
+
+        $container->logger->debug("Update tourist location => ".json_encode($inputs));
+        try {
+            $container->poiManagementService->updatePoi($inputs);
+            return $response->withJson([ApplicationConstants::REST_MESSAGE_KEY => 'Tourist location updated successfully', 'id' => $id], 200);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            return $response->withJson([ApplicationConstants::REST_MESSAGE_KEY => 'Something went wrong. Try again later'], 500);
+        }
+    });
 };

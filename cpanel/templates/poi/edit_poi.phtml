@@ -1,0 +1,212 @@
+<div class="section">
+    <h5>Update Basic Information</h5>
+</div>
+<form name="poiForm">
+    <div class="input-field">
+        <input name="name" type="text" class="validate" required value="<?= $result['name'] ?>" />
+        <label>Name</label>
+    </div>
+    <div class="row">
+        <div class="input-field col l8">
+            <textarea name="address" class="materialize-textarea validate" required><?= $result['address'] ?></textarea>
+            <label>Address</label>
+        </div>
+        <div class="input-field col l4">
+            <select name="town" class="validate" required>
+                <option value="" disabled selected>Select town</option>
+                <?php foreach ($circuits as $circuit => $towns) : ?>
+                    <optgroup label="<?= $circuit ?>">
+                        <?php foreach ($towns as $town) : ?>
+                            <?php if (strcasecmp($result['town'], $town) == 0) : ?>
+                                <option value="<?= $town ?>" selected><?= $town ?></option>
+                            <?php else : ?>
+                                <option value="<?= $town ?>"><?= $town ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </optgroup>
+                <?php endforeach; ?>
+            </select>
+            <label>Tourism Ciruit and Town</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col l6">
+            <input name="latitude" type="text" class="validate" required value="<?= $result['latitude'] ?>" />
+            <label>Latitude</label>
+        </div>
+        <div class="input-field col l6">
+            <input name="longitude" type="text" class="validate" required value="<?= $result['longitude'] ?>" />
+            <label>Longitude</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col l6">
+            <p>Classifications</p>
+            <div id="tourist-classification"></div>
+            <input type="hidden" name="classifications" value='<?= $assignedClassificationsBackend ?>' />
+            <input type="hidden" id="classificationsBackend" value='<?= $classificationsBackend ?>' />
+        </div>
+        <div class="input-field col l6">
+            <p>Topic Tags</p>
+            <div id="tourist-tags"></div>
+            <input type="hidden" name="topicTags" value='<?= $assignedTagsBackend ?>' />
+            <input type="hidden" id="tagsBackend" value='<?= $tagsBackend ?>' />
+        </div>
+    </div>
+    <div>
+        <p>Description</p>
+        <div id="description-editor">&nbsp;</div>
+    </div>
+    <div>
+        <p>Commuter's Guide</p>
+        <div id="commuterGuide"></div>
+    </div>
+    <div style="margin-top: 20px;" class="right">
+        <button class="btn waves-effect waves-light" type="submit">update<i class="material-icons left">edit</i></button>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('select').formSelect();
+
+        $("#tourist-classification").chips({
+            placeholder: 'Classification',
+            secondaryPlaceholder: 'Classification',
+            data: <?= $assignedClassifications ?>,
+            autocompleteOptions: {
+                data: <?= $classifications ?>
+            },
+            onChipAdd: function(e, chip) {
+                let rawData = $("#classificationsBackend").val();
+                let data = JSON.parse(rawData);
+                let classifications = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    classifications.push(result[0]);
+                }
+                $("[name=classifications]").val(JSON.stringify(classifications));
+            },
+            onChipDelete: function(e, chip) {
+                let rawData = $("#classificationsBackend").val();
+                let data = JSON.parse(rawData);
+                let classifications = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    classifications.push(result[0]);
+                }
+                $("[name=classifications]").val(JSON.stringify(classifications));
+            }
+        });
+
+        $("#tourist-tags").chips({
+            placeholder: 'Topic Tags',
+            secondaryPlaceholder: 'Topic Tags',
+            data: <?= $assignedTags ?>,
+            autocompleteOptions: {
+                data: <?= $tags ?>
+            },
+            onChipAdd: function(e, chip) {
+                let rawData = $("#tagsBackend").val();
+                let data = JSON.parse(rawData);
+                let tags = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    tags.push(result[0]);
+                }
+                $("[name=topicTags]").val(JSON.stringify(tags));
+            },
+            onChipDelete: function(e, chip) {
+                let rawData = $("#tagsBackend").val();
+                let data = JSON.parse(rawData);
+                let tags = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    tags.push(result[0]);
+                }
+                $("[name=topicTags]").val(JSON.stringify(tags));
+            }
+        });
+
+        var descriptionField = new Quill('#description-editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['link', 'clean']
+                ]
+            },
+            placeholder: 'Compose a descriptive text about the location...'
+        });
+        descriptionField.setContents(<?= $result['descriptionwysiwyg'] ?>);
+
+        var commuterGuideField = new Quill('#commuterGuide', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['link', 'clean']
+                ]
+            },
+            placeholder: 'Compose a guide on how to travel on this location...'
+        });
+        commuterGuideField.setContents(<?= $result['commuterguidewysiwg'] ?>);
+
+        $("[name=poiForm]").submit(function() {
+            event.preventDefault();
+
+            var description = descriptionField.getText().trim();
+            var commuterGuide = commuterGuideField.getText().trim();
+            
+            $.ajax({
+                url: "<?="/api/poi/{$id}/edit"?>",
+                method: 'POST',
+                data: {
+                    name: $("[name=name]").val(),
+                    address: $("[name=address]").val(),
+                    town: $("[name=town]").val(),
+                    latitude: $("[name=latitude]").val(),
+                    longitude: $("[name=longitude]").val(),
+                    classifications: $("[name=classifications]").val(),
+                    topicTags: $("[name=topicTags]").val(),
+                    description: description.length == 0 ? null : description,
+                    descriptionwysiwyg: description.length == 0 ? null : JSON.stringify(descriptionField.getContents()),
+                    commuterguide: commuterGuide.length == 0 ? null : commuterGuide,
+                    commuterguidewysiwyg: commuterGuide.length == 0 ? null : JSON.stringify(commuterGuideField.getContents()),
+                    id: <?=$id?>
+                }
+            }).done(function(data, status, xhr) {
+                console.log(data);
+                M.toast({ 
+                    html: data.message,
+                    displayLength: 500,
+                    completeCallback: function() {
+                        window.location = `/poi/${data.id}`
+                    }
+                });
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                M.toast({ 
+                    html: 'Something went wrong. Try again later',
+                    displayLength: 500,
+                    completeCallback: function() {
+                        window.location = "/poi"
+                    }
+                })
+            });
+        })
+    });
+</script>
