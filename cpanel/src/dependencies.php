@@ -64,6 +64,8 @@ return function (App $app) {
 
     // POI Management Service
     $container['poiManagementService'] = function($c) {
-        return new PoiManagementDaoImpl($c->database);
+        $service = new PoiManagementDaoImpl($c->database);
+        $service->logger = $c->logger;
+        return $service;
     };
 };

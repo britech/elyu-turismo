@@ -6,10 +6,12 @@ use gov\pglu\tourism\dao\PoiManagementDao;
 
 /**
  * @property \PDO $pdo
+ * @property \Monolog\Logger $logger;
  */
 class PoiManagementDaoImpl implements PoiManagementDao {
 
     private $pdo;
+    private $logger;
 
     public function __construct(\PDO $pdo) {
         $this->pdo = $pdo;
@@ -66,9 +68,11 @@ QUERY;
         try {
             $statement = $this->pdo->prepare($query);
             $statement->execute(['id' => $id]);
-
+            
             $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
-            if (count($rows) == 0) {
+            $this->logger->debug('Rows => '.json_encode($rows));
+
+            if (count($rows) == 0 || is_null($rows[0]['name'])) {
                 return null;
             }
 
@@ -93,5 +97,13 @@ QUERY;
             list($id, $name) = explode('=', $val);
             return ['id' => $id, 'name' => $name];
         }, explode('|', $entries));
+    }
+
+    public function __set($name, $value) {
+        $this->$name = $value;
+    }
+
+    public function __get($name) {
+        return $this->$name;
     }
 }
