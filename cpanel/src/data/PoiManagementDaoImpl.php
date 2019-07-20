@@ -94,6 +94,51 @@ QUERY;
         }
     }
 
+    public function updatePoi(array $map) {
+        $poiQuery = <<< QUERY
+        UPDATE placeofinterest
+            SET name=:name,
+                description=:description,
+                commuterguide=:commuterguide,
+                address=:address,
+                town=:town,
+                latitude=:latitude,
+                longitude=:longitude,
+                descriptionwysiwyg=:descriptionwysiwyg,
+                commuterguidewysiwyg=:commuterguidewysiwyg
+            WHERE id=:id
+QUERY;
+
+    $poiFields = array_filter($map, function($key) { 
+        return strcasecmp('topicTags', $key) != 0 && strcasecmp('classifications', $key) != 0 && strcasecmp('action', $key) != 0;  
+    }, ARRAY_FILTER_USE_KEY);
+    
+    list('topicTags' => $topicTags, 'classifications' => $classifications, 'id' => $id) = $map;
+
+        try {
+            $this->pdo->beginTransaction();
+            
+            $statement = $this->pdo->prepare($poiQuery);
+            $statement->execute($poiFields);
+            
+            $this->pdo->prepare('DELETE FROM poiclassification WHERE placeofinterest=:id')->execute(['id' => $id]);
+            $this->pdo->prepare('DELETE FROM poitag WHERE placeofinterest=:id')->execute(['id' => $id]);
+
+            foreach($classifications as $classification) {
+                $this->pdo->prepare('INSERT INTO poiclassification VALUES(:placeOfInterest, :classification)')->execute(array('placeOfInterest' => $id, 'classification' => $classification));
+            }
+
+            foreach($topicTags as $topicTag) {
+                $this->pdo->prepare('INSERT INTO poitag VALUES(:placeOfInterest, :topicTag)')->execute(array('placeOfInterest' => $id, 'topicTag' => $topicTag));
+            }
+
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);
