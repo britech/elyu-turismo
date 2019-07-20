@@ -122,7 +122,7 @@ return function (App $app) {
         }
     });
 
-    $app->get('/poi/{id}', function(Request $request, Response $response, array $args) use ($container, $app) {
+    $app->get('/poi/{id}', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         $renderer = $container->poiRenderer;
         $flash = $container->flash;
