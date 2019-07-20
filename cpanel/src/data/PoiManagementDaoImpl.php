@@ -48,7 +48,9 @@ class PoiManagementDaoImpl implements PoiManagementDao {
         $query = <<< QUERY
         SELECT poi.name,
             description,
+            descriptionwysiwyg,
             commuterguide,
+            commuterguidewysiwyg,
             address,
             town,
             latitude,
