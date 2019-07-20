@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+        <title>PGLU Tourism Control Panel</title>
+    </head>
+
+    <body>
+        <?php include_once 'navigation.phtml'; ?>
+
+        <div class="container">
+            <div class="row" style="margin-top: 30px;">
+                <div class="col l3">
+                    <div class="collection">
+                        <a href="<?= "/poi/{$id}" ?>" class="collection-item">Basic Info</a>
+                        <a href="<?= "/poi/{$id}/schedules" ?>" class="collection-item">Schedules</a>
+                        <a href="<?= "/poi/{$id}/fees" ?>" class="collection-item">Fees</a>
+                        <a href="<?= "/poi/{$id}/reviews" ?>" class="collection-item">Reviews</a>
+                        <a href="<?= "/poi/{$id}/admin" ?>" class="collection-item">Administration</a>
+                    </div>
+                </div>
+                <div class="col l9">
+                    <?=$content?>
+                </div>
+            </div>
+        </div>
+
+        <?php include_once 'footer.phtml'; ?>
+    </body>
+</html>
