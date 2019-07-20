@@ -16,3 +16,11 @@
         </tr>
     </tbody>
 </table>
+
+<?php if(isset($notification)): ?>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            M.toast({ html: '<?=$notification?>'});
+        });
+    </script>
+<?php endif;?>
