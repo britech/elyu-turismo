@@ -4,6 +4,7 @@ use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use gov\pglu\tourism\util\ApplicationUtils;
+use gov\pglu\tourism\util\ApplicationConstants;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -81,7 +82,10 @@ return function (App $app) {
         }
     });
 
-    $app->get('/poi', function(Request $request, Response $response, array $args) use ($renderer) {
+    $app->get('/poi', function(Request $request, Response $response, array $args) use ($container) {
+        $renderer = $container->renderer;
+        $flash = $container->flash;
+        $args = array_merge($args, [ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)]);
         return $renderer->render($response, 'poi/index.phtml', $args);
     })->setName('poi-list');
 
