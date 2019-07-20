@@ -23,6 +23,15 @@ return function (App $app) {
         return $renderer;
     };
 
+    $container['poiRenderer'] = function($c) {
+        list('renderer' => $rendererSettings) = $c->settings;
+        list('template_path' => $templatePath) = $rendererSettings;
+
+        $renderer = new PhpRenderer($templatePath);
+        $renderer->setLayout('layout_poi.phtml');
+        return $renderer;
+    };
+
     // flash messages component
     $container['flash'] = function($c) {
         return new FlashMessage();
