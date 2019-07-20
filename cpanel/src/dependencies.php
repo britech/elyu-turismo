@@ -2,6 +2,7 @@
 
 use Slim\App;
 use Slim\Views\PhpRenderer;
+use Slim\Flash\Messages as FlashMessage;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Monolog\Handler\RotatingFileHandler;
@@ -20,6 +21,11 @@ return function (App $app) {
         $renderer = new PhpRenderer($templatePath);
         $renderer->setLayout('layout.phtml');
         return $renderer;
+    };
+
+    // flash messages component
+    $container['flash'] = function($c) {
+        return new FlashMessage();
     };
 
     // monolog
