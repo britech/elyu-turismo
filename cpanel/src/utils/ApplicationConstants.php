@@ -2,7 +2,7 @@
 
 namespace gov\pglu\tourism\util;
 
-class ApplicationConstants {
+final class ApplicationConstants {
 
     const NOTIFICATION_KEY = "notification";
 }
