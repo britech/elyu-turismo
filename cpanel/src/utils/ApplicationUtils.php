@@ -25,7 +25,6 @@ final class ApplicationUtils {
         return count($result) == 0 ? '[]' : json_encode($result);
     }
 
-
     public static function convertArrayToAutocompleteData(array $map, $keyName) {
         $result = [];
         foreach($map as $entry) {
@@ -33,5 +32,19 @@ final class ApplicationUtils {
             $result = array_merge($result, array($value => NULL));
         }
         return count($result) == 0 ? '{}' : json_encode($result);
+    }
+
+    /**
+     * @param String $town
+     * @return String
+     */
+    public static function getTourismCircuit($town) {
+        foreach (self::TOURISM_CIRCUITS as $circuit => $towns) {
+            foreach($towns as $entry) {
+                if (strcasecmp($town, $entry) == 0) {
+                    return $circuit;
+                }
+            }
+        }
     }
 }
