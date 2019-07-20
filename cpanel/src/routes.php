@@ -104,7 +104,7 @@ return function (App $app) {
     $app->post('/api/poi/add', function(Request $request, Response $response, array $args) use ($logger, $container) {
         $body = $request->getParsedBody();
         $inputs = array_filter($body, function($key) {
-            return strcasecmp('topicTags', $key) !=0 && strcasecmp('classifications', $key);
+            return strcasecmp('topicTags', $key) !=0 && strcasecmp('classifications', $key) != 0;
         }, ARRAY_FILTER_USE_KEY);
 
         list('topicTags' => $rawTags, 'classifications' => $rawClassifications, 'name' => $name) = $body;
