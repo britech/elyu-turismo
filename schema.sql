@@ -57,16 +57,18 @@ DROP TABLE IF EXISTS `placeofinterest`;
 CREATE TABLE `placeofinterest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(1000) NOT NULL,
-  `description` text DEFAULT NULL,
-  `commuterGuide` text DEFAULT NULL,
+  `description` text,
+  `commuterGuide` text,
   `address` varchar(1000) NOT NULL,
   `town` varchar(100) NOT NULL,
   `latitude` varchar(100) NOT NULL,
   `longitude` varchar(100) NOT NULL,
   `arenabled` tinyint(4) DEFAULT '0',
   `displayable` tinyint(4) DEFAULT '0',
+  `descriptionWysiwyg` json DEFAULT NULL,
+  `commuterGuideWysiwyg` json DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
