@@ -19,4 +19,9 @@ interface PoiManagementDao {
      * @param array $map
      */
     public function updatePoi(array $map);
+
+    /**
+     * @return array
+     */
+    public function listPoi();
 }

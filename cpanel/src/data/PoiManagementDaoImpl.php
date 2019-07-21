@@ -142,6 +142,29 @@ QUERY;
         }
     }
 
+    public function listPoi() {
+        $query = <<< QUERY
+            SELECT id, name, address, latitude, longitude, town
+            FROM placeofinterest
+QUERY;
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
+            
+            $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            array_walk($rows, function(&$row) {
+                list('town' => $town) = $row;
+                $row = array_merge($row, [
+                    'tourismCircuit' => ApplicationUtils::getTourismCircuit($town)
+                ]);
+            });
+            $this->logger->debug(json_encode($rows));
+            return $rows;
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);
