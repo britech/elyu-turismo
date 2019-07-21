@@ -85,6 +85,12 @@ return function (App $app) {
     $app->get('/poi', function(Request $request, Response $response, array $args) use ($container) {
         $renderer = $container->renderer;
         $flash = $container->flash;
+        try {
+            $result = $container->poiManagementService->listPoi();
+            $args = array_merge($args, ['poiList' => $result]);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+        }
         $args = array_merge($args, [ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)]);
         return $renderer->render($response, 'poi/index.phtml', $args);
     })->setName('poi-list');
