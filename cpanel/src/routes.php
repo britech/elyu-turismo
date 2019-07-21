@@ -133,7 +133,7 @@ return function (App $app) {
                 return $response->withRedirect($container->router->pathFor('poi-list'));
             } else {
                 list('town' => $town) = $result;
-                $args = array_merge($args, [ 'id' => $id, 'result' => $result, 'tourismCircuit' => ApplicationUtils::getTourismCircuit($town) ]);
+                $args = array_merge($args, [ 'id' => $id, 'result' => $result ]);
                 return $renderer->render($response, 'poi/info.phtml', $args);
             }
         } catch (\PDOException $ex) {
