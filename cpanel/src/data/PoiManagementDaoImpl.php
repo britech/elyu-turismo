@@ -3,6 +3,7 @@
 namespace gov\pglu\tourism\dao;
 
 use gov\pglu\tourism\dao\PoiManagementDao;
+use gov\pglu\tourism\util\ApplicationUtils;
 
 /**
  * @property \PDO $pdo
@@ -84,9 +85,11 @@ QUERY;
                 return strcasecmp('classifications', $key) != 0 && strcasecmp('topicTags', $key) != 0;
             }, ARRAY_FILTER_USE_KEY);
 
-            list('classifications' => $rawClassifications, 'topicTags' => $rawTags) = $attributes;
-            $resultMap = array_merge($resultMap, ['classifications' => $this->createObjectMapArray($rawClassifications)]);
-            $resultMap = array_merge($resultMap, ['topicTags' => $this->createObjectMapArray($rawTags)]);
+            list('classifications' => $rawClassifications, 'topicTags' => $rawTags, 'town' => $town) = $attributes;
+            $resultMap = array_merge($resultMap, ['classifications' => $this->createObjectMapArray($rawClassifications), 
+                'topicTags' => $this->createObjectMapArray($rawTags),
+                'tourismCircuit' => ApplicationUtils::getTourismCircuit($town)
+            ]);
 
             return $resultMap;
         } catch (\PDOException $ex) {
