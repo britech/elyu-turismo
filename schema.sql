@@ -169,6 +169,8 @@ CREATE TABLE `poischedule` (
   `day` varchar(100) DEFAULT NULL,
   `notes` varchar(1000) DEFAULT NULL,
   `enabled` tinyint(4) DEFAULT '1',
+  `openEveryday` tinyint(4) DEFAULT '0',
+  `openAllDay` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `poischedule_fk` (`placeofinterest`),
   CONSTRAINT `poischedule_fk` FOREIGN KEY (`placeofinterest`) REFERENCES `placeofinterest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
