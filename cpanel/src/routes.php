@@ -220,4 +220,19 @@ return function (App $app) {
             return $response->withJson([ApplicationConstants::REST_MESSAGE_KEY => 'Something went wrong. Try again later'], 500);
         }
     });
+
+    $app->get('/poi/{id}/schedules', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        $flash = $container->flash;
+        $service = $container->poiManagementService;
+        try {
+            $result = $service->getPoi($id);
+            list('name' => $name) = $result;
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while loading Tourist Location info. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+        
+    });
 };
