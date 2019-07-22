@@ -231,6 +231,13 @@ return function (App $app) {
             $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while loading Tourist Location info. Try again later');
             return $response->withRedirect($container->router->pathFor('poi-list'));
         }
-        
+    });
+
+    $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
+        return $container->webRenderer->render($response, 'index.phtml', $args);
+    });
+
+    $app->get('/open-data', function(Request $request, Response $response, array $args) use ($container) {
+        return $container->webRenderer->render($response, 'open-data.phtml', $args);
     });
 };
