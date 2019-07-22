@@ -23,6 +23,8 @@ return [
             'dsn' => 'mysql:host=database;dbname=tourism',
             'username' => 'tourism_user',
             'password' => 'u&e6uaAz-b#^Lj7m'
-        ]
+        ],
+        
+        'uploadsDir' => '/var/www/html/cpanel/uploads'
     ],
 ];
