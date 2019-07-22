@@ -227,6 +227,16 @@ CREATE TABLE `topictag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+CREATE TABLE `poiimage` (
+  `id` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `placeofinterest` int(11) NOT NULL,
+  `designation` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `enabled` tinyint(4) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `poiimage_FK` (`placeofinterest`),
+  CONSTRAINT `poiimage_FK` FOREIGN KEY (`placeofinterest`) REFERENCES `placeofinterest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE USER 'tourism_user'@'localhost' IDENTIFIED BY 'u&e6uaAz-b#^Lj7m';
 GRANT SELECT,INSERT,UPDATE,DELETE ON tourism.* TO 'tourism_user'@'localhost';
 
