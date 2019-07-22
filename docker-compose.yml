@@ -1,7 +1,7 @@
 version: "2"
 services:
-  cpanel:
-    container_name: "tourism_cpanel"
+  app:
+    container_name: "tourism_app"
     image: "pglu/tourism-cpanel"
     build: .
     working_dir: /var/www/html
@@ -11,6 +11,11 @@ services:
       - ./cpanel/public/css:/var/www/html/cpanel/public/css
       - ./cpanel/public/js:/var/www/html/cpanel/public/js
       - tourism_cpanel_logs:/var/www/html/cpanel/logs
+      - ./web/src:/var/www/html/web/src
+      - ./web/templates:/var/www/html/web/templates
+      - ./web/public/css:/var/www/html/web/public/css
+      - ./web/public/js:/var/www/html/web/public/js
+      - tourism_web_logs:/var/www/html/web/logs
     ports:
       - '80:80'
     links:
@@ -32,3 +37,4 @@ services:
 volumes:
   tourism_db:
   tourism_cpanel_logs:
+  tourism_web_logs:
