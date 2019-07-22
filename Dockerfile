@@ -11,29 +11,17 @@ RUN apt-get update\
     && dpkg-reconfigure -f noninteractive tzdata\
     && docker-php-ext-install pdo pdo_mysql
 
-WORKDIR /var/www/html/cpanel
-COPY --chown=www-data cpanel/logs ./logs
-COPY --chown=www-data cpanel/public ./public
-COPY --chown=www-data cpanel/src ./src
-COPY --chown=www-data cpanel/templates ./templates
-COPY --chown=www-data cpanel/composer.json ./composer.json
-COPY --chown=www-data cpanel/composer.lock ./composer.lock
+WORKDIR /var/www/html
+COPY --chown=www-data logs ./logs
+COPY --chown=www-data public ./public
+COPY --chown=www-data src ./src
+COPY --chown=www-data templates ./templates
+COPY --chown=www-data composer.json ./composer.json
+COPY --chown=www-data composer.lock ./composer.lock
 
 RUN composer dump-autoload\
     && composer install --no-dev\
-    && chown -hR www-data:www-data /var/www/html/cpanel/vendor
-
-WORKDIR /var/www/html/web
-COPY --chown=www-data web/logs ./logs
-COPY --chown=www-data web/public ./public
-COPY --chown=www-data web/src ./src
-COPY --chown=www-data web/templates ./templates
-COPY --chown=www-data web/composer.json ./composer.json
-COPY --chown=www-data web/composer.lock ./composer.lock
-
-RUN composer dump-autoload\
-    && composer install --no-dev\
-    && chown -hR www-data:www-data /var/www/html/web/vendor
+    && chown -hR www-data:www-data /var/www/html/vendor
 
 RUN a2enmod rewrite
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf

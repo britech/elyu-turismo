@@ -6,16 +6,10 @@ services:
     build: .
     working_dir: /var/www/html
     volumes:
-      - ./cpanel/src:/var/www/html/cpanel/src
-      - ./cpanel/templates:/var/www/html/cpanel/templates
-      - ./cpanel/public/css:/var/www/html/cpanel/public/css
-      - ./cpanel/public/js:/var/www/html/cpanel/public/js
-      - tourism_cpanel_logs:/var/www/html/cpanel/logs
-      - ./web/src:/var/www/html/web/src
-      - ./web/templates:/var/www/html/web/templates
-      - ./web/public/css:/var/www/html/web/public/css
-      - ./web/public/js:/var/www/html/web/public/js
-      - tourism_web_logs:/var/www/html/web/logs
+      - ./src:/var/www/html/src
+      - ./templates:/var/www/html/templates
+      - ./public:/var/www/html/public
+      - app_logs:/var/www/html/logs
     ports:
       - '80:80'
     links:
@@ -36,5 +30,4 @@ services:
       - "TZ=Asia/Manila"
 volumes:
   tourism_db:
-  tourism_cpanel_logs:
-  tourism_web_logs:
+  app_logs:
