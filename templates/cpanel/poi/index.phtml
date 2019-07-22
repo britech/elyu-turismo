@@ -1,5 +1,5 @@
 <h2>Points of Interest</h2>
-<a class="waves-light btn-large" href="/poi/add"><i class="material-icons left">create</i>Create</a>
+<a class="waves-light btn-large" href="/cpanel/poi/add"><i class="material-icons left">create</i>Create</a>
 <table>
     <thead>
         <tr>
@@ -11,7 +11,7 @@
     <tbody>
         <?php foreach ($poiList as $poi) : ?>
             <tr>
-                <td><a href="<?= "/poi/{$poi['id']}" ?>"><?= $poi['name'] ?></a></td>
+                <td><a href="<?= "/cpanel/poi/{$poi['id']}" ?>"><?= $poi['name'] ?></a></td>
                 <td>
                     <?= $poi['address'] ?>
                     <br />

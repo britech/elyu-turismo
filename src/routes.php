@@ -8,17 +8,16 @@ use gov\pglu\tourism\util\ApplicationConstants;
 
 return function (App $app) {
     $container = $app->getContainer();
-    $renderer = $container->renderer;
     $logger = $container->logger;
 
-    $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
-        return $container->renderer->render($response, 'home.phtml', $args);
+    $app->get('/cpanel', function(Request $request, Response $response, array $args) use ($container) {
+        return $container->cpanelRenderer->render($response, 'index.phtml', $args);
     });
 
-    $app->get('/tags', function(Request $request, Response $response, array $args) use ($container) {
+    $app->get('/cpanel/tags', function(Request $request, Response $response, array $args) use ($container) {
         $result = $container->tagService->getTags();
 
-        return $container->renderer->render($response, 'tags.phtml', array(
+        return $container->cpanelRenderer->render($response, 'tags.phtml', array(
             'tags' => ApplicationUtils::convertArrayToTagData($result, 'name'),
             'tagsBackend' => json_encode($result)
         ));
@@ -49,13 +48,13 @@ return function (App $app) {
         }
     });
 
-    $app->get('/classifications', function(Request $request, Response $response, array $args) use ($container) {
+    $app->get('/cpanel/classifications', function(Request $request, Response $response, array $args) use ($container) {
         $result = $container->classificationService->getClassifications();
         $classifications = array();
         foreach($result as $tag) {
             $classifications = array_merge($classifications, array(array('tag' => $tag['name'])));
         }
-        return $container->renderer->render($response, 'classifications.phtml', array(
+        return $container->cpanelRenderer->render($response, 'classifications.phtml', array(
             'classifications' => count($classifications) == 0 ? '[]' : json_encode($classifications)
         ));
     });
@@ -82,8 +81,7 @@ return function (App $app) {
         }
     });
 
-    $app->get('/poi', function(Request $request, Response $response, array $args) use ($container) {
-        $renderer = $container->renderer;
+    $app->get('/cpanel/poi', function(Request $request, Response $response, array $args) use ($container) {
         $flash = $container->flash;
         try {
             $result = $container->poiManagementService->listPoi();
@@ -92,10 +90,10 @@ return function (App $app) {
             $container->logger->error($ex);
         }
         $args = array_merge($args, [ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)]);
-        return $renderer->render($response, 'poi/index.phtml', $args);
+        return $container->cpanelRenderer->render($response, 'poi/index.phtml', $args);
     })->setName('poi-list');
 
-    $app->get('/poi/add', function(Request $request, Response $response, array $args) use($renderer, $container) {
+    $app->get('/cpanel/poi/add', function(Request $request, Response $response, array $args) use($container) {
         $classifications = $container->classificationService->getClassifications();
         $tags = $container->tagService->getTags();
 
@@ -104,7 +102,7 @@ return function (App $app) {
             'classificationsBackend' => json_encode($classifications),
             'tags' => ApplicationUtils::convertArrayToAutocompleteData($tags, 'name'),
             'tagsBackend' => json_encode($tags) ]);
-        return $renderer->render($response, 'poi/create.phtml', $args);
+        return $container->cpanelRenderer->render($response, 'poi/create.phtml', $args);
     });
 
     $app->post('/api/poi/add', function(Request $request, Response $response, array $args) use ($logger, $container) {
@@ -128,7 +126,7 @@ return function (App $app) {
         }
     });
 
-    $app->get('/poi/{id}', function(Request $request, Response $response, array $args) use ($container) {
+    $app->get('/cpanel/poi/{id}', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         $renderer = $container->poiRenderer;
         $flash = $container->flash;
@@ -149,7 +147,7 @@ return function (App $app) {
         }
     })->setName('poi-info');
 
-    $app->get('/poi/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
+    $app->get('/cpanel/poi/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         $renderer = $container->poiRenderer;
         $flash = $container->flash;
@@ -221,7 +219,7 @@ return function (App $app) {
         }
     });
 
-    $app->get('/poi/{id}/schedules', function(Request $request, Response $response, array $args) use ($container) {
+    $app->get('/cpanel/poi/{id}/schedules', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         $flash = $container->flash;
         $service = $container->poiManagementService;

@@ -18,7 +18,7 @@ return function (App $app) {
         list('renderer' => $rendererSettings) = $c->settings;
         list('template_path' => $templatePath) = $rendererSettings;
 
-        $renderer = new PhpRenderer($templatePath);
+        $renderer = new PhpRenderer("{$templatePath}/");
         $renderer->setLayout('layout.phtml');
         return $renderer;
     };
@@ -27,8 +27,17 @@ return function (App $app) {
         list('renderer' => $rendererSettings) = $c->settings;
         list('template_path' => $templatePath) = $rendererSettings;
 
-        $renderer = new PhpRenderer($templatePath);
+        $renderer = new PhpRenderer("{$templatePath}/cpanel/");
         $renderer->setLayout('layout_poi.phtml');
+        return $renderer;
+    };
+
+    $container['cpanelRenderer'] = function($c) {
+        list('renderer' => $rendererSettings) = $c->settings;
+        list('template_path' => $templatePath) = $rendererSettings;
+
+        $renderer = new PhpRenderer("{$templatePath}/cpanel/");
+        $renderer->setLayout('layout.phtml');
         return $renderer;
     };
 
