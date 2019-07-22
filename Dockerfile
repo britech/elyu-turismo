@@ -23,6 +23,18 @@ RUN composer dump-autoload\
     && composer install --no-dev\
     && chown -hR www-data:www-data /var/www/html/cpanel/vendor
 
+WORKDIR /var/www/html/web
+COPY --chown=www-data web/logs ./logs
+COPY --chown=www-data web/public ./public
+COPY --chown=www-data web/src ./src
+COPY --chown=www-data web/templates ./templates
+COPY --chown=www-data web/composer.json ./composer.json
+COPY --chown=www-data web/composer.lock ./composer.lock
+
+RUN composer dump-autoload\
+    && composer install --no-dev\
+    && chown -hR www-data:www-data /var/www/html/web/vendor
+
 RUN a2enmod rewrite
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
