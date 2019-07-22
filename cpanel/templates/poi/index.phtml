@@ -9,37 +9,20 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
+        <?php foreach ($poiList as $poi) : ?>
+            <tr>
+                <td><a href="<?= "/poi/{$poi['id']}" ?>"><?= $poi['name'] ?></a></td>
+                <td>
+                    <?= $poi['address'] ?>
+                    <br />
+                    Coordinates: <?= $poi['latitude'] ?>, <?= $poi['longitude'] ?>
+                </td>
+                <td><?= $poi['tourismCircuit'] ?></td>
+                <td><?= $poi['town'] ?></td>
+            </tr>
+        <?php endforeach; ?>
     </tbody>
 </table>
-    <table id="poiList">
-        <thead>
-            <tr>
-                <th style="width: 30%;">Name</th>
-                <th style="width: 40%;">Location</th>
-                <th>Circuit</th>
-                <th>Town</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($poiList as $poi) : ?>
-                <tr>
-                    <td><a href="<?= "/poi/{$poi['id']}" ?>"><?= $poi['name'] ?></a></td>
-                    <td>
-                        <?= $poi['address'] ?>
-                        <br />
-                        Coordinates: <?= $poi['latitude'] ?>, <?= $poi['longitude'] ?>
-                    </td>
-                    <td><?= $poi['tourismCircuit'] ?></td>
-                    <td><?= $poi['town'] ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
 <script type="text/javascript">
     $(document).ready(function() {
         <?php if (isset($notification)) : ?>
@@ -47,12 +30,5 @@
                 html: '<?= $notification ?>'
             });
         <?php endif; ?>
-
-<?php if(isset($notification)): ?>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            M.toast({ html: '<?=$notification?>'});
-        });
-    </script>
-<?php endif;?>    });
+    });
 </script>
