@@ -1,38 +1,51 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <title>Slim 3</title>
-        <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
-        <style>
-            body {
-                margin: 50px 0 0 0;
-                padding: 0;
-                width: 100%;
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                text-align: center;
-                color: #aaa;
-                font-size: 18px;
-            }
 
-            h1 {
-                color: #719e40;
-                letter-spacing: -3px;
-                font-family: 'Lato', sans-serif;
-                font-size: 100px;
-                font-weight: 200;
-                margin-bottom: 0;
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <style>
+            i:hover {
+                cursor: pointer
             }
         </style>
+        <title>Welcome to La Union</title>
     </head>
-    <body>
-        <h1>Slim</h1>
-        <div>a microframework for PHP</div>
 
-        <?php if (isset($name)) : ?>
-            <h2>Hello <?= htmlspecialchars($name); ?>!</h2>
-        <?php else: ?>
-            <p>Try <a href="http://www.slimframework.com">SlimFramework</a></p>
-        <?php endif; ?>
+    <body>
+        <div class="container">
+            <div class="row" style="margin-top: 50px;">
+                <div class="col s12 l12">
+                    <div class="center">
+                        <h1>Welcome to La Union</h1>
+                        <h5>Select an icon to proceed</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s4">
+                    <div class="center">
+                        <i class="material-icons center large" onclick='window.location="/explore"'>explore</i>
+                        <h6>Explore</h6>
+                        <p>Discover the different tourist destinations that our province has to offer.</p>
+                    </div>
+                </div>
+                <div class="col s4">
+                    <div class="center">
+                        <i class="material-icons center large" onclick='window.location="/suggest"'>not_listed_location</i>
+                        <h6>Suggest</h6>
+                        <p>Found a place not included here? Help us discover and promote these new locations.</p>
+                    </div>
+                </div>
+                <div class="col s4">
+                    <div class="center">
+                        <i class="material-icons center large" onclick='window.location="/open-data"'>cloud_download</i>
+                        <h6>Open Data</h6>
+                        <p>Need Data? Our open data component gives you real-time raw data for analysis and consumption</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
+
 </html>
