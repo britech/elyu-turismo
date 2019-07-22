@@ -17,10 +17,8 @@ return function (App $app) {
     $container['renderer'] = function ($c) {
         list('renderer' => $rendererSettings) = $c->settings;
         list('template_path' => $templatePath) = $rendererSettings;
-
-        $renderer = new PhpRenderer("{$templatePath}/");
-        $renderer->setLayout('layout.phtml');
-        return $renderer;
+        
+        return new PhpRenderer("{$templatePath}/");
     };
 
     $container['poiRenderer'] = function($c) {
@@ -39,6 +37,13 @@ return function (App $app) {
         $renderer = new PhpRenderer("{$templatePath}/cpanel/");
         $renderer->setLayout('layout.phtml');
         return $renderer;
+    };
+
+    $container['webRenderer'] = function($c) {
+        list('renderer' => $rendererSettings) = $c->settings;
+        list('template_path' => $templatePath) = $rendererSettings;
+
+        return new PhpRenderer("{$templatePath}/web/");
     };
 
     // flash messages component
