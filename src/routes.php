@@ -257,4 +257,9 @@ return function (App $app) {
             'poiListBackend' => json_encode($poiList) ]);
         return $container->openDataRenderer->render($response, 'csv.phtml', $args);
     });
+
+    $app->post('/open-data/csv', function(Request $request, Response $response, array $args) use ($container) {
+        $this->logger->debug($request->getParsedBody());
+        die();
+    });
 };
