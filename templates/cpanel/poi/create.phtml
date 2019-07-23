@@ -88,7 +88,7 @@
                     html: data.message,
                     displayLength: 500,
                     completeCallback: function() {
-                        window.location = `/poi/${data.id}`
+                        window.location = `/cpanel/poi/${data.id}`
                     }
                 });
             }).fail(function(xhr, status, err) {
@@ -97,7 +97,7 @@
                     html: 'Something went wrong. Try again later',
                     displayLength: 2000,
                     completeCallback: function() {
-                        window.location = "/poi"
+                        window.location = "/cpanel/poi"
                     }
                 })
             });
