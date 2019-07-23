@@ -238,6 +238,6 @@ return function (App $app) {
     });
 
     $app->get('/open-data', function(Request $request, Response $response, array $args) use ($container) {
-        return $container->webRenderer->render($response, 'open-data.phtml', $args);
+        return $container->openDataRenderer->render($response, 'index.phtml', $args);
     });
 };

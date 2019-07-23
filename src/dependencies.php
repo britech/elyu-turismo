@@ -46,6 +46,15 @@ return function (App $app) {
         return new PhpRenderer("{$templatePath}/web/");
     };
 
+    $container['openDataRenderer'] = function($c) {
+        list('renderer' => $rendererSettings) = $c->settings;
+        list('template_path' => $templatePath) = $rendererSettings;
+
+        $renderer = new PhpRenderer("{$templatePath}/web/open-data");
+        $renderer->setLayout('layout.phtml');
+        return $renderer; 
+    };
+
     // flash messages component
     $container['flash'] = function($c) {
         return new FlashMessage();
