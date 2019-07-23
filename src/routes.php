@@ -237,6 +237,10 @@ return function (App $app) {
         return $container->webRenderer->render($response, 'index.phtml', $args);
     });
 
+    $app->get('/explore', function(Request $request, Response $response, array $args) use ($container) {
+        return $container->webRenderer->render($response, 'explore.phtml', $args);
+    });
+
     $app->get('/open-data', function(Request $request, Response $response, array $args) use ($container) {
         return $container->openDataRenderer->render($response, 'index.phtml', $args);
     });
