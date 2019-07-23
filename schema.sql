@@ -136,8 +136,6 @@ CREATE TABLE `poifee` (
 --
 
 DROP TABLE IF EXISTS `poirating`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poirating` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `placeofinterest` int(11) NOT NULL,
@@ -149,10 +147,11 @@ CREATE TABLE `poirating` (
   PRIMARY KEY (`id`),
   KEY `poirating_fk` (`placeofinterest`),
   KEY `poirating_fk_1` (`guest`),
+  KEY `poirating_alternate_search_IDX` (`placeofinterest`,`dateadded`) USING BTREE,
+  KEY `poirating_primary_search_IDX` (`dateadded`) USING BTREE,
   CONSTRAINT `poirating_fk` FOREIGN KEY (`placeofinterest`) REFERENCES `placeofinterest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `poirating_fk_1` FOREIGN KEY (`guest`) REFERENCES `guest` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `poischedule`
@@ -200,18 +199,17 @@ CREATE TABLE `poitag` (
 --
 
 DROP TABLE IF EXISTS `poivisit`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poivisit` (
   `placeofinterest` int(11) NOT NULL,
   `guest` varchar(50) DEFAULT NULL,
   `dateadded` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   KEY `poivisit_fk` (`placeofinterest`),
   KEY `poivisit_fk_1` (`guest`),
+  KEY `poivisit_alternate_search_IDX` (`placeofinterest`,`dateadded`) USING BTREE,
+  KEY `poivisit_primary_search_IDX` (`dateadded`) USING BTREE,
   CONSTRAINT `poivisit_fk` FOREIGN KEY (`placeofinterest`) REFERENCES `placeofinterest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `poivisit_fk_1` FOREIGN KEY (`guest`) REFERENCES `guest` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `topictag`
