@@ -1,0 +1,82 @@
+<div class="row">
+    <h4>CSV Exports</h4>
+    <p>Below are the available reports that can be accessed and exported as a CSV file.</p>
+
+    <a href="#">List of identified Points of Interest</a>
+
+    <h5 style="margin-bottom: 30px;">Other Reports</h5>
+
+    <form action="/open-data/csv" method="post" style="margin-top: 20px;">
+        <div class="row">
+            <div class="input-field col l6">
+                <p>Report Type</p>
+                <select name="reportType">
+                    <?php foreach ($reportTypes as $id => $reportName) : ?>
+                        <option value="<?= $id ?>"><?= $reportName ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="input-field col l6">
+                <p class="tooltip" data-position="top" data-tooltip="Use this option to filter the places of interest you want in your report">Places of Interest</p>
+                <div id="poi"></div>
+                <input type="hidden" name="poiList" />
+                <input type="hidden" id="poiListBackend" value='<?= $poiListBackend ?>' />
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col l6">
+                <p>Start date</p>
+                <input type="text" class="datepicker" name="startDate">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Generate Report<i class="material-icons right">cloud_download</i></button>
+            </div>
+            <div class="input-field col l6">
+                <p>End date</p>
+                <input type="text" class="datepicker" name="endDate">
+            </div>
+        </div>
+
+        
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('select').formSelect();
+
+        $('.tooltip').tooltip();
+
+        $('.datepicker').datepicker({
+            showClearBtn: true,
+            autoClose: true,
+            format: 'yyyy-mm-dd'
+        });
+
+        $("#poi").chips({
+            placeholder: 'Place of Interest',
+            secondaryPlaceholder: 'Place of Interest',
+            autocompleteOptions: {
+                data: <?= $poiList ?>
+            },
+            onChipAdd: function(e, chip) {
+                let rawData = $("#poiListBackend").val();
+                let data = JSON.parse(rawData);
+                let tags = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    tags.push(result[0]);
+                }
+                $("[name=poiList]").val(JSON.stringify(tags));
+            },
+            onChipDelete: function(e, chip) {
+                let rawData = $("#poiListBackend").val();
+                let data = JSON.parse(rawData);
+                let tags = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    tags.push(result[0]);
+                }
+                $("[name=poiList]").val(JSON.stringify(tags));
+            }
+        });
+    });
+</script>
