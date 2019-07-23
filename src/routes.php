@@ -240,4 +240,8 @@ return function (App $app) {
     $app->get('/open-data', function(Request $request, Response $response, array $args) use ($container) {
         return $container->openDataRenderer->render($response, 'index.phtml', $args);
     });
+
+    $app->get('/open-data/rest', function(Request $request, Response $response, array $args) use ($container) {
+        return $container->openDataRenderer->render($response, 'rest.phtml', $args);
+    });
 };
