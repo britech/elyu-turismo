@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <style>
+            i:hover {
+                cursor: pointer
+            }
+        </style>
+        <title>La Union Tourism - Open Data</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="row" style="margin-top: 20px;">
+                <div class="col s9 m9">
+                    <h1>Open Data</h1>
+                    <h5>Description here...</h5>
+                </div>
+                <div class="col s3 m3">
+                    <a class="btn indigo darken-4" href="/"><i class="material-icons left">home</i>back to home</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <h3 class="center">How do you want to retrieve our data?</h3>
+            </div>
+
+            <div class="row">
+                <div class="col s6 m6">
+                    <div class="center">
+                        <img class="responsive-img" src="/images/csv-icon.png" onclick="window.location='/open-data#test'"/>
+                        <h4>CSV</h4>
+                    </div>
+                </div>
+                <div class="col s6 m6">
+                <div class="center">
+                        <img class="responsive-img" src="/images/rest-api-icon.png"/>
+                        <h4>REST</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <a id="test">CSV Exports</a>
+            </div>
+        </div>
+    </body>
+
+</html>
