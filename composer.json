@@ -21,6 +21,7 @@
     "autoload": {
         "psr-4": {
             "gov\\pglu\\tourism\\dao\\": "src/data/",
+            "gov\\pglu\\tourism\\service\\": "src/services/",
             "gov\\pglu\\tourism\\util\\": "src/utils/"
         }
     },
