@@ -52,10 +52,19 @@ class OpenDataServiceCsvImpl implements OpenDataService {
         } catch (\PDOException $ex) {
             throw $ex;
         }
-        return [];
     }
 
     public function computeAverageVisitorRating(array $criteriaMap) {
-        return [];
+        $csvRows = [['Name', 'Rating']];
+        try {
+            $rows = $this->openDataDao->computeAverageVisitorRating($criteriaMap);
+            foreach($rows as $row) {
+                list('name' => $name, 'rating' => $rating) = $row;
+                $csvRows = array_merge($csvRows, [[$name, $rating]]);
+            }
+            return $csvRows;
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
     }
 }
