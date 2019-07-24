@@ -9,6 +9,7 @@ use Monolog\Handler\RotatingFileHandler;
 use gov\pglu\tourism\dao\TagDaoImpl;
 use gov\pglu\tourism\dao\ClassificationDaoImpl;
 use gov\pglu\tourism\dao\PoiManagementDaoImpl;
+use gov\pglu\tourism\dao\OpenDataDaoImpl;
 use gov\pglu\tourism\service\OpenDataServiceCsvImpl;
 
 return function (App $app) {
@@ -102,8 +103,14 @@ return function (App $app) {
         return $service;
     };
 
+    $container['openDataDao'] = function($c) {
+        $dao = new OpenDataDaoImpl($c->database);
+        $dao->logger = $c->logger;
+        return $dao;
+    };
+
     $container['csvOpenDataService'] = function($c) {
-        return new OpenDataServiceCsvImpl($c->poiManagementService);
+        return new OpenDataServiceCsvImpl($c->poiManagementService, $c->openDataDao);
     };
 
     $container['csvGenerationSetting'] = function($c) {
