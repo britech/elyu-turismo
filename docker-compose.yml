@@ -8,8 +8,10 @@ services:
     volumes:
       - ./src:/var/www/html/src
       - ./templates:/var/www/html/templates
-      - ./public:/var/www/html/public
-      - app_logs:/var/www/html/logs
+      - ./public/downloads:/var/www/html/public/downloads
+      - ./public/images:/var/www/html/public/images
+      - ./public/uploads:/var/www/html/public/uploads
+      - ./logs:/var/www/html/logs
     ports:
       - '80:80'
     links:
@@ -30,4 +32,3 @@ services:
       - "TZ=Asia/Manila"
 volumes:
   tourism_db:
-  app_logs:
