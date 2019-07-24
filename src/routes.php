@@ -262,4 +262,25 @@ return function (App $app) {
         $this->logger->debug($request->getParsedBody());
         die();
     });
+
+    $app->get('/open-data/csv/poi', function(Request $request, Response $response, array $args) use ($container) {
+        $logger = $container->logger;
+        $csvGenerationSetting = $container->csvGenerationSetting;
+        
+        $filename = "{$csvGenerationSetting->destination}/" . time() . "_poi-list.csv";
+        try {
+            $rows = $container->csvOpenDataService->listPoi();
+            $file = fopen($filename, 'w');
+            foreach($rows as $row) {
+                fputcsv($file, $row);
+            }
+            fclose($file);
+
+            $baseName = basename($filename);
+            return $response->withRedirect("{$csvGenerationSetting->httpPath}/{$baseName}");
+        } catch (\Exception $ex) {
+            $logger->error($ex);
+            return $response->withStatus(500, $ex->getMessage());
+        }
+    });
 };
