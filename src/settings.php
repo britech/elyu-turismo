@@ -25,6 +25,9 @@ return [
             'password' => 'u&e6uaAz-b#^Lj7m'
         ],
         
-        'uploadsDir' => '/var/www/html/cpanel/uploads'
+        'csvGeneration' => [
+            'destination' => '/var/www/html/public/downloads',
+            'httpPath' => '/downloads'
+        ]
     ],
 ];
