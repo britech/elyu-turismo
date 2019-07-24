@@ -8,5 +8,5 @@ interface OpenDataService {
 
     public function countVisitors(array $criteriaMap);
 
-    public function computeVisitorAverageRating(array $criteriaMap);
+    public function computeAverageVisitorRating(array $criteriaMap);
 }
