@@ -259,7 +259,61 @@ return function (App $app) {
     });
 
     $app->post('/open-data/csv', function(Request $request, Response $response, array $args) use ($container) {
-        $this->logger->debug($request->getParsedBody());
-        die();
+        $logger = $container->logger;
+
+        $criteriaMap = array_filter($request->getParsedBody(), function($value) {
+            return strlen($value) != 0;
+        }, ARRAY_FILTER_USE_BOTH);
+
+        if (array_key_exists('places', $criteriaMap)) {
+            $criteriaMap = array_merge($criteriaMap, ['places' => json_decode($criteriaMap['places'])]);
+        }
+
+        $logger->debug("Criteria Map: ".json_encode($criteriaMap));
+        list('reportType' => $reportType) = $request->getParsedBody();
+        $csvGenerationSetting = $container->csvGenerationSetting;
+        $filename = "{$csvGenerationSetting->destination}/" . time() . "_{$reportType}.csv";
+        try {
+            $rows = [];
+            if ($reportType == 'visitorCount') {
+                $rows = array_merge($rows, $container->csvOpenDataService->countVisitors($criteriaMap));
+            } else {
+                $rows = array_merge($rows, $container->csvOpenDataService->computeAverageVisitorRating($criteriaMap));
+            }
+            $logger->debug("Result: ".json_encode($rows));
+
+            $file = fopen($filename, 'w');
+            foreach($rows as $row) {
+                fputcsv($file, $row);
+            }
+            fclose($file);
+
+            $baseName = basename($filename);
+            return $response->withRedirect("{$csvGenerationSetting->httpPath}/{$baseName}");
+        } catch (\PDOException $ex) {
+            $logger->error($ex);
+            return $response->withStatus(500, $ex->getMessage());
+        }
+    });
+
+    $app->get('/open-data/csv/poi', function(Request $request, Response $response, array $args) use ($container) {
+        $logger = $container->logger;
+        $csvGenerationSetting = $container->csvGenerationSetting;
+        
+        $filename = "{$csvGenerationSetting->destination}/" . time() . "_poi-list.csv";
+        try {
+            $rows = $container->csvOpenDataService->listPoi();
+            $file = fopen($filename, 'w');
+            foreach($rows as $row) {
+                fputcsv($file, $row);
+            }
+            fclose($file);
+
+            $baseName = basename($filename);
+            return $response->withRedirect("{$csvGenerationSetting->httpPath}/{$baseName}");
+        } catch (\Exception $ex) {
+            $logger->error($ex);
+            return $response->withStatus(500, $ex->getMessage());
+        }
     });
 };
