@@ -1,7 +1,7 @@
 <div class="section">
     <h5>Update Basic Information</h5>
 </div>
-<form name="poiForm">
+<form name="poiForm" enctype="multipart/form-data" action="<?="/cpanel/poi/{$id}/edit"?>" method="post">
     <div class="input-field">
         <input name="name" type="text" class="validate" required value="<?= $result['name'] ?>" />
         <label>Name</label>
@@ -55,11 +55,24 @@
     </div>
     <div>
         <p>Description</p>
+        <input type="hidden" name="descriptionwysiwyg" value='<?= $result['descriptionwysiwyg'];?>'/>
+        <input type="hidden" name="description" value='<?= $result['description'];?>'/>
         <div id="description-editor">&nbsp;</div>
     </div>
     <div>
         <p>Commuter's Guide</p>
-        <div id="commuterGuide"></div>
+        <input type="hidden" name="commuterguidewysiwyg" value='<?= $result['commuterguidewysiwyg'];?>'/>
+        <input type="hidden" name="commuterguide" value='<?= $result['commuterguide'];?>'/>
+        <div id="commuterGuide">&nbsp;</div>
+    </div>
+    <div class="file-field input-field">
+      <div class="btn indigo darken-4">
+        <span>image</span>
+        <input type="file" name="image" accept="image/*">
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text">
+      </div>
     </div>
     <div style="margin-top: 20px;" class="right">
         <button class="btn waves-effect waves-light" type="submit">update<i class="material-icons left">edit</i></button>
@@ -145,6 +158,10 @@
             placeholder: 'Compose a descriptive text about the location...'
         });
         descriptionField.setContents(<?= $result['descriptionwysiwyg'] ?>);
+        descriptionField.on('text-change', function() {
+            $("[name=descriptionwysiwyg]").val(JSON.stringify(descriptionField.getContents()));
+            $("[name=description]").val(descriptionField.getText().trim());
+        });
 
         var commuterGuideField = new Quill('#commuterGuide', {
             theme: 'snow',
@@ -164,49 +181,9 @@
             placeholder: 'Compose a guide on how to travel on this location...'
         });
         commuterGuideField.setContents(<?= $result['commuterguidewysiwyg'] ?>);
-
-        $("[name=poiForm]").submit(function() {
-            event.preventDefault();
-
-            var description = descriptionField.getText().trim();
-            var commuterGuide = commuterGuideField.getText().trim();
-            
-            $.ajax({
-                url: "<?="/api/poi/{$id}/edit"?>",
-                method: 'POST',
-                data: {
-                    name: $("[name=name]").val(),
-                    address: $("[name=address]").val(),
-                    town: $("[name=town]").val(),
-                    latitude: $("[name=latitude]").val(),
-                    longitude: $("[name=longitude]").val(),
-                    classifications: $("[name=classifications]").val(),
-                    topicTags: $("[name=topicTags]").val(),
-                    description: description.length == 0 ? null : description,
-                    descriptionwysiwyg: description.length == 0 ? null : JSON.stringify(descriptionField.getContents()),
-                    commuterguide: commuterGuide.length == 0 ? null : commuterGuide,
-                    commuterguidewysiwyg: commuterGuide.length == 0 ? null : JSON.stringify(commuterGuideField.getContents()),
-                    id: <?=$id?>
-                }
-            }).done(function(data, status, xhr) {
-                console.log(data);
-                M.toast({ 
-                    html: data.message,
-                    displayLength: 500,
-                    completeCallback: function() {
-                        window.location = `/cpanel/poi/${data.id}`
-                    }
-                });
-            }).fail(function(xhr, status, err) {
-                console.error(err);
-                M.toast({ 
-                    html: 'Something went wrong. Try again later',
-                    displayLength: 500,
-                    completeCallback: function() {
-                        window.location = "/cpanel/poi"
-                    }
-                })
-            });
-        })
+        commuterGuideField.on('text-change', function() {
+            $("[name=commuterguidewysiwyg]").val(JSON.stringify(commuterGuideField.getContents()));
+            $("[name=commuterguide]").val(commuterGuideField.getText().trim());
+        });
     });
 </script>
