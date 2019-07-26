@@ -244,6 +244,27 @@ return function (App $app) {
         }
     });
 
+    $app->get('/cpanel/poi/{id}/admin', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        $flash = $container->flash;
+        try {
+            $result = $container->poiManagementService->getPoi($id);
+            list('arEnabled' => $arEnabled, 'displayable' => $displayable, 'name' => $name) = $result;
+
+            $args = array_merge($args, [
+                'arEnabled' => $arEnabled, 
+                'displayable' => $displayable,
+                'name' => $name
+            ]);
+
+            return $container->poiRenderer->render($response, 'poi/admin.phtml', $args);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while loading Tourist Location info. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    })->setName('poi-admin');
+
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
         return $container->webRenderer->render($response, 'index.phtml', $args);
     });

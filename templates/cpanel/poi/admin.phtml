@@ -1,0 +1,42 @@
+<table>
+    <tbody>
+        <tr>
+            <th style="width: 25%;">Name</th>
+            <td><?= $name ?></td>
+        </tr>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col l6">
+        <h6 class="tooltip" data-position="top" data-tooltip="Activating this feature marks the POI to open an AR (artificial reality) application for immersive interaction.">Enable AR</h6>
+        <div class="switch">
+            <label>
+                Yes
+                <input type="checkbox" name="arEnabled" <?= $arEnabled == 1 ? "checked" : "" ?>>
+                <span class="lever"></span>
+                No
+            </label>
+        </div>
+    </div>
+
+    <div class="col l6">
+        <h6 class="tooltip" data-position="top" data-tooltip="Activating this feature will display the place of interest in the website.">Display to Website</h6>
+        <div class="switch">
+            <label>
+                Yes
+                <input type="checkbox" name="displayable" <?= $displayable == 1 ? "checked" : ""; ?>>
+                <span class="lever"></span>
+                No
+            </label>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tooltip').tooltip();
+
+        $("[name=displayable]").change(function() {
+            console.log($(this).is(":checked"));
+        });
+    })
+</script>
