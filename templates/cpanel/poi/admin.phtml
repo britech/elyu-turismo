@@ -36,7 +36,37 @@
         $('.tooltip').tooltip();
 
         $("[name=displayable]").change(function() {
-            console.log($(this).is(":checked"));
+            let indicator = $(this).is(":checked") ? 1 : 0;
+            $.ajax({
+                url: `/api/poi/<?= $id ?>/toggle/display/${indicator}`,
+                method: 'PATCH'
+            }).done(function(data, status, xhr) {
+                M.toast({
+                    html: data.message
+                });
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                M.toast({
+                    html: 'Something went wrong. Try again later'
+                })
+            });
+        });
+
+        $("[name=arEnabled]").change(function() {
+            let indicator = $(this).is(":checked") ? 1 : 0;
+            $.ajax({
+                url: `/api/poi/<?= $id ?>/toggle/ar/${indicator}`,
+                method: 'PATCH'
+            }).done(function(data, status, xhr) {
+                M.toast({
+                    html: data.message
+                });
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                M.toast({
+                    html: 'Something went wrong. Try again later'
+                })
+            });
         });
     })
 </script>

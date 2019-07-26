@@ -265,6 +265,32 @@ return function (App $app) {
         }
     })->setName('poi-admin');
 
+    $app->patch('/api/poi/{id}/toggle/{field}/{indicator}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id, 'field' => $field, 'indicator' => $indicator) = $args;
+
+        $service = $container->poiManagementService;
+        try {
+            if ($field == 'display') {
+                $service->toggleDisplay($id, $indicator);
+                return $response->withJson([
+                    'message' => $indicator ? "Place of interest is now available." : "Place of interest will not be displayed in the website."
+                ]);
+            } else if ($field == 'ar') {
+                $service->toggleAr($id, $indicator);
+                return $response->withJson([
+                    'message' => $indicator ? "AR has been activated." : "AR is now disabled."
+                ]);
+            } else {
+                return $response->withStatus(400);
+            }
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            return $response->withJson([
+                'message' => 'Something went wrong. Try again later.'
+            ], 500);
+        }
+    });
+
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
         return $container->webRenderer->render($response, 'index.phtml', $args);
     });
