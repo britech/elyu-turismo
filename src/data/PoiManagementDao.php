@@ -24,4 +24,8 @@ interface PoiManagementDao {
      * @return array
      */
     public function listPoi();
+
+    public function toggleDisplay($id, $val);
+
+    public function toggleAr($id, $val);
 }

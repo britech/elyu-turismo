@@ -167,6 +167,40 @@ QUERY;
         }
     }
 
+    public function toggleDisplay($id, $val) {
+        try {
+            $this->pdo->beginTransaction();
+            
+            $statement = $this->pdo->prepare('UPDATE placeofinterest SET displayable=:indicator WHERE id=:id');
+            $statement->execute([
+                'indicator' => $val,
+                'id' => $id
+            ]);
+            
+            $this->pdo->commit();
+        } catch(\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
+    public function toggleAr($id, $val) {
+        try {
+            $this->pdo->beginTransaction();
+            
+            $statement = $this->pdo->prepare('UPDATE placeofinterest SET arEnabled=:indicator WHERE id=:id');
+            $statement->execute([
+                'indicator' => $val,
+                'id' => $id
+            ]);
+            
+            $this->pdo->commit();
+        } catch(\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);
