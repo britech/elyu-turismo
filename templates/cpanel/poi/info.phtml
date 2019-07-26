@@ -1,6 +1,16 @@
-<a class="waves-effect waves-light btn" href="<?="/cpanel/poi/{$id}/edit"?>"><i class="material-icons left">edit</i>edit</a>
+<a class="waves-effect waves-light btn" href="<?= "/cpanel/poi/{$id}/edit" ?>"><i class="material-icons left">edit</i>edit</a>
 <table class="striped" style="margin-top: 10px;">
     <tbody>
+        <tr>
+            <th style="width: 25%">Image</th>
+            <td>
+                <?php if (is_null($result['imageName']) || strlen($result['imageName']) == 0) : ?>
+                    <strong>No Image Yet</strong>
+                <?php else : ?>
+                    <a href="/uploads/<?= $result['imageName'];?>" target="_blank">Image Source</a>
+                <?php endif; ?>
+            </td>
+        </tr>
         <tr>
             <th style="width: 25%">Name</th>
             <td><?= $result['name']; ?></td>
