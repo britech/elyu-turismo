@@ -28,6 +28,8 @@ return [
         'csvGeneration' => [
             'destination' => '/var/www/html/public/downloads',
             'httpPath' => '/downloads'
-        ]
+        ],
+
+        'uploadPath' => '/var/www/html/public/uploads'
     ],
 ];
