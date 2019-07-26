@@ -5,6 +5,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use gov\pglu\tourism\util\ApplicationUtils;
 use gov\pglu\tourism\util\ApplicationConstants;
+use gov\pglu\tourism\util\FileUtils;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -183,7 +184,7 @@ return function (App $app) {
         }
     });
 
-    $app->post('/api/poi/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
+    $app->post('/cpanel/poi/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
 
         $body = $request->getParsedBody();
@@ -192,14 +193,19 @@ return function (App $app) {
                 && strcasecmp('commuterguidewysiwyg', $key) != 0
                 && strcasecmp('commuterguide', $key) != 0
                 && strcasecmp('descriptionwysiwyg', $key)  != 0
-                && strcasecmp('description', $key)  != 0;
+                && strcasecmp('description', $key)  != 0
+                && strcasecmp('imagebackend', $key) != 0;
         }, ARRAY_FILTER_USE_KEY);
 
         list('topicTags' => $rawTags, 'classifications' => $rawClassifications, 
             'descriptionwysiwyg' => $rawDescriptionWysiwyg, 
             'description' => $rawDescription,
             'commuterguidewysiwyg' => $rawCommuterWysiWyg,
-            'commuterguide' => $rawCommuterGuide) = $body;
+            'commuterguide' => $rawCommuterGuide,
+            'imagebackend' => $imageBackend) = $body;
+
+        list('image' => $image) = $request->getUploadedFiles();
+        $filename = FileUtils::uploadFile($image, ['id' => $id, 'directory' => $container->settings['uploadPath']]);
 
         $inputs = array_merge($inputs, [ 'topicTags' => json_decode($rawTags),
             'classifications' => json_decode($rawClassifications),
@@ -207,15 +213,20 @@ return function (App $app) {
             'description' => strlen(trim($rawDescription)) == 0 ? null : $rawDescription,
             'commuterguidewysiwyg' => strlen(trim($rawCommuterWysiWyg)) == 0 ? null : json_encode(json_decode($rawCommuterWysiWyg, true)),
             'commuterguide' => strlen(trim($rawCommuterGuide)) == 0 ? null : $rawCommuterGuide,
+            'id' => $id,
+            'imagename' => is_null($filename) ? $imageBackend : $filename
         ]);
 
         $container->logger->debug("Update tourist location => ".json_encode($inputs));
         try {
             $container->poiManagementService->updatePoi($inputs);
-            return $response->withJson([ApplicationConstants::REST_MESSAGE_KEY => 'Tourist location updated successfully', 'id' => $id], 200);
+            return $response->withRedirect($container->router->pathFor('poi-info', [
+                'id' => $id
+            ]));
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
-            return $response->withJson([ApplicationConstants::REST_MESSAGE_KEY => 'Something went wrong. Try again later'], 500);
+            $container->flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
         }
     });
 
