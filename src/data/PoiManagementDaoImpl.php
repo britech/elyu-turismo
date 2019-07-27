@@ -201,6 +201,60 @@ QUERY;
         }
     }
 
+    public function addSchedule(array $map, $id) {
+        $query = [];
+        if (array_key_exists('open247', $map)) {
+            list('open247' => $indicator) = $map;
+            $query = array_merge($query, [[
+                'definition' => "INSERT INTO poischedule(placeofinterest, open247) VALUES(:placeofinterest, :open247)",
+                'params' => [
+                    'placeofinterest' => $id,
+                    'open247' => $indicator
+                ]
+            ]]);
+        } else if (array_key_exists('days', $map) && !is_null($map['days'])) {
+            list('days' => $days, 'openingTime' => $openingTime, 'closingTime' => $closingTime) = $map;
+            foreach($days as $day) {
+                $query = array_merge($query, [[
+                    'definition' => "INSERT INTO poischedule(placeofinterest, day, openingtime, closingtime) VALUES(:placeOfInterest, :day, :openingTime, :closingTime)",
+                    'params' => [
+                        'placeOfInterest' => $id,
+                        'day' => $day,
+                        'openingTime' => $openingTime,
+                        'closingTime' => $closingTime
+                    ]
+                ]]);
+            }
+        } else if (array_key_exists('date', $map) && !is_null($map['date'])) {
+            list('date' => $date, 'openingTime' => $openingTime, 'closingTime' => $closingTime) = $map;
+            $query = array_merge($query, [[
+                'definition' => "INSERT INTO poischedule(placeofinterest, date, openingtime, closingtime) VALUES(:placeOfInterest, :date, :openingTime, :closingTime)",
+                'params' => [
+                    'placeOfInterest' => $id,
+                    'date' => $date,
+                    'openingTime' => $openingTime,
+                    'closingTime' => $closingTime
+                ]
+            ]]);
+        } else {
+            throw new \Exception('No query available based on this condition');
+        }
+        
+        try {
+            $this->pdo->beginTransaction();
+            foreach($query as $entry) {
+                list('definition' => $definition, 'params' => $params) = $entry;
+                $statement = $this->pdo->prepare($definition);
+                $this->logger->debug("INSERT QUERY: {$definition}");
+                $this->logger->debug("Params: ". json_encode($params));
+                $statement->execute($params);
+            }
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);

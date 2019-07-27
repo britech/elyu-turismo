@@ -28,4 +28,6 @@ interface PoiManagementDao {
     public function toggleDisplay($id, $val);
 
     public function toggleAr($id, $val);
+
+    public function addSchedule(array $map, $id);
 }
