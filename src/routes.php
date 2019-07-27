@@ -237,7 +237,51 @@ return function (App $app) {
         try {
             $result = $service->getPoi($id);
             list('name' => $name) = $result;
+            $args = array_merge($args, [
+                'name' => $name,
+                ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
+            ]);
+            return $container->poiRenderer->render($response, 'poi/schedule.phtml', $args);
         } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while loading Tourist Location info. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    })->setName('schedules');
+
+    $app->post('/cpanel/schedule/add', function(Request $request, Response $response, array $args) use ($container) {
+        $body = $request->getParsedBody();
+        list('open247' => $open247, 'day' => $days, 'date' => $date, 'openingTime' => $openingTime, 'closingTime' => $closingTime, 'id' => $id) = $body;
+        $flash = $container->flash;
+
+        $hasNoDate = is_null($open247) && (count($days) == 0 || strlen(trim($date)) == 0);  
+        $hasNoTime = strlen(trim($openingTime)) == 0 && strlen(trim($closingTime)) == 0;
+        if ($hasNoDate && $hasNoTime) {
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Schedule not added due to insufficient data');
+            return $response->withRedirect($container->router->pathFor('schedules', [
+                'id' => $id
+            ]));
+        }
+
+        $map = ['id' => $id];
+        if (array_key_exists('open247', $body)) {
+            $map = array_merge($map, ['open247' => $open247 == 'on' ? 1 : 0]);
+        } else {
+            $map = array_merge($map, [
+                'openingTime' => date('H:i:s', strtotime($openingTime)),
+                'closingTime' => date('H:i:s', strtotime($closingTime)),
+                'days' => count($days) == 0 ? null : $days,
+                'date' => strlen(trim($date)) == 0 ? null : date('Y-m-d', strtotime($date))
+            ]);
+        }
+
+        try {
+            $container->poiManagementService->addSchedule($map, $id);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Schedule successfully added.');
+            return $response->withRedirect($container->router->pathFor('schedules', [
+                'id' => $id
+            ]));
+        } catch (\Exception $ex) {
             $container->logger->error($ex);
             $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while loading Tourist Location info. Try again later');
             return $response->withRedirect($container->router->pathFor('poi-list'));
