@@ -1,22 +1,126 @@
 <div class="section">
     <h5>Manage Schedules</h5>
 </div>
-<form method="post" action=<?= $formUrl ?>>
-    <div class="input-field">
-        <input name="name" type="text" class="validate" readonly value="<?=$name?>"/>
-        <label>Name</label>
+<form method="post" action="/cpanel/schedule/add">
+    <div class="row">
+        <div class="col l3">
+            <h6>Open 24/7</h6>
+            <div class="switch">
+                <label>
+                    No
+                    <input type="checkbox" name="open247">
+                    <span class="lever"></span>
+                    Yes
+                </label>
+            </div>
+        </div>
+        <div class="col l9">
+            <h6>Available Days</h6>
+            <div class="row">
+                <div class="col l3">
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Monday" />
+                        <span>Monday</span>
+                    </label>
+                </div>
+                <div class="col l3">
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Tuesday" />
+                        <span>Tuesday</span>
+                    </label>
+                </div>
+                <div class="col l3">
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Wednesday" />
+                        <span>Wednesday</span>
+                    </label>
+                </div>
+                <div class="col l3">
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Thursday" />
+                        <span>Thursday</span>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col l3">
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Friday" />
+                        <span>Friday</span>
+                    </label>
+                </div>
+                <div class="col l3">
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Saturday" />
+                        <span>Saturday</span>
+                    </label>
+                </div>
+                <div class="col l3">
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Sunday" />
+                        <span>Sunday</span>
+                    </label>
+                </div>
+                <div class="col l3">&nbsp;</div>
+            </div>
+        </div>
     </div>
+    <div class="row">
+        <div class="col l4">
+            <h6>Custom Date</h6>
+            <input type="text" class="datepicker" name="date">
+        </div>
+        <div class="col l4">
+            <h6>Opening Time</h6>
+            <input type="text" class="timepicker" name="openingTime">
+        </div>
+        <div class="col l4">
+            <h6>Closing Time</h6>
+            <input type="text" class="timepicker" name="closingTime">
+        </div>
+    </div>
+    <input type="hidden" value="<?= $id?>" name="id"/>
+    <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">schedule</i></button>
 </form>
 <table class="striped">
     <thead>
+        <tr>
+            <th>Name</th>
+            <td colspan="3"><?= $name ?></td>
+        </tr>
+    </thead>
+    <tbody>
         <tr>
             <th style="width: 20%">Day</th>
             <th style="width: 20%">Operating Hours</th>
             <th style="width: 50%">Notes</th>
             <th style="width: 10%">Actions</th>
         </tr>
-    </thead>
-    <tbody>
-
     </tbody>
 </table>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("[name=open247]").change(function() {
+            let isChecked = $(this).is(":checked");
+            $("[name*=day]").attr('disabled', isChecked);
+            $("[name=date]").attr('disabled', isChecked);
+            $("[name*=Time]").attr('disabled', isChecked);
+        })
+
+        $('.datepicker').datepicker({
+            showClearBtn: true,
+            autoClose: true
+        });
+
+        $('.timepicker').timepicker({
+            showClearBtn: true
+        });
+
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
+    });
+</script>
