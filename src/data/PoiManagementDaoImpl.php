@@ -220,6 +220,16 @@ QUERY;
                     'openEveryday' => 1
                 ]
             ]]);
+        } else if($openEveryday == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
+            $query = array_merge($query, [[
+                'definition' => 'INSERT INTO poischedule(placeofinterest, open7d, openingtime, closingtime) VALUES(:placeOfInterest, :openEveryday, :openingTime, :closingTime)',
+                'params' => [
+                    'placeOfInterest' => $id,
+                    'openEveryday' => 1,
+                    'openingTime' => $openingTime,
+                    'closingTime' => $closingTime,
+                ]
+            ]]);
         }
 
         if (array_key_exists('days', $map) && !is_null($days)) {
