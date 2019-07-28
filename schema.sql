@@ -51,7 +51,9 @@ CREATE TABLE `placeofinterest` (
   `descriptionWysiwyg` json DEFAULT NULL,
   `commuterGuideWysiwyg` json DEFAULT NULL,
   `imageName` text,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `placeofinterest_town_IDX` (`town`) USING BTREE,
+  FULLTEXT KEY `placeofinterest_name_IDX` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
