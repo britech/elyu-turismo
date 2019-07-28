@@ -242,7 +242,7 @@ return function (App $app) {
                 ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY),
                 'schedules' => $service->listSchedules($id)
             ]);
-            return $container->poiRenderer->render($response, 'poi/schedule.phtml', $args);
+            return $container->poiRenderer->render($response, 'schedule/index.phtml', $args);
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
             $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while loading Tourist Location info. Try again later');
@@ -257,7 +257,7 @@ return function (App $app) {
             'id' => $id,
             ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
         ]);
-        return $container->poiRenderer->render($response, 'poi/add_schedule.phtml', $args);
+        return $container->poiRenderer->render($response, 'schedule/create.phtml', $args);
     })->setName('create-schedule');
 
     $app->post('/cpanel/schedule/add', function(Request $request, Response $response, array $args) use ($container) {
