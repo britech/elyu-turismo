@@ -4,6 +4,7 @@ namespace gov\pglu\tourism\dao;
 
 use gov\pglu\tourism\dao\PoiManagementDao;
 use gov\pglu\tourism\util\ApplicationUtils;
+use gov\pglu\tourism\util\ApplicationConstants;
 
 /**
  * @property \PDO $pdo
@@ -203,41 +204,54 @@ QUERY;
 
     public function addSchedule(array $map, $id) {
         $query = [];
-        if (array_key_exists('open247', $map)) {
-            list('open247' => $indicator) = $map;
+        list('open24h' => $openAllDay, 
+            'open7d' => $openEveryday, 
+            'days' => $days, 
+            'date' => $date, 
+            'openingTime' => $openingTime, 
+            'closingTime' => $closingTime) = $map;
+
+        if ($openAllDay == ApplicationConstants::INDICATOR_NUMERIC_TRUE && $openEveryday == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
             $query = array_merge($query, [[
-                'definition' => "INSERT INTO poischedule(placeofinterest, open247) VALUES(:placeofinterest, :open247)",
+                'definition' => 'INSERT INTO poischedule(placeofinterest, open24h, open7d) VALUES(:placeOfInterest, :openAllDay, :openEveryday)',
                 'params' => [
-                    'placeofinterest' => $id,
-                    'open247' => $indicator
+                    'placeOfInterest' => $id,
+                    'openAllDay' => 1,
+                    'openEveryday' => 1
                 ]
             ]]);
-        } else if (array_key_exists('days', $map) && !is_null($map['days'])) {
-            list('days' => $days, 'openingTime' => $openingTime, 'closingTime' => $closingTime) = $map;
+        }
+
+        if (array_key_exists('days', $map) && !is_null($days)) {
             foreach($days as $day) {
                 $query = array_merge($query, [[
-                    'definition' => "INSERT INTO poischedule(placeofinterest, day, openingtime, closingtime) VALUES(:placeOfInterest, :day, :openingTime, :closingTime)",
+                    'definition' => "INSERT INTO poischedule(placeofinterest, day, openingtime, closingtime, open24h) VALUES(:placeOfInterest, :day, :openingTime, :closingTime, :openAllDay)",
                     'params' => [
                         'placeOfInterest' => $id,
                         'day' => $day,
                         'openingTime' => $openingTime,
-                        'closingTime' => $closingTime
+                        'closingTime' => $closingTime,
+                        'openAllDay' => $openAllDay == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? 1 : 0
                     ]
                 ]]);
             }
-        } else if (array_key_exists('date', $map) && !is_null($map['date'])) {
-            list('date' => $date, 'openingTime' => $openingTime, 'closingTime' => $closingTime) = $map;
+        }
+
+        if (array_key_exists('date', $map) && !is_null($date)) {
             $query = array_merge($query, [[
-                'definition' => "INSERT INTO poischedule(placeofinterest, date, openingtime, closingtime) VALUES(:placeOfInterest, :date, :openingTime, :closingTime)",
+                'definition' => "INSERT INTO poischedule(placeofinterest, date, openingtime, closingtime, open24h) VALUES(:placeOfInterest, :date, :openingTime, :closingTime, :openAllDay)",
                 'params' => [
                     'placeOfInterest' => $id,
                     'date' => $date,
                     'openingTime' => $openingTime,
-                    'closingTime' => $closingTime
+                    'closingTime' => $closingTime,
+                    'openAllDay' => $openAllDay == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? 1 : 0
                 ]
             ]]);
-        } else {
-            throw new \Exception('No query available based on this condition');
+        }
+
+        if (count($query) == 0) {
+            throw new \Exception('No queries available for processing');
         }
         
         try {
