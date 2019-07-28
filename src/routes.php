@@ -358,6 +358,51 @@ return function (App $app) {
         }
     });
 
+    $app->get('/cpanel/poi/{id}/fees', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        $flash = $container->flash;
+        $service = $container->poiManagementService;
+        try {
+            $result = $service->getPoi($id);
+            list('name' => $name) = $result;
+            $args = array_merge($args, [
+                'url' => '/cpanel/fee',
+                'name' => $name,
+                'poi' => $id,
+                ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
+            ]);
+            return $container->poiRenderer->render($response, 'fees.phtml', $args);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while loading Tourist Location info. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    })->setName('fees');
+
+    $app->post('/cpanel/fee', function(Request $request, Response $response, array $args) use ($container) {
+        list('poi' => $poi, 'description' => $description, 'freePrice' => $freePrice, 'amount' => $amount) = $request->getParsedBody();
+        $flash = $container->flash;
+
+        if (is_null($freePrice) && strlen(trim($amount)) == 0) {
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Fee not added due to insufficient data');
+            return $response->withRedirect($container->router->pathFor('fees', ['id' => $poi]));
+        }
+
+        try {
+            $container->poiManagementService->addFee([
+                'description' => strlen(trim($description)) == 0 ? null : $description,
+                'freePrice' => strcasecmp('on', $freePrice) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE,
+                'amount' => strlen(trim($amount)) == 0 ? null : $amount
+            ], $poi);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Fee successfully added');
+            return $response->withRedirect($container->router->pathFor('fees', ['id' => $poi]));
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    });
+
     $app->get('/cpanel/poi/{id}/admin', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         $flash = $container->flash;

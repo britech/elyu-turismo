@@ -1,0 +1,59 @@
+<div class="section">
+    <h5>Manage Fees</h5>
+</div>
+<form method="post" action="<?= $url ?>">
+    <div class="input-field">
+        <label>Description</label>
+        <input type="text" name="description"/>
+    </div>
+    <div class="row">
+        <div class="col l3">
+            <h6>Free Admission</h6>
+            <div class="switch">
+                <label>
+                    No
+                    <input type="checkbox" name="freePrice">
+                    <span class="lever"></span>
+                    Yes
+                </label>
+            </div>
+        </div>
+        <div class="col l9">
+            <div class="input-field">
+                <input type="number" name="amount" step=".01" />
+                <label>Price</label>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="poi" value="<?= $poi ?>" />
+    <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add</i></button>
+</form>
+<table class="striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <td colspan="3"><?= $name ?></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="width: 50%">Particulars</th>
+            <th style="width: 30%">Price</th>
+            <th style="width: 10%">Enabled</th>
+            <th style="width: 10%">Actions</th>
+        </tr>
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function() {
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
+        $("[name=freePrice]").change(function() {
+            $("[name=price]").prop('disabled', $(this).is(':checked'));
+            $("[name=price]").val(null);
+        });
+    });
+</script>
