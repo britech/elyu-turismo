@@ -97,16 +97,7 @@
     $(document).ready(function() {
         $("[name=open7d]").change(function() {
             let isChecked = $(this).is(":checked")
-            $("[name*=day]").prop('checked', isChecked);
-
-            if (isChecked) {
-                $("[name*=day]").click(function() {
-                    return false;
-                });
-            } else {
-                $("[name*=day]").off('click');
-            }
-
+            $("[name*=day]").prop('checked', isChecked).prop('disabled', isChecked);
             if (isChecked && $("#customDate").is(':checked')) {
                 $("#customDate").prop('checked', !isChecked);
                 $(".datepicker").prop('disabled', true);
@@ -117,7 +108,7 @@
             let isChecked = $(this).is(":checked")
             $(".datepicker").prop('disabled', !isChecked);
             if (isChecked) {
-                $("[name*=day]").prop('checked', !isChecked);
+                $("[name*=day]").prop('checked', !isChecked).prop('disabled', !isChecked);
                 $("[name=open7d]").prop('checked', !isChecked);
             }
         })
