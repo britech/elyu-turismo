@@ -347,6 +347,21 @@ QUERY;
         }
     }
 
+    public function toggleSchedule($id, $indicator) {
+        try {
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare('UPDATE poischedule SET enabled=:enabled WHERE id=:id');
+            $statement->execute([
+                'enabled' => $indicator,
+                'id' => $id
+            ]);
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);
