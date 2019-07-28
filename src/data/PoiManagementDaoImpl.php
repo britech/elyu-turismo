@@ -209,25 +209,28 @@ QUERY;
             'days' => $days, 
             'date' => $date, 
             'openingTime' => $openingTime, 
-            'closingTime' => $closingTime) = $map;
+            'closingTime' => $closingTime,
+            'notes' => $notes) = $map;
 
         if ($openAllDay == ApplicationConstants::INDICATOR_NUMERIC_TRUE && $openEveryday == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
             $query = array_merge($query, [[
-                'definition' => 'INSERT INTO poischedule(placeofinterest, open24h, open7d) VALUES(:placeOfInterest, :openAllDay, :openEveryday)',
+                'definition' => 'INSERT INTO poischedule(placeofinterest, open24h, open7d, notes) VALUES(:placeOfInterest, :openAllDay, :openEveryday, :notes)',
                 'params' => [
                     'placeOfInterest' => $id,
                     'openAllDay' => 1,
-                    'openEveryday' => 1
+                    'openEveryday' => 1,
+                    'notes' => $notes
                 ]
             ]]);
         } else if($openEveryday == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
             $query = array_merge($query, [[
-                'definition' => 'INSERT INTO poischedule(placeofinterest, open7d, openingtime, closingtime) VALUES(:placeOfInterest, :openEveryday, :openingTime, :closingTime)',
+                'definition' => 'INSERT INTO poischedule(placeofinterest, open7d, openingtime, closingtime, notes) VALUES(:placeOfInterest, :openEveryday, :openingTime, :closingTime, :notes)',
                 'params' => [
                     'placeOfInterest' => $id,
                     'openEveryday' => 1,
                     'openingTime' => $openingTime,
                     'closingTime' => $closingTime,
+                    'notes' => $notes
                 ]
             ]]);
         }
@@ -235,13 +238,14 @@ QUERY;
         if (array_key_exists('days', $map) && !is_null($days)) {
             foreach($days as $day) {
                 $query = array_merge($query, [[
-                    'definition' => "INSERT INTO poischedule(placeofinterest, day, openingtime, closingtime, open24h) VALUES(:placeOfInterest, :day, :openingTime, :closingTime, :openAllDay)",
+                    'definition' => "INSERT INTO poischedule(placeofinterest, day, openingtime, closingtime, open24h, notes) VALUES(:placeOfInterest, :day, :openingTime, :closingTime, :openAllDay, :notes)",
                     'params' => [
                         'placeOfInterest' => $id,
                         'day' => $day,
                         'openingTime' => $openingTime,
                         'closingTime' => $closingTime,
-                        'openAllDay' => $openAllDay == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? 1 : 0
+                        'openAllDay' => $openAllDay == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? 1 : 0,
+                        'notes' => $notes
                     ]
                 ]]);
             }
@@ -249,13 +253,14 @@ QUERY;
 
         if (array_key_exists('date', $map) && !is_null($date)) {
             $query = array_merge($query, [[
-                'definition' => "INSERT INTO poischedule(placeofinterest, date, openingtime, closingtime, open24h) VALUES(:placeOfInterest, :date, :openingTime, :closingTime, :openAllDay)",
+                'definition' => "INSERT INTO poischedule(placeofinterest, date, openingtime, closingtime, open24h, notes) VALUES(:placeOfInterest, :date, :openingTime, :closingTime, :openAllDay, :notes)",
                 'params' => [
                     'placeOfInterest' => $id,
                     'date' => $date,
                     'openingTime' => $openingTime,
                     'closingTime' => $closingTime,
-                    'openAllDay' => $openAllDay == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? 1 : 0
+                    'openAllDay' => $openAllDay == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? 1 : 0,
+                    'notes' => $notes
                 ]
             ]]);
         }
