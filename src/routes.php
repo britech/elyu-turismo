@@ -268,7 +268,8 @@ return function (App $app) {
             'date' => $date, 
             'openingTime' => $openingTime, 
             'closingTime' => $closingTime, 
-            'id' => $id) = $body;
+            'id' => $id,
+            'notes' => $notes) = $body;
 
         $flash = $container->flash;
 
@@ -289,7 +290,8 @@ return function (App $app) {
                 'days' => count($days) == 0 ? null : $days,
                 'date' => strlen(trim($date)) == 0 || is_null($date) ? null : date('Y-m-d', strtotime($date)),
                 'openingTime' => strlen(trim($openingTime)) == 0 || is_null($openingTime) ? null : date('H:i:s', strtotime($openingTime)),
-                'closingTime' => strlen(trim($closingTime)) == 0 || is_null($closingTime) ? null : date('H:i:s', strtotime($closingTime))
+                'closingTime' => strlen(trim($closingTime)) == 0 || is_null($closingTime) ? null : date('H:i:s', strtotime($closingTime)),
+                'notes' => $notes
             ], $id);
             $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Schedule successfully added.');
             return $response->withRedirect($container->router->pathFor('schedules', [

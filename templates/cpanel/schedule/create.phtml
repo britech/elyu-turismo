@@ -87,6 +87,10 @@
                 <h6>Closing Time</h6>
                 <input type="text" class="timepicker" name="closingTime">
             </div>
+            <div>
+                <h6>Additional Notes</h6>
+                <textarea class="materialize-textarea" name="notes"></textarea>
+            </div>
             <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">schedule</i></button>
         </div>
     </div>
@@ -129,6 +133,8 @@
             let isChecked = $(this).is(":checked");
             $('.timepicker').prop('disabled', isChecked);
         })
+
+        M.textareaAutoResize($('[name=notes]'));
 
         <?php if (isset($notification)) : ?>
             M.toast({
