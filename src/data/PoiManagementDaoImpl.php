@@ -423,6 +423,18 @@ QUERY;
         }
     }
 
+    public function removeFee($id) {
+        try {
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare('DELETE FROM poifee WHERE id=:id');
+            $statement->execute(['id' => $id]);
+            $this->pdo->commit();
+        } catch(\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);

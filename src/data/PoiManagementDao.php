@@ -46,4 +46,6 @@ interface PoiManagementDao {
     public function getFee($id);
 
     public function updateFee(array $map, $id);
+
+    public function removeFee($id);
 }
