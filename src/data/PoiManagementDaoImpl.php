@@ -435,6 +435,82 @@ QUERY;
         }
     }
 
+    public function listPoiByTown($town) {
+        $query = <<< QUERY
+            SELECT id, name, description
+            FROM placeofinterest WHERE town=:town
+QUERY;
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute(['town' => $town]);
+            
+            $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            array_walk($rows, function(&$row) {
+                list('town' => $town) = $row;
+                $row = array_merge($row, [
+                    'tourismCircuit' => ApplicationUtils::getTourismCircuit($town)
+                ]);
+            });
+            $this->logger->debug(json_encode($rows));
+            return $rows;
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
+    public function getPoiByName($name) {
+        $query = <<< QUERY
+        SELECT poi.name,
+            description,
+            descriptionwysiwyg,
+            commuterguide,
+            commuterguidewysiwyg,
+            address,
+            town,
+            latitude,
+            longitude,
+            arEnabled,
+            displayable,
+            imageName,
+            GROUP_CONCAT(DISTINCT(CONCAT(classification.id, '=', classification.name)) SEPARATOR '|') as classifications,
+            GROUP_CONCAT(DISTINCT(CONCAT(tag.id, '=', tag.name)) SEPARATOR '|') as topicTags
+        FROM placeofinterest poi
+            JOIN poiclassification poic ON poic.placeofinterest = poi.id
+            JOIN classification classification ON classification.id = poic.classification
+            JOIN poitag poit ON poit.placeofinterest = poi.id
+            JOIN topictag tag ON tag.id = poit.tag
+        WHERE MATCH(poi.name) AGAINST (:name)
+QUERY;
+
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute(['name' => $name]);
+            
+            $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $this->logger->debug('Rows => '.json_encode($rows));
+
+            if (count($rows) == 0 || is_null($rows[0]['name'])) {
+                return null;
+            }
+
+            list($attributes) = $rows;
+
+            $resultMap = array_filter($attributes, function($key) {
+                return strcasecmp('classifications', $key) != 0 && strcasecmp('topicTags', $key) != 0;
+            }, ARRAY_FILTER_USE_KEY);
+
+            list('classifications' => $rawClassifications, 'topicTags' => $rawTags, 'town' => $town) = $attributes;
+            $resultMap = array_merge($resultMap, ['classifications' => $this->createObjectMapArray($rawClassifications), 
+                'topicTags' => $this->createObjectMapArray($rawTags),
+                'tourismCircuit' => ApplicationUtils::getTourismCircuit($town)
+            ]);
+
+            return $resultMap;
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);

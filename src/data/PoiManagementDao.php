@@ -15,6 +15,8 @@ interface PoiManagementDao {
      */
     public function getPoi($id);
 
+    public function getPoiByName($name);
+
     /**
      * @param array $map
      */
@@ -24,6 +26,8 @@ interface PoiManagementDao {
      * @return array
      */
     public function listPoi();
+
+    public function listPoiByTown($town);
 
     public function toggleDisplay($id, $val);
 
