@@ -302,6 +302,47 @@ return function (App $app) {
         }
     });
 
+    $app->get('/api/schedule/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        try {
+            $result = $container->poiManagementService->getSchedule($id);
+            if (is_null($result)) {
+                return $response->withJson(['message' => 'No schedule found'], 404);
+            }
+
+            list('open24h' => $openAllDay, 
+                'open7d' => $openEveryday, 
+                'id' => $id, 
+                'day' => $day, 
+                'date' => $specificDate, 
+                'openingtime' => $openingTime,
+                'closingtime' => $closingTime,
+                'placeofinterest' => $poi) = $result;
+
+            return $response->withJson([
+                'id' => $id,
+                'poi' => $poi,
+                'day' => $openEveryday == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Everyday" : (is_null($day) ? date('M j, Y', strtotime($specificDate)) : $day),
+                'operatingHours' => $openAllDay == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "24 hours" : (date('h:i a', strtotime($openingTime)).' - '. date('h:i a', strtotime($closingTime)))
+            ], 200);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            return $response->withJson(['message' => $ex->getMessage()], 500);
+        }
+    });
+
+    $app->delete('/api/schedule/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $schedule) = $args;
+        list('poi' => $poi) = $request->getParsedBody();
+        try {
+            $container->poiManagementService->removeSchedule($schedule);
+            return $response->withJson(['url' => $container->router->pathFor('schedules', ['id' => $poi])], 200);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            return $response->withJson(['message' => $ex->getMessage()], 500);
+        }
+    });
+
     $app->get('/cpanel/poi/{id}/admin', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         $flash = $container->flash;
