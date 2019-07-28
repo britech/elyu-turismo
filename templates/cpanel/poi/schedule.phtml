@@ -1,3 +1,7 @@
+<?php
+
+use gov\pglu\tourism\util\ApplicationConstants;
+?>
 <div class="section">
     <h5>Manage Schedules</h5>
 </div>
@@ -11,13 +15,50 @@
     </thead>
     <tbody>
         <tr>
-            <th style="width: 20%">Day</th>
-            <th style="width: 20%">Operating Hours</th>
-            <th style="width: 50%">Notes</th>
-            <th style="width: 10%">Actions</th>
+            <th style="width: 30%">Day</th>
+            <th style="width: 25%">Operating Hours</th>
+            <th style="width: 25%">Notes</th>
+            <th style="width: 5%">Enabled</th>
+            <th style="width: 15%">Actions</th>
         </tr>
+        <?php foreach ($schedules as $schedule) : ?>
+            <tr>
+                <td><?= $schedule['openEveryday'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Everyday" : (is_null($schedule['day']) ? $schedule['specificDate'] : $schedule['day']) ?></td>
+                <td><?= $schedule['openAllDay'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "24 hours" : $schedule['operatingHours'] ?></td>
+                <td><?= $schedule['notes'] ?></td>
+                <td><?= $schedule['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Yes" : "No" ?></td>
+                <td class="center">
+                    <a href="<?= "/cpanel/schedule/{$schedule['id']}/edit" ?>"><i class="material-icons left">edit</i></a>
+                    <a id="remove-<?= $schedule['id'] ?>" href="#" data-target="removeSchedule" class="modal-trigger"><i class="material-icons left">delete</i></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
     </tbody>
 </table>
+
+<div id="removeSchedule" class="modal">
+    <div class="modal-content">
+        <h4>Do you want to remove this schedule ?</h4>
+        <table>
+            <tbody>
+                <tr>
+                    <th style="width: 25%">Day</th>
+                    <td id="day"></td>
+                </tr>
+                <tr>
+                    <th style="width: 25%">Operating Hours</th>
+                    <td id="operatingHours"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="scheduleId" />
+        <input type="hidden" id="poiId" />
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn green lighten-1">No</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn red lighten-1" id="continueRemove">Yes</a>
+    </div>
+</div>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -26,5 +67,41 @@
                 html: '<?= $notification ?>'
             });
         <?php endif; ?>
+
+        $("#removeSchedule").modal({
+            onOpenStart: function(e, t) {
+                let entries = t.id.split("-");
+                let id = entries[1];
+                $.ajax({
+                    url: `/api/schedule/${id}`,
+                    method: 'GET',
+                }).done(function(data, status, xhr) {
+                    $("#scheduleId").val(data.id);
+                    $("#poiId").val(data.poi);
+                    $("#day").html(data.day);
+                    $("#operatingHours").html(data.operatingHours);
+                }).fail(function(xhr, status, err) {
+                    console.error(err);
+                    throw err;
+                });
+            }
+        });
+
+        $('#continueRemove').click(function() {
+            let poiId = $("#poiId").val();
+            let id = $("#scheduleId").val();
+            $.ajax({
+                url: `/api/schedule/${id}`,
+                method: 'DELETE',
+                data: {
+                    poi: poiId
+                }
+            }).done(function(data, status, xhr) {
+                window.location = data.url;
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                window.location = `/cpanel/poi/${poiId}/schedules`
+            });
+        })
     });
 </script>
