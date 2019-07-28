@@ -455,6 +455,41 @@ return function (App $app) {
         }
     });
 
+    $app->get('/api/fee/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        try {
+            $result = $container->poiManagementService->getFee($id);
+            if (is_null($result)) {
+                return $response->withJson(['message' => 'No fee found'], 404);
+            }
+
+            list('description' => $description, 
+                'amount' => $amount, 
+                'freePrice' => $freePrice) = $result;
+
+            return $response->withJson([
+                'id' => $id,
+                'description' => is_null($description) ? "N/A" : $description,
+                'amount' => $freePrice == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Free Admission" : "PHP ".number_format($amount, 2)
+            ], 200);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            return $response->withJson(['message' => $ex->getMessage()], 500);
+        }
+    });
+
+    $app->delete('/api/fee/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $fee) = $args;
+        list('poi' => $poi) = $request->getParsedBody();
+        try {
+            $container->poiManagementService->removeFee($fee);
+            return $response->withJson(['url' => $container->router->pathFor('fees', ['id' => $poi])], 200);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            return $response->withJson(['message' => $ex->getMessage()], 500);
+        }
+    });
+
     $app->get('/cpanel/poi/{id}/admin', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         $flash = $container->flash;

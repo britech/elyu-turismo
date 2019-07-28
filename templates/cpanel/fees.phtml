@@ -76,6 +76,29 @@ use gov\pglu\tourism\util\ApplicationConstants;
     </tbody>
 </table>
 
+<div id="removeFee" class="modal">
+    <div class="modal-content">
+        <h4>Do you want to remove this schedule ?</h4>
+        <table>
+            <tbody>
+                <tr>
+                    <th style="width: 25%">Description</th>
+                    <td id="description"></td>
+                </tr>
+                <tr>
+                    <th>Amount</th>
+                    <td id="amount"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="feeId" />
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn green lighten-1">No</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn red lighten-1" id="continueRemove">Yes</a>
+    </div>
+</div>
+
 <script type="text/javascript">
     $(document).ready(function() {
         <?php if (isset($notification)) : ?>
@@ -87,6 +110,40 @@ use gov\pglu\tourism\util\ApplicationConstants;
         $("[name=freePrice]").change(function() {
             $("[name=amount]").prop('disabled', $(this).is(':checked'));
             $("[name=amount]").val(null);
+        });
+
+        $('.modal').modal({
+            onOpenStart: function(e, t) {
+                let entries = t.id.split("-");
+                let id = entries[1];
+                $.ajax({
+                    url: `/api/fee/${id}`,
+                    method: 'GET',
+                }).done(function(data, status, xhr) {
+                    $("#feeId").val(data.id);
+                    $("#description").html(data.description);
+                    $("#amount").html(data.amount);
+                }).fail(function(xhr, status, err) {
+                    console.error(err);
+                    throw err;
+                });
+            }
+        });
+
+        $('#continueRemove').click(function() {
+            let id = $("#feeId").val();
+            $.ajax({
+                url: `/api/fee/${id}`,
+                method: 'DELETE',
+                data: {
+                    poi: <?= $id?>
+                }
+            }).done(function(data, status, xhr) {
+                window.location = data.url;
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                window.location = `/cpanel/poi/<?= $id?>/fees`
+            });
         });
     });
 </script>
