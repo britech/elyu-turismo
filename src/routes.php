@@ -369,6 +369,7 @@ return function (App $app) {
                 'url' => '/cpanel/fee',
                 'name' => $name,
                 'poi' => $id,
+                'fees' => $service->listFees($id),
                 ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
             ]);
             return $container->poiRenderer->render($response, 'fees.phtml', $args);

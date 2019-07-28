@@ -40,4 +40,6 @@ interface PoiManagementDao {
     public function toggleSchedule($id, $indicator);
 
     public function addFee(array $map, $id);
+
+    public function listFees($poi);
 }

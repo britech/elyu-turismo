@@ -1,10 +1,14 @@
+<?php
+
+use gov\pglu\tourism\util\ApplicationConstants;
+?>
 <div class="section">
     <h5>Manage Fees</h5>
 </div>
 <form method="post" action="<?= $url ?>">
     <div class="input-field">
         <label>Description</label>
-        <input type="text" name="description"/>
+        <input type="text" name="description" />
     </div>
     <div class="row">
         <div class="col l3">
@@ -37,13 +41,25 @@
     </thead>
     <tbody>
         <tr>
-            <th style="width: 50%">Particulars</th>
+            <th style="width: 35%">Description</th>
             <th style="width: 30%">Price</th>
             <th style="width: 10%">Enabled</th>
-            <th style="width: 10%">Actions</th>
+            <th style="width: 15%">Actions</th>
         </tr>
+        <?php foreach ($fees as $fee) : ?>
+            <tr>
+                <td><?= $fee['description'] ?></td>
+                <td><?= $fee['freePrice'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Free Admission" : "PHP " . number_format($fee['amount'], 2) ?></td>
+                <td><?= $fee['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Yes" : "No" ?></td>
+                <td>
+                    <a href="<?="/cpanel/fee/{$fee['id']}/edit"?>"><i class="material-icons left">edit</i></a>
+                    <a id="remove-<?= $fee['id'] ?>" href="#" data-target="removeFee" class="modal-trigger"><i class="material-icons left">delete</i></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
     </tbody>
 </table>
+
 <script type="text/javascript">
     $(document).ready(function() {
         <?php if (isset($notification)) : ?>

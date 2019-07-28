@@ -378,6 +378,15 @@ QUERY;
         }
     }
 
+    public function listFees($poi) {
+        try {
+            $statement = $this->pdo->prepare('SELECT * FROM poifee WHERE placeofinterest=:poi');
+            $statement->execute(['poi' => $poi]);
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);
