@@ -387,6 +387,42 @@ QUERY;
             throw $ex;
         }
     }
+
+    public function getFee($id) {
+        try {
+            $statement = $this->pdo->prepare('SELECT * FROM poifee WHERE id=:id');
+            $statement->execute(['id' => $id]);
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            return count($result) == 0 ? null : $result[0];
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
+    public function updateFee(array $map, $id) {
+        $params = array_merge($map, [
+            'id' => $id
+        ]);
+        
+        $query = <<<QUERY
+            UPDATE poifee
+            SET description=:description,
+                freePrice=:freePrice,
+                amount=:amount,
+                enabled=:enabled
+            WHERE id=:id
+QUERY;
+        try {
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare($query);
+            $statement->execute($params);
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);
