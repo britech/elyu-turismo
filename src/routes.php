@@ -345,6 +345,19 @@ return function (App $app) {
         }
     });
 
+    $app->patch('/api/schedule/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        list('enabled' => $enabled, 'poi' => $poi) = $request->getParsedBody();
+        try {
+            $status = $enabled == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "enabled" : "disabled";
+            $container->poiManagementService->toggleSchedule($id, $enabled);
+            return $response->withJson(['message' => "Schedule has been {$status}", 'poi' => $poi], 200);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            return $response->withJson(['message' => 'Something went wrong. Try again later'], 500);
+        }
+    });
+
     $app->get('/cpanel/poi/{id}/admin', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         $flash = $container->flash;

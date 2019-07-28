@@ -30,7 +30,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
                     <div class="switch">
                         <label>
                             No
-                            <input type="checkbox" name="enabled-<?= $schedule['id']?>" <?= $schedule['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "checked" : ""?>>
+                            <input type="checkbox" name="enabled-<?= $schedule['id'] ?>" <?= $schedule['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "checked" : "" ?>>
                             <span class="lever"></span>
                             Yes
                         </label>
@@ -109,6 +109,31 @@ use gov\pglu\tourism\util\ApplicationConstants;
             }).fail(function(xhr, status, err) {
                 console.error(err);
                 window.location = `/cpanel/poi/${poiId}/schedules`
+            });
+        });
+
+        $("[name*=enabled]").change(function() {
+            let rawEntries = $(this).prop('name').split("-");
+            let id = rawEntries[1];
+
+            $.ajax({
+                url: `/api/schedule/${id}`,
+                method: 'PATCH',
+                data: {
+                    poi: <?= $id ?>,
+                    enabled: $(this).is(":checked") ? 1 : 0
+                }
+            }).done(function(data, status, xhr) {
+                M.toast({ 
+                    html: data.message,
+                    displayLength: 500,
+                    completeCallback: function() {
+                        window.location = `/cpanel/poi/${data.poi}/schedules`
+                    }
+                });
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                window.location = `/cpanel/poi/<?= $id ?>/schedules`
             });
         })
     });
