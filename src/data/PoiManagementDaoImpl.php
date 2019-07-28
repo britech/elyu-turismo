@@ -293,6 +293,45 @@ QUERY;
         }
     }
 
+    public function getSchedule($id) {
+        $query = <<< QUERY
+            SELECT id, 
+                day,
+                date,
+                openingtime,
+                closingtime,
+                open24h,
+                open7d,
+                notes,
+                enabled,
+                placeofinterest
+            FROM poischedule
+            WHERE id=:id
+QUERY;
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute(['id' => $id]);
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $this->logger->debug(json_encode($result));
+
+            return count($result) == 0 ? null : $result[0];
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
+    public function removeSchedule($id) {
+        try {
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare('DELETE FROM poischedule WHERE id=:id');
+            $statement->execute(['id' => $id]);
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);

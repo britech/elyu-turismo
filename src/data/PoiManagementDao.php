@@ -32,4 +32,8 @@ interface PoiManagementDao {
     public function addSchedule(array $map, $id);
 
     public function listSchedules($id);
+
+    public function getSchedule($id);
+
+    public function removeSchedule($id);
 }
