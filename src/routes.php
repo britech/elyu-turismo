@@ -239,7 +239,8 @@ return function (App $app) {
             list('name' => $name) = $result;
             $args = array_merge($args, [
                 'name' => $name,
-                ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
+                ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY),
+                'schedules' => $service->listSchedules($id)
             ]);
             return $container->poiRenderer->render($response, 'poi/schedule.phtml', $args);
         } catch (\PDOException $ex) {

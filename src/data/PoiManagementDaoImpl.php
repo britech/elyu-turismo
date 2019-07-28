@@ -269,6 +269,30 @@ QUERY;
         }
     }
 
+    public function listSchedules($id) {
+        $query = <<< QUERY
+            SELECT id, 
+                day,
+                DATE_FORMAT(date, '%M %e, %Y') as specificDate,
+                CONCAT(TIME_FORMAT(openingtime, '%h:%i %p'), ' - ', TIME_FORMAT(closingtime, '%h:%i %p')) as operatingHours,
+                open24h as openAllDay,
+                open7d as openEveryday,
+                notes,
+                enabled
+            FROM poischedule
+            WHERE placeofinterest=:poi
+QUERY;
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute(['poi' => $id]);
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $this->logger->debug(json_encode($result));
+            return $result;
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);
