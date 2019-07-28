@@ -1,0 +1,148 @@
+<h4>Add Schedule</h4>
+<div class="divider">&nbsp;</div>
+<form method="post" action="/cpanel/schedule/add">
+    <div class="row">
+        <div class="col l6">
+            <div class="input-field">
+                <h6>Open Everyday</h6>
+                <div class="switch">
+                    <label>
+                        No
+                        <input type="checkbox" name="open7d">
+                        <span class="lever"></span>
+                        Yes
+                    </label>
+                </div>
+            </div>
+            <div class="input-field">
+                <h6>Available Days</h6>
+                <div>
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Monday" />
+                        <span>Monday</span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Tuesday" />
+                        <span>Tuesday</span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Wednesday" />
+                        <span>Wednesday</span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Thursday" />
+                        <span>Thursday</span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Friday" />
+                        <span>Friday</span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Saturday" />
+                        <span>Saturday</span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="filled-in" name="day[]" value="Sunday" />
+                        <span>Sunday</span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="filled-in" id="customDate" />
+                        <span>Custom Date</span>
+                        <input type="text" class="datepicker" name="date" disabled>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col l6">
+            <div class="input-field">
+                <h6>Open All Day</h6>
+                <div class="switch">
+                    <label>
+                        No
+                        <input type="checkbox" name="open24h">
+                        <span class="lever"></span>
+                        Yes
+                    </label>
+                </div>
+            </div>
+            <div>
+                <h6>Opening Time</h6>
+                <input type="text" class="timepicker" name="openingTime">
+            </div>
+            <div>
+                <h6>Closing Time</h6>
+                <input type="text" class="timepicker" name="closingTime">
+            </div>
+            <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">schedule</i></button>
+        </div>
+    </div>
+    <input type="hidden" value="<?= $id ?>" name="id" />
+
+</form>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("[name=open7d]").change(function() {
+            let isChecked = $(this).is(":checked")
+            $("[name*=day]").prop('checked', isChecked);
+
+            if (isChecked) {
+                $("[name*=day]").click(function() {
+                    return false;
+                });
+            } else {
+                $("[name*=day]").off('click');
+            }
+
+            if (isChecked && $("#customDate").is(':checked')) {
+                $("#customDate").prop('checked', !isChecked);
+                $(".datepicker").prop('disabled', true);
+            }
+        });
+
+        $("#customDate").change(function() {
+            let isChecked = $(this).is(":checked")
+            $(".datepicker").prop('disabled', !isChecked);
+            if (isChecked) {
+                $("[name*=day]").prop('checked', !isChecked);
+                $("[name=open7d]").prop('checked', !isChecked);
+            }
+        })
+
+        $('.datepicker').datepicker({
+            showClearBtn: true,
+            autoClose: true
+        });
+
+        $('.timepicker').timepicker({
+            showClearBtn: true,
+            onSelect: function() {
+                $("[name=open24h]").prop('checked', false);
+            }
+        });
+
+        $("[name=open24h]").change(function() {
+            let isChecked = $(this).is(":checked");
+            $('.timepicker').prop('disabled', isChecked);
+        })
+
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
+    });
+</script>

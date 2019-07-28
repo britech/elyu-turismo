@@ -249,6 +249,15 @@ return function (App $app) {
         }
     })->setName('schedules');
 
+    $app->get('/cpanel/poi/{id}/schedule', function(Request $request, Response $response, array $args) use ($container) {
+        $flash = $container->flash;
+        $args = array_merge($args, [
+            'id' => id,
+            ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
+        ]);
+        return $container->poiRenderer->render($response, 'poi/add_schedule.phtml', $args);
+    })->setName('create-schedule');
+
     $app->post('/cpanel/schedule/add', function(Request $request, Response $response, array $args) use ($container) {
         $body = $request->getParsedBody();
         list('open247' => $open247, 'day' => $days, 'date' => $date, 'openingTime' => $openingTime, 'closingTime' => $closingTime, 'id' => $id) = $body;
