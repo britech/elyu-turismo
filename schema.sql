@@ -82,7 +82,7 @@ DROP TABLE IF EXISTS `poifee`;
 CREATE TABLE `poifee` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `placeofinterest` int(11) NOT NULL,
-  `description` varchar(300) NOT NULL,
+  `description` varchar(300) DEFAULT NULL,
   `amount` decimal(10,2) DEFAULT NULL,
   `freePrice` tinyint(4) DEFAULT '0',
   `enabled` tinyint(4) DEFAULT '1',
