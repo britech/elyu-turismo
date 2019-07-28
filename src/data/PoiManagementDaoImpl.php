@@ -362,6 +362,21 @@ QUERY;
         }
     }
 
+    public function addFee(array $map, $id) {
+        $params = array_merge($map, [
+            'poi' => $id
+        ]);
+
+        try {
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare('INSERT INTO poifee(description, amount, freePrice, placeofinterest) VALUES(:description, :amount, :freePrice, :poi)');
+            $statement->execute($params);
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);
