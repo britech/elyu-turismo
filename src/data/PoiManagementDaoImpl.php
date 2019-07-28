@@ -373,6 +373,7 @@ QUERY;
             $statement->execute($params);
             $this->pdo->commit();
         } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
             throw $ex;
         }
     }
