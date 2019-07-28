@@ -250,9 +250,10 @@ return function (App $app) {
     })->setName('schedules');
 
     $app->get('/cpanel/poi/{id}/schedule', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
         $flash = $container->flash;
         $args = array_merge($args, [
-            'id' => id,
+            'id' => $id,
             ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
         ]);
         return $container->poiRenderer->render($response, 'poi/add_schedule.phtml', $args);
@@ -260,32 +261,35 @@ return function (App $app) {
 
     $app->post('/cpanel/schedule/add', function(Request $request, Response $response, array $args) use ($container) {
         $body = $request->getParsedBody();
-        list('open247' => $open247, 'day' => $days, 'date' => $date, 'openingTime' => $openingTime, 'closingTime' => $closingTime, 'id' => $id) = $body;
+        list('open24h' => $openAllDay, 
+            'open7d' => $openEveryday, 
+            'day' => $days, 
+            'date' => $date, 
+            'openingTime' => $openingTime, 
+            'closingTime' => $closingTime, 
+            'id' => $id) = $body;
+
         $flash = $container->flash;
 
-        $hasNoDate = is_null($open247) && (count($days) == 0 || strlen(trim($date)) == 0);  
-        $hasNoTime = strlen(trim($openingTime)) == 0 && strlen(trim($closingTime)) == 0;
+        $hasNoDate = is_null($openEveryday) && (count($days) == 0 || strlen(trim($date)) == 0);  
+        $hasNoTime = is_null($openAllDay) && strlen(trim($openingTime)) == 0 && strlen(trim($closingTime)) == 0;
         if ($hasNoDate && $hasNoTime) {
             $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Schedule not added due to insufficient data');
-            return $response->withRedirect($container->router->pathFor('schedules', [
+            return $response->withRedirect($container->router->pathFor('create-schedule', [
                 'id' => $id
             ]));
         }
 
-        $map = ['id' => $id];
-        if (array_key_exists('open247', $body)) {
-            $map = array_merge($map, ['open247' => $open247 == 'on' ? 1 : 0]);
-        } else {
-            $map = array_merge($map, [
-                'openingTime' => date('H:i:s', strtotime($openingTime)),
-                'closingTime' => date('H:i:s', strtotime($closingTime)),
-                'days' => count($days) == 0 ? null : $days,
-                'date' => strlen(trim($date)) == 0 ? null : date('Y-m-d', strtotime($date))
-            ]);
-        }
-
         try {
-            $container->poiManagementService->addSchedule($map, $id);
+            $container->poiManagementService->addSchedule([
+                'id' => $id,
+                'open24h' => $openAllDay == 'on' ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE,
+                'open7d' => $openEveryday == 'on' ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE,
+                'days' => count($days) == 0 ? null : $days,
+                'date' => strlen(trim($date)) == 0 || is_null($date) ? null : date('Y-m-d', strtotime($date)),
+                'openingTime' => strlen(trim($openingTime)) == 0 || is_null($openingTime) ? null : date('H:i:s', strtotime($openingTime)),
+                'closingTime' => strlen(trim($closingTime)) == 0 || is_null($closingTime) ? null : date('H:i:s', strtotime($closingTime))
+            ], $id);
             $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Schedule successfully added.');
             return $response->withRedirect($container->router->pathFor('schedules', [
                 'id' => $id
