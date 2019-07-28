@@ -8,7 +8,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
 <form method="post" action="<?= $url ?>">
     <div class="input-field">
         <label>Description</label>
-        <input type="text" name="description" />
+        <input type="text" name="description" <?= $updateMode ? "value=\"{$fee['description']}\"" : "" ?> />
     </div>
     <div class="row">
         <div class="col l3">
@@ -16,7 +16,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <div class="switch">
                 <label>
                     No
-                    <input type="checkbox" name="freePrice">
+                    <input type="checkbox" name="freePrice" <?= $updateMode ? ($fee['freePrice'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "checked" : "") : "" ?>>
                     <span class="lever"></span>
                     Yes
                 </label>
@@ -24,12 +24,28 @@ use gov\pglu\tourism\util\ApplicationConstants;
         </div>
         <div class="col l9">
             <div class="input-field">
-                <input type="number" name="amount" step=".01" />
+                <input type="number" name="amount" step=".01" <?= $updateMode ? "value=\"{$fee['amount']}\"" : "" ?> />
                 <label>Price</label>
             </div>
+            <?php if ($updateMode) : ?>
+                <div>
+                    <h6>Enable Fee</h6>
+                    <div class="switch">
+                        <label>
+                            No
+                            <input type="checkbox" name="enabled" <?= $updateMode ? ($fee['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "checked" : "") : "" ?>>
+                            <span class="lever"></span>
+                            Yes
+                        </label>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
     <input type="hidden" name="poi" value="<?= $poi ?>" />
+    <?php if ($updateMode) : ?>
+        <input type="hidden" name="id" value="<?= $fee['id'] ?>" />
+    <?php endif; ?>
     <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add</i></button>
 </form>
 <table class="striped">
@@ -52,7 +68,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 <td><?= $fee['freePrice'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Free Admission" : "PHP " . number_format($fee['amount'], 2) ?></td>
                 <td><?= $fee['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Yes" : "No" ?></td>
                 <td>
-                    <a href="<?="/cpanel/fee/{$fee['id']}/edit"?>"><i class="material-icons left">edit</i></a>
+                    <a href="<?= "/cpanel/fee/{$fee['id']}" ?>"><i class="material-icons left">edit</i></a>
                     <a id="remove-<?= $fee['id'] ?>" href="#" data-target="removeFee" class="modal-trigger"><i class="material-icons left">delete</i></a>
                 </td>
             </tr>
@@ -67,9 +83,10 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 html: '<?= $notification ?>'
             });
         <?php endif; ?>
+
         $("[name=freePrice]").change(function() {
-            $("[name=price]").prop('disabled', $(this).is(':checked'));
-            $("[name=price]").val(null);
+            $("[name=amount]").prop('disabled', $(this).is(':checked'));
+            $("[name=amount]").val(null);
         });
     });
 </script>

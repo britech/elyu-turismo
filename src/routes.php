@@ -404,6 +404,57 @@ return function (App $app) {
         }
     });
 
+    $app->get('/cpanel/fee/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        $flash = $container->flash;
+        $service = $container->poiManagementService;
+        try {
+            $fee = $service->getFee($id);
+            list('placeofinterest' => $poi) = $fee;
+
+            $placeOfInterest = $service->getPoi($poi);
+            list('name' => $name) = $placeOfInterest;
+
+            $args = array_merge($args, [
+                'url' => "/cpanel/fee/{$id}",
+                'name' => $name,
+                'poi' => $poi,
+                'fees' => $service->listFees($poi),
+                'updateMode' => true,
+                'fee' => $fee,
+                'id' => $poi,
+                ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
+            ]);
+            return $container->poiRenderer->render($response, 'fees.phtml', $args);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    });
+
+    $app->post('/cpanel/fee/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        list('poi' => $poi, 'description' => $description, 'freePrice' => $freePrice, 'amount' => $amount, 'enabled' => $enabled) = $request->getParsedBody();
+        $flash = $container->flash;
+        $service = $container->poiManagementService;
+
+        try {
+            $container->poiManagementService->updateFee([
+                'description' => strlen(trim($description)) == 0 ? null : $description,
+                'freePrice' => strcasecmp('on', $freePrice) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE,
+                'amount' => strlen(trim($amount)) == 0 ? null : $amount,
+                'enabled' => strcasecmp('on', $enabled) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE
+            ], $id);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Fee successfully updated');
+            return $response->withRedirect($container->router->pathFor('fees', ['id' => $poi]));
+        } catch(\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    });
+
     $app->get('/cpanel/poi/{id}/admin', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         $flash = $container->flash;
