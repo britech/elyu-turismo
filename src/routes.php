@@ -590,6 +590,24 @@ return function (App $app) {
         }
     });
 
+    $app->get('/discover', function(Request $request, Response $response, array $args) use ($container) {
+        $places = [];
+        try {
+            $places = array_merge([], $container->poiManagementService->listPoi());
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+        }
+
+        $args = array_merge($args, [
+            'places' => array_filter($places, function($val) use ($container) {
+                $container->logger->debug(json_encode($val));
+                return $val['displayable'] != 0 && $val['arEnabled'] != 0;
+            }, ARRAY_FILTER_USE_BOTH)
+        ]);
+
+        return $container->webRenderer->render($response, 'discover.phtml', $args);
+    });
+
     $app->get('/open-data', function(Request $request, Response $response, array $args) use ($container) {
         return $container->openDataRenderer->render($response, 'index.phtml', $args);
     });
