@@ -542,13 +542,13 @@ return function (App $app) {
     });
 
     $app->get('/explore', function(Request $request, Response $response, array $args) use ($container) {
-        return $container->webRenderer->render($response, 'explore.phtml', $args);
+        return $container->exploreRenderer->render($response, 'explore.phtml', $args);
     })->setName('explore');
 
     $app->get('/places/{town}', function(Request $request, Response $response, array $args) use ($container) {
         list('town' => $town) = $args;
 
-        $modifiedTown = ucwords($town);
+        $modifiedTown = ucwords(implode(' ', explode('_', $town)));
         $places = [];
         try {
             $places = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
@@ -563,7 +563,7 @@ return function (App $app) {
                 return $val['displayable'] != 0;
             }, ARRAY_FILTER_USE_BOTH)
         ]);
-        return $container->webRenderer->render($response, 'places.phtml', $args);
+        return $container->exploreRenderer->render($response, 'places.phtml', $args);
     });
 
     $app->get('/place/{id}', function(Request $request, Response $response, array $args) use ($container) {
