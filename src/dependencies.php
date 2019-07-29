@@ -48,6 +48,16 @@ return function (App $app) {
         return new PhpRenderer("{$templatePath}/web/");
     };
 
+    $container['exploreRenderer'] = function($c) {
+        list('renderer' => $rendererSettings) = $c->settings;
+        list('template_path' => $templatePath) = $rendererSettings;
+        
+        $renderer = new PhpRenderer("{$templatePath}/web/");
+        $renderer->setLayout('layout_explore.phtml');
+
+        return $renderer;
+    };
+
     $container['openDataRenderer'] = function($c) {
         list('renderer' => $rendererSettings) = $c->settings;
         list('template_path' => $templatePath) = $rendererSettings;
