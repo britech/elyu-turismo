@@ -147,7 +147,7 @@ QUERY;
 
     public function listPoi() {
         $query = <<< QUERY
-            SELECT id, name, address, latitude, longitude, town
+            SELECT id, name, address, latitude, longitude, town, displayable, arEnabled
             FROM placeofinterest
 QUERY;
         try {
