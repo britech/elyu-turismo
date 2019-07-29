@@ -7,8 +7,7 @@ final class ApplicationConstants {
     const NOTIFICATION_KEY = "notification";
     const REST_MESSAGE_KEY = "message";
     const REPORT_TYPES = [
-        'visitorCount' => 'Number of Visitors for identified Places of Interest',
-        'ratingSummary' => 'Average Rating for identified Places of Interest'
+        'visitorCount' => 'Number of Visitors for identified Places of Interest'
     ];
     CONST INDICATOR_NUMERIC_TRUE = 1;
     CONST INDICATOR_NUMERIC_FALSE = 0;
