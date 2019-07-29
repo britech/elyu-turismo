@@ -1,209 +1,408 @@
-<!DOCTYPE html>
-<html>
-
-    <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-        <style>
-            h6:hover {
-                cursor: pointer
-            }
-        </style>
-        <title>Explore La Union</title>
-    </head>
-
-    <body>
-        <div class="container">
-            <div class="row" style="margin-top: 10px;">
-                <div class="col s12 l12">
-                    <div class="center">
-                        <h1>Explore La Union</h1>
-                        <h5>Select a town to proceed</h5>
-                    </div>
-                </div>
+<!-- Northern Circuit Start -->
+<div class="row">
+    <h3>Northern Circuit</h3>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_balaoan.png" class="responsive-img">
             </div>
-
-            <!-- Northern Circuit Start -->
-            <div class="row">
-                <h3>Northern Circuit</h3>
-                <div class="col l4 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/balaoan'">Balaoan</h6>
-                    </div>
-                </div>
-                <div class="col l4 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/bangar'">Bangar</h6>
-                    </div>
-                </div>
-                <div class="col l4 hide-on-med-and-down">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/luna'">Luna</h6>
-                    </div>
-                </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Balaoan<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/balaoan">Explore</a></p>
             </div>
-            <div class="row">
-                <div class="col s6 hide-on-large-only">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/luna'">Luna</h6>
-                    </div>
-                </div>
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/santol'">Santol</h6>
-                    </div>
-                </div>
-                <div class="col l6 hide-on-med-and-down">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/sudipen'">Sudipen</h6>
-                    </div>
-                </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Balaoan<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
             </div>
-            <div class="row">
-                <div class="col s12 hide-on-large-only">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/sudipen'">Sudipen</h6>
-                    </div>
-                </div>
-            </div>
-            <!-- Northern Circuit End -->
-
-            <!-- Central Circuit Start -->
-            <div class="row">
-                <h3>Central Circuit</h3>
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/bacnotan'">Bacnotan</h6>
-                    </div>
-                </div>
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/san_fernando'">San Fernando</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/san_gabriel'">San Gabriel</h6>
-                    </div>
-                </div>
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/san_juan'">San Juan</h6>
-                    </div>
-                </div>
-            </div>
-            <!-- Central Circuit End -->
-
-            <!-- Central Eastern Circuit Start -->
-            <div class="row">
-                <h3>Central Eastern Circuit</h3>
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/bauang'">Bauang</h6>
-                    </div>
-                </div>
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/bagulin'">Bagulin</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/burgos'">Burgos</h6>
-                    </div>
-                </div>
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/naguilian'">Naguilian</h6>
-                    </div>
-                </div>
-            </div>
-            <!-- Central Eastern Circuit End -->
-
-            <!-- Southern Circuit Start -->
-            <div class="row">
-                <h3>Southern Circuit</h3>
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/agoo'">Agoo</h6>
-                    </div>
-                </div>
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/aringay'">Aringay</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/caba'">Caba</h6>
-                    </div>
-                </div>
-                <div class="col l6 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/santo_tomas'">Santo Tomas</h6>
-                    </div>
-                </div>
-            </div>
-            <!-- Southern Circuit End -->
-
-            <!-- Southern Eastern Circuit Start -->
-            <div class="row">
-                <h3>Southern Eastern Circuit</h3>
-                <div class="col l4 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/pugo'">Pugo</h6>
-                    </div>
-                </div>
-                <div class="col l4 s6">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/rosario'">Rosario</h6>
-                    </div>
-                </div>
-                <div class="col l4 hide-on-med-and-down">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/tubao'">Tubao</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12 hide-on-large-only">
-                    <div class="center">
-                        <p>image Here</p>
-                        <h6 onclick="window.location='/places/tubao'">Tubao</h6>
-                    </div>
-                </div>
-            </div>
-            <!-- Southern Eastern Circuit End -->
-
         </div>
-    </body>
+    </div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_bangar.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Bangar<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/bangar">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Bangar<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l4 hide-on-med-and-down">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_luna.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Luna<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/luna">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Luna<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s6 hide-on-large-only">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_luna.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Luna<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/luna">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Luna<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_santol.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Santol<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/santol">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Santol<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l4 hide-on-med-and-down">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_sudipen.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Sudipen<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/sudipen">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Sudipen<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+</div>
+<div class="row">
+    <div class="col s3 hide-on-large-only">
+        &nbsp;
+    </div>
+    <div class="col s6 hide-on-large-only">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_sudipen.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Sudipen<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/sudipen">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Sudipen<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col s3 hide-on-large-only">
+        &nbsp;
+    </div>
+</div>
+<!-- Northern Circuit End -->
 
-</html>
+<!-- Central Circuit Start -->
+<div class="row">
+    <h3>Central Circuit</h3>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_bacnotan.jpg" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Bacnotan<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/bacnotan">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Bacnotan<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_san_fernando.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">San Fernando<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/san_fernando">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About San Fernando<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+</div>
+<div class="row">
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_san_gabriel.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">San Gabriel<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/san_gabriel">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About San Gabriel<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_san_juan.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">San Juan<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/san_juan">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About San Juan<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+</div>
+<!-- Central Circuit End -->
+
+<!-- Central Eastern Circuit Start -->
+<div class="row">
+    <h3>Central Eastern Circuit</h3>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_bauang.jpg" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Bauang<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/bauang">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Bauang<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_bagulin.jpg" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Bagulin<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/bagulin">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Bagulin<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+</div>
+<div class="row">
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_burgos.jpg" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Burgos<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/burgos">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Burgos<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_naguilian.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Naguilian<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/naguilian">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Naguilian<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+</div>
+<!-- Central Eastern Circuit End -->
+
+<!-- Southern Circuit Start -->
+<div class="row">
+    <h3>Southern Circuit</h3>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_agoo.jpg" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Agoo<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/agoo">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Agoo<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_aringay.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Aringay<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/aringay">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Aringay<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+</div>
+<div class="row">
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_caba.jpg" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Caba<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/caba">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Caba<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_santo_tomas.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Santo Tomas<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/santo_tomas">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Santo Tomas<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l2 hide-on-med-and-down">&nbsp;</div>
+</div>
+<!-- Southern Circuit End -->
+
+<!-- Southern Eastern Circuit Start -->
+<div class="row">
+    <h3>Southern Eastern Circuit</h3>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_pugo.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Pugo<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/pugo">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Pugo<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l4 s6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_rosario.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Rosario<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/rosario">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Rosario<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col l4 hide-on-med-and-down">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_tubao.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Tubao<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/tubao">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Tubao<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s3 hide-on-large-only">&nbsp;</div>
+    <div class="col s6 hide-on-large-only">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="/images/seal_tubao.png" class="responsive-img">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">Tubao<i class="material-icons right">more_vert</i></span>
+                <p><a href="/places/tubao">Explore</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">About Tubao<i class="material-icons right">close</i></span>
+                <p>Description here..</p>
+            </div>
+        </div>
+    </div>
+    <div class="col s3 hide-on-large-only">&nbsp;</div>
+</div>
+<!-- Southern Eastern Circuit End -->

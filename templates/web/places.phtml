@@ -1,44 +1,31 @@
-<html>
-
-    <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-        <style>
-            h6:hover {
-                cursor: pointer
-            }
-        </style>
-        <title>Explore <?= $town ?></title>
-    </head>
-
-    <body>
-        <div class="container">
-            <div class="row" style="margin-top: 10px;">
-                <div class="col s12 l12">
-                    <div class="center">
-                        <h1>Explore <?= $town ?></h1>
-                        <h5>Description here...</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12 l12">
-                    <?php if (count($places) == 0) : ?>
-                        <h1>Oops! No places here. Return to this <a href="/explore">site</a></h1>
-                    <?php else : ?>
-                        <ul class="collection">
-                            <?php foreach ($places as $place) : ?>
-                                <li class="collection-item" style="cursor: pointer;" onclick="window.location='/place/<?= $place['id']?>'">
-                                    <h5><?= $place['name']?></h5>
-                                    <p class="hide-on-small-only"><?= $place['description']?></p>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-
-                </div>
-            </div>
+<div class="row" style="margin-top: 10px;">
+    <div class="col s12 l12">
+        <div class="center">
+            <h1>Welcome to <?= $town ?></h1>
         </div>
-    </body>
-
-</html>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 l12">
+        <?php if (count($places) == 0) : ?>
+            <div class="center">
+                <img src="/images/no_records.png" class="responsive-img" />
+                <h6 class="center">Oops! It seems there are no places yet declared in this town. Try again later or check out this <a href="/explore">site</a></h6>
+            </div>
+        <?php else : ?>
+            <ul class="collection">
+                <?php foreach ($places as $place) : ?>
+                    <li class="collection-item" style="cursor: pointer;" onclick="window.location='/place/<?= $place['id'] ?>'">
+                        <h5>
+                            <?= $place['name'] ?>
+                            <?php if ($place['arEnabled'] == 1) : ?>
+                                <span class="new badge blue" data-badge-caption="AR Available">&nbsp;</span>
+                            <?php endif; ?>
+                        </h5>
+                        <p class="hide-on-small-only"><?= $place['description'] ?></p>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </div>
+</div>
