@@ -437,7 +437,7 @@ QUERY;
 
     public function listPoiByTown($town) {
         $query = <<< QUERY
-            SELECT id, name, description
+            SELECT id, name, description, displayable
             FROM placeofinterest WHERE town=:town
 QUERY;
         try {
