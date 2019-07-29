@@ -543,6 +543,51 @@ return function (App $app) {
 
     $app->get('/explore', function(Request $request, Response $response, array $args) use ($container) {
         return $container->webRenderer->render($response, 'explore.phtml', $args);
+    })->setName('explore');
+
+    $app->get('/places/{town}', function(Request $request, Response $response, array $args) use ($container) {
+        list('town' => $town) = $args;
+
+        $modifiedTown = ucwords($town);
+        $places = [];
+        try {
+            $places = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+        }
+
+        $args = array_merge($args, [
+            'town' => $modifiedTown,
+            'places' => array_filter($places, function($val) use ($container) {
+                $container->logger->debug(json_encode($val));
+                return $val['displayable'] != 0;
+            }, ARRAY_FILTER_USE_BOTH)
+        ]);
+        return $container->webRenderer->render($response, 'places.phtml', $args);
+    });
+
+    $app->get('/place/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+
+        try {
+            $poi = $container->poiManagementService->getPoi($id);
+            $schedules = $container->poiManagementService->listSchedules($id);
+            $fees = $container->poiManagementService->listFees($id);
+            $container->openDataDao->captureVisit($id);
+            
+            $args = array_merge($args, [
+                'poi' => $poi,
+                'schedules' => $schedules,
+                'fees' => $fees,
+                'visitorCount' => $container->openDataDao->countVisitors([
+                    'places' => [$id]
+                ])
+            ]);
+            return $container->webRenderer->render($response, 'place.phtml', $args);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            return $response->withRedirect($container->router->pathFor('explore'));
+        }
     });
 
     $app->get('/open-data', function(Request $request, Response $response, array $args) use ($container) {
