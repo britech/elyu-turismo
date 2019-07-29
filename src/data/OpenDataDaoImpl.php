@@ -61,6 +61,18 @@ QUERY;
         }
      }
 
+    public function captureVisit($placeOfInterest) {
+        try {
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare("INSERT INTO poivisit(placeofinterest) VALUES(:poi)");
+            $statement->execute(['poi' => $placeOfInterest]);
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
     public function __set($name, $value) {
         $this->$name = $value;
     }
