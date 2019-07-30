@@ -19,7 +19,7 @@
     <body>
         <?php include_once 'navigation.phtml'; ?>
 
-        <div class="container">
+        <div class="container hide-on-med-and-down">
             <div class="row" style="margin-top: 30px;">
                 <div class="col l3">
                     <div class="collection">
@@ -31,6 +31,14 @@
                 </div>
                 <div class="col l9">
                     <?=$content?>
+                </div>
+            </div>
+        </div>
+        <div class="container hide-on-large-only">
+            <div class="row" style="margin-top: 20px;">
+                <div class="center">
+                    <i class="material-icons center large">mobile_off</i>
+                    <p>Oops! You are attempting to view a site that is not compatible for mobile and tablet devices.</p>
                 </div>
             </div>
         </div>
