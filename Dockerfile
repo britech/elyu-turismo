@@ -17,7 +17,8 @@ COPY --chown=www-data templates ./templates
 COPY --chown=www-data composer.json ./composer.json
 COPY --chown=www-data composer.lock ./composer.lock
 
-RUN mkdir -p /var/www/html/public/{downloads,uploads}\
+RUN mkdir -p /var/www/html/public/downloads\
+    && mkdir -p /var/www/html/public/uploads\
     && chown -hR www-data:www-data /var/www/html/public/downloads\
     && chown -hR www-data:www-data /var/www/html/public/uploads\
     && chmod 777 /var/www/html/public/downloads\
