@@ -48,9 +48,19 @@ use gov\pglu\tourism\util\ApplicationConstants;
                     <img class="responsive-img" src="/uploads/<?= $poi['imageName'] ?>" />
                 </div>
                 <div class="col l6 hide-on-med-and-down">
-                    <h3><?= $poi['name'] ?></h3>
+                    <h3>
+                        <?= $poi['name'] ?>
+                        <?php if($poi['arEnabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE): ?>
+                            <span class="new badge blue black-text" data-badge-caption="AR Available">&nbsp;</span>
+                        <?php endif;?>
+                    </h3>
                     <table>
                         <tbody>
+                            <?php if($poi['arEnabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE): ?>
+                                <tr>
+                                    <td colspan="2"><a href="<?= $arLink?>" target="_blank">Augmented Reality</a></td>
+                                </tr>
+                            <?php endif;?>
                             <tr>
                                 <th>Location</th>
                                 <td>

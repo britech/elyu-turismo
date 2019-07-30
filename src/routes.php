@@ -581,7 +581,8 @@ return function (App $app) {
                 'fees' => $fees,
                 'visitorCount' => $container->openDataDao->countVisitors([
                     'places' => [$id]
-                ])
+                ]),
+                'arLink' => strlen(trim($poi['arLink'])) == 0 ? '#' : trim($poi['arLink'])
             ]);
             if ($poi['displayable'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
                 return $container->webRenderer->render($response, 'place.phtml', $args);
