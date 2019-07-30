@@ -583,7 +583,11 @@ return function (App $app) {
                     'places' => [$id]
                 ])
             ]);
-            return $container->webRenderer->render($response, 'place.phtml', $args);
+            if ($poi['displayable'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
+                return $container->webRenderer->render($response, 'place.phtml', $args);
+            } else {
+                return $response->withRedirect($container->router->pathFor('explore'));
+            }
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
             return $response->withRedirect($container->router->pathFor('explore'));
