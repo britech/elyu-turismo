@@ -104,6 +104,7 @@ DROP TABLE IF EXISTS `pointofinterest`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pointofinterest` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(500) DEFAULT NULL,
   `latitude` varchar(100) NOT NULL,
   `longitude` varchar(100) NOT NULL,
   `town` varchar(100) NOT NULL,
