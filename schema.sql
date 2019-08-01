@@ -96,6 +96,23 @@ CREATE TABLE `poifee` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `pointofinterest`
+--
+
+DROP TABLE IF EXISTS `pointofinterest`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pointofinterest` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `latitude` varchar(100) NOT NULL,
+  `longitude` varchar(100) NOT NULL,
+  `town` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pointofinterest_town_IDX` (`town`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `poischedule`
 --
 
@@ -165,6 +182,23 @@ CREATE TABLE `topictag` (
   `name` varchar(200) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `topictag_UN` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `townproduct`
+--
+
+DROP TABLE IF EXISTS `townproduct`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `townproduct` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(500) CHARACTER SET latin1 NOT NULL,
+  `arLink` varchar(1000) CHARACTER SET latin1 DEFAULT NULL,
+  `town` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `townproduct_town_IDX` (`town`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
