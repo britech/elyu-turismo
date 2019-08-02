@@ -614,14 +614,6 @@ return function (App $app) {
     });
 
     $app->get('/open-data', function(Request $request, Response $response, array $args) use ($container) {
-        return $container->openDataRenderer->render($response, 'index.phtml', $args);
-    });
-
-    $app->get('/open-data/rest', function(Request $request, Response $response, array $args) use ($container) {
-        return $container->openDataRenderer->render($response, 'rest.phtml', $args);
-    });
-    
-    $app->get('/open-data/csv', function(Request $request, Response $response, array $args) use ($container) {
         $poiList = $container->poiManagementService->listPoi();
 
         $args = array_merge($args, ['reportTypes' => ApplicationConstants::REPORT_TYPES, 
