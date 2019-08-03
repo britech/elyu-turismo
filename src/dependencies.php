@@ -86,8 +86,14 @@ return function (App $app) {
 
     // database
     $container['database'] = function($c) {
-        list('database' => $databaseSettings) = $c->settings;
-        list('dsn' => $dsn, 'username' => $username, 'password' => $password) = $databaseSettings;
+        list('DATABASE_HOST' => $host, 'DATABASE_TARGET' => $database, 
+            'DATABASE_USER' => $username, 'DATABASE_PASSWORD' => $password) = getenv();
+
+        if (is_null($host) && is_null($database) && is_null($username) && is_null($password)) {
+            $c->logger->debug('DEVELOPMENT Environments missing, assuming heroku setup');
+        } else {
+            $dsn = "mysql:host={$host};dbname={$database}";
+        }
 
         $connection = new PDO($dsn, $username, $password);
         $connection->setAttribute(PDO::ATTR_PERSISTENT, true);

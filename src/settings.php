@@ -19,12 +19,6 @@ return [
             'level' => Logger::DEBUG,
         ],
 
-        'database' => [
-            'dsn' => 'mysql:host=database;dbname=tourism',
-            'username' => 'tourism_user',
-            'password' => 'u&e6uaAz-b#^Lj7m'
-        ],
-        
         'csvGeneration' => [
             'destination' => '/var/www/html/public/downloads',
             'httpPath' => '/downloads'

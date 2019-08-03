@@ -12,6 +12,11 @@ services:
       - ./public/images:/var/www/html/public/images
       - ./public/uploads:/var/www/html/public/uploads
       - ./logs:/var/www/html/logs
+    environment:
+      - "DATABASE_HOST=database"
+      - "DATABASE_TARGET=tourism"
+      - "DATABASE_USER=root"
+      - "DATABASE_PASSWORD=Xv&kV!pe6Bwa-#h^"
     ports:
       - '80:80'
     links:
