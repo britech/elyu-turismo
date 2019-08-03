@@ -51,7 +51,6 @@ CREATE TABLE `placeofinterest` (
   `descriptionWysiwyg` json DEFAULT NULL,
   `commuterGuideWysiwyg` json DEFAULT NULL,
   `imageName` text,
-  `arLink` tinytext,
   PRIMARY KEY (`id`),
   KEY `placeofinterest_town_IDX` (`town`) USING BTREE,
   FULLTEXT KEY `placeofinterest_name_IDX` (`name`)
