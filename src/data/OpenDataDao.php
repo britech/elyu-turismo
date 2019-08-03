@@ -13,4 +13,6 @@ interface OpenDataDao {
     public function listTop5Destinations();
 
     public function summarizeVisitors();
+
+    public function countVisitorsByDestination($destination);
 }
