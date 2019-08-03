@@ -759,6 +759,18 @@ return function (App $app) {
     });
 
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
+        $topDestinations = [];
+
+        try {
+            $topDestinations = array_merge([], $container->openDataDao->listTop5Destinations());
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+        }
+
+        $args = array_merge($args, [
+            'topDestinations' => $topDestinations
+        ]);
+
         return $container->webRenderer->render($response, 'index.phtml', $args);
     });
 

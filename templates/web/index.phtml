@@ -72,6 +72,30 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <h5 class="flow-text center">Top 5 Destinations</h5>
+                    <?php if (count($topDestinations) == 0) : ?>
+                        <div class="card-panel red lighten-2">
+                            <strong class="flow-text white-text">No Available Data</strong>
+                        </div>
+                    <?php else : $count = 1; ?>
+                        <ul class="collection">
+                            <?php foreach ($topDestinations as $topDestination) : ?>
+                                <li class="collection-item" style="cursor: pointer;" onclick="window.location='/place/<?= $topDestination['id'] ?>'">
+                                    <h5 class="flow-text">
+                                        <?= "{$count}. {$topDestination['name']}" ?>
+                                        <?php if ($topDestination['arEnabled'] == 1) : ?>
+                                            <span class="new badge blue flow-text" data-badge-caption="AR Available">&nbsp;</span>
+                                        <?php endif; ?>
+                                    </h5>
+                                </li>
+                                <?php $count++;
+                            endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
     </body>
 
