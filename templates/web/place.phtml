@@ -52,26 +52,26 @@ use gov\pglu\tourism\util\ApplicationConstants;
                     <table>
                         <tbody>
                             <tr>
-                                <th>Location</th>
-                                <td>
+                                <th class="flow-text">Location</th>
+                                <td class="flow-text">
                                     <?= $poi['address']; ?>
                                     <br />
                                     <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<?= "{$poi['latitude']},{$poi['longitude']}" ?>">View on Google Maps</a>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Classifications</th>
-                                <td>
+                                <th class="flow-text">Classifications</th>
+                                <td class="flow-text">
                                     <?php foreach ($poi['classifications'] as $classification) : ?>
-                                        <div class="chip blue lighten-2"><?= $classification['name'] ?></div>
+                                        <div class="chip blue lighten-2 flow-text"><?= $classification['name'] ?></div>
                                     <?php endforeach; ?>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Tags</th>
+                                <th class="flow-text">Tags</th>
                                 <td>
                                     <?php foreach ($poi['topicTags'] as $tag) : ?>
-                                        <div class="chip red lighten-2"><?= $tag['name'] ?></div>
+                                        <div class="chip red lighten-2 flow-text"><?= $tag['name'] ?></div>
                                     <?php endforeach; ?>
                                 </td>
                             </tr>
@@ -82,45 +82,49 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <div class="row">
                 <div class="col l9 hide-on-med-and-down">
                     <?php if (strlen($poi['description']) == 0) : ?>
-                        <p style="font-style: italic">To be formulated</p>
+                        <p style="font-style: italic" class="flow-text">To be formulated</p>
                     <?php else : ?>
-                        <div id="description"></div>
+                        <div id="description" class="flow-text"></div>
                     <?php endif; ?>
 
                     <h6>Commuter's Guide</h6>
                     <?php if (strlen($poi['commuterguide']) == 0) : ?>
-                        <p style="font-style: italic">To be formulated</p>
+                        <p style="font-style: italic" class="flow-text">To be formulated</p>
                     <?php else : ?>
-                        <div id="commuterGuide"></div>
+                        <div id="commuterGuide" class="flow-text"></div>
                     <?php endif; ?>
                 </div>
                 <div class="col l3 hide-on-med-and-down">
-                    <h6>Total Visits</h6>
-                    <p><?= number_format($visitorCount[0]['visitorcount']) ?> visitors</p>
+                    <h6 class="flow-text">Total Visits</h6>
+                    <p class="flow-text"><?= number_format($visitorCount[0]['visitorcount']) ?> visitors</p>
 
-                    <h6 style="margin-top: 20px;">Schedules</h6>
+                    <h6 style="margin-top: 20px;" class="flow-text">Schedules</h6>
                     <?php if (count($schedules) == 0) : ?>
-                        <p>No Schedules Yet</p>
+                        <div class="card-panel red lighten-2">
+                            <strong class="flow-text white-text">No Available Data</strong>
+                        </div>
                     <?php else : ?>
                         <ul class="collection">
                             <?php foreach ($schedules as $schedule) : ?>
                                 <li class="collection-item">
-                                    <h6><?= $schedule['openEveryday'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Everyday" : (is_null($schedule['day']) ? $schedule['specificDate'] : $schedule['day']) ?></h6>
-                                    <p><?= $schedule['openAllDay'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "24 hours" : $schedule['operatingHours'] ?></p>
+                                    <h6 class="flow-text"><?= $schedule['openEveryday'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Everyday" : (is_null($schedule['day']) ? $schedule['specificDate'] : $schedule['day']) ?></h6>
+                                    <p class="flow-text"><?= $schedule['openAllDay'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "24 hours" : $schedule['operatingHours'] ?></p>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
 
-                    <h6 style="margin-top: 20px">Fees</h6>
+                    <h6 style="margin-top: 20px" class="flow-text">Fees</h6>
                     <?php if (count($fees) == 0) : ?>
-                        <p>No Fees Yet</p>
+                        <div class="card-panel red lighten-2">
+                            <strong class="flow-text white-text">No Available Data</strong>
+                        </div>
                     <?php else : ?>
                         <ul class="collection">
                             <?php foreach ($fees as $fee) : ?>
                                 <li class="collection-item">
-                                    <h6><?= $fee['description'] ?></h6>
-                                    <p><?= $fee['freePrice'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Free Admission" : "PHP " . number_format($fee['amount'], 2) ?></p>
+                                    <h6 class="flow-text"><?= $fee['description'] ?></h6>
+                                    <p class="flow-text"><?= $fee['freePrice'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Free Admission" : "PHP " . number_format($fee['amount'], 2) ?></p>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
@@ -137,76 +141,88 @@ use gov\pglu\tourism\util\ApplicationConstants;
                     <table>
                         <tbody>
                             <tr>
-                                <th>Location</th>
-                                <td>
+                                <th class="flow-text">Location</th>
+                                <td class="flow-text">
                                     <?= $poi['address']; ?>
                                     <br />
                                     <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<?= "{$poi['latitude']},{$poi['longitude']}" ?>">View on Google Maps</a>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Classifications</th>
-                                <td>
+                                <th class="flow-text">Classifications</th>
+                                <td class="flow-text">
                                     <?php foreach ($poi['classifications'] as $classification) : ?>
                                         <div class="chip blue lighten-2"><?= $classification['name'] ?></div>
                                     <?php endforeach; ?>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Tags</th>
+                                <th class="flow-text">Tags</th>
                                 <td>
                                     <?php foreach ($poi['topicTags'] as $tag) : ?>
                                         <div class="chip red lighten-2"><?= $tag['name'] ?></div>
                                     <?php endforeach; ?>
-                                </td>
+                                </td class="flow-text">
                             </tr>
                         </tbody>
                     </table>
                     <?php if (strlen($poi['description']) == 0) : ?>
-                        <p style="font-style: italic">To be formulated</p>
+                        <p style="font-style: italic" class="flow-text">To be formulated</p>
                     <?php else : ?>
-                        <div id="description-mobile"><?= $poi['description'] ?></div>
+                        <div id="description-mobile" class="flow-text"><?= $poi['description'] ?></div>
                     <?php endif; ?>
 
                     <h6>Commuter's Guide</h6>
                     <?php if (strlen($poi['commuterguide']) == 0) : ?>
-                        <p style="font-style: italic">To be formulated</p>
+                        <p style="font-style: italic" class="flow-text">To be formulated</p>
                     <?php else : ?>
-                        <div id="commuterGuide-mobile"></div>
+                        <div id="commuterGuide-mobile" class="flow-text"></div>
                     <?php endif; ?>
 
-                    <h6 style="margin-top: 20px;">Schedules</h6>
+                    <h6 style="margin-top: 20px;" class="flow-text">Schedules</h6>
                     <?php if (count($schedules) == 0) : ?>
-                        <p>No Schedules Yet</p>
+                        <div class="card-panel red lighten-2">
+                            <strong class="flow-text white-text">No Available Data</strong>
+                        </div>
                     <?php else : ?>
                         <ul class="collection">
                             <?php foreach ($schedules as $schedule) : ?>
                                 <li class="collection-item">
-                                    <h6><?= $schedule['openEveryday'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Everyday" : (is_null($schedule['day']) ? $schedule['specificDate'] : $schedule['day']) ?></h6>
-                                    <p><?= $schedule['openAllDay'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "24 hours" : $schedule['operatingHours'] ?></p>
+                                    <h6 class="flow-text"><?= $schedule['openEveryday'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Everyday" : (is_null($schedule['day']) ? $schedule['specificDate'] : $schedule['day']) ?></h6>
+                                    <p class="flow-text"><?= $schedule['openAllDay'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "24 hours" : $schedule['operatingHours'] ?></p>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
 
-                    <h6 style="margin-top: 20px">Fees</h6>
+                    <h6 style="margin-top: 20px" class="flow-text">Fees</h6>
                     <?php if (count($fees) == 0) : ?>
-                        <p>No Fees Yet</p>
+                        <div class="card-panel red lighten-2">
+                            <strong class="flow-text white-text">No Available Data</strong>
+                        </div>
                     <?php else : ?>
                         <ul class="collection">
                             <?php foreach ($fees as $fee) : ?>
                                 <li class="collection-item">
-                                    <h6><?= $fee['description'] ?></h6>
-                                    <p><?= $fee['freePrice'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Free Admission" : "PHP " . number_format($fee['amount'], 2) ?></p>
+                                    <h6 class="flow-text"><?= $fee['description'] ?></h6>
+                                    <p class="flow-text"><?= $fee['freePrice'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Free Admission" : "PHP " . number_format($fee['amount'], 2) ?></p>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
 
-                    <h6>Total Visits</h6>
-                    <p><?= number_format($visitorCount[0]['visitorcount']) ?> visitors</p>
+                    <h6 class="flow-text">Total Visits</h6>
+                    <p class="flow-text"><?= number_format($visitorCount[0]['visitorcount']) ?> visitors</p>
                 </div>
             </div>
+
+            <?php if($poi['arEnabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE): ?>
+                <div class="row">
+                    <div class="col l12 m12 s12">
+                        <h5 class="flow-text">Instructions on how to use the AR (Augmented Reality) Component</h5>
+                    </div>
+                </div>
+            <?php endif;?>
         </div>
     </body>
 
