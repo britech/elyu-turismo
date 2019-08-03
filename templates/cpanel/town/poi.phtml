@@ -1,0 +1,127 @@
+<?php
+
+use gov\pglu\tourism\util\ApplicationConstants;
+?>
+<h6 style="margin-bottom: 30px;">Manage Points of Interest</h6>
+<form method="post" action="<?= $url ?>">
+    <div class="input-field">
+        <input name="town" type="text" value="<?= $town ?>" readonly />
+        <label>Town</label>
+    </div>
+    <div class="input-field">
+        <input name="name" type="text" class="validate" required value="<?= $poi['name'] ?>" />
+        <label>Name</label>
+    </div>
+    <div class="row">
+        <div class="input-field col l6">
+            <input name="latitude" type="text" class="validate" required value="<?= $poi['latitude'] ?>" />
+            <label>Latitude</label>
+        </div>
+        <div class="input-field col l6">
+            <input name="longitude" type="text" class="validate" required value="<?= $poi['longitude'] ?>" />
+            <label>Longitude</label>
+        </div>
+    </div>
+    <?php if ($updateMode) : ?>
+        <div style="margin-bottom: 20px;">
+            <h6>Display to Site</h6>
+            <div class="switch">
+                <label>
+                    No
+                    <input type="checkbox" name="enabled" <?= $updateMode ? ($poi['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "checked" : "") : "" ?>>
+                    <span class="lever"></span>
+                    Yes
+                </label>
+            </div>
+        </div>
+        <button class="btn waves-effect waves-light blue" type="submit" name="action">Update<i class="material-icons left">edit</i></button>
+    <?php else : ?>
+        <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add_location</i></button>
+    <?php endif; ?>
+</form>
+<table class="striped">
+    <thead>
+        <tr>
+            <th style="width: 45%">Name</th>
+            <th style="width: 25%">Coordinates</th>
+            <th style="width: 15%">Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($places as $place) : ?>
+            <td><?= $place['name'] ?></td>
+            <td>
+                <span>
+                    Latitude: <?= $place['latitude'] ?>
+                    <br />
+                    Longitude: <?= $place['longitude'] ?>
+                </span>
+            </td>
+            <td><?= $place['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Active" : "Disabled" ?></td>
+            <td>
+                <a href="<?= "/cpanel/pov/{$place['id']}" ?>"><i class="material-icons left">edit</i></a>
+                <a id="remove-<?= $place['id'] ?>" href="#" data-target="removePoi" class="modal-trigger"><i class="material-icons left">delete</i></a>
+            </td>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<div id="removePoi" class="modal">
+    <div class="modal-content">
+        <h4>Do you want to remove this Point of Interest ?</h4>
+        <table>
+            <tbody>
+                <tr>
+                    <th style="width: 25%">Name</th>
+                    <td id="povName"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="povId" />
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn green lighten-1">No</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn red lighten-1" id="continueRemove">Yes</a>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
+
+        $("#removePoi").modal({
+            onOpenStart: function(e, t) {
+                let entries = t.id.split("-");
+                let id = entries[1];
+                $.ajax({
+                    url: `/api/pov/${id}`,
+                    method: 'GET',
+                }).done(function(data, status, xhr) {
+                    console.log(data);
+                    $("#povName").html(data.name);
+                    $("#povId").val(data.id);
+                }).fail(function(xhr, status, err) {
+                    console.error(err);
+                    throw err;
+                });
+            }
+        });
+
+        $('#continueRemove').click(function() {
+            let poiId = $("#poiId").val();
+            let id = $("#povId").val();
+            $.ajax({
+                url: `/api/pov/${id}`,
+                method: 'DELETE'
+            }).done(function(data, status, xhr) {
+                window.location = `/cpanel/town/<?=$townLink?>/pov`
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                window.location = `/cpanel/town/<?=$townLink?>/pov`
+            });
+        });
+    })
+</script>
