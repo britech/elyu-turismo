@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <title>PGLU Tourism Control Panel</title>
+    </head>
+
+    <body>
+        <?php include_once 'navigation.phtml'; ?>
+
+        <div class="container hide-on-med-and-down">
+            <div class="row" style="margin-top: 30px;">
+                <div class="col l3">
+                    <div class="collection with-header">
+                        <?php foreach($tourismCircuits as $tourismCircuit => $towns): ?>
+                            <li class="collection-header"><h6><?=$tourismCircuit?></h6></li>
+                            <?php foreach($towns as $town): ?>
+                                <?php $link="/cpanel/town/".strtolower(implode('_', explode(' ', $town)))."/{$type}"; ?>
+                                <a href="<?=$link?>" class="collection-item"><?=$town?></a>
+                            <?php endforeach;?>
+                        <?php endforeach;?>
+                    </div>
+                </div>
+                <div class="col l9">
+                    <?=$content?>
+                </div>
+            </div>
+        </div>
+        <div class="container hide-on-large-only">
+            <div class="row" style="margin-top: 20px;">
+                <div class="center">
+                    <i class="material-icons center large">mobile_off</i>
+                    <p>Oops! You are attempting to view a site that is not compatible for mobile and tablet devices.</p>
+                </div>
+            </div>
+        </div>
+
+        <?php include_once 'footer.phtml'; ?>
+    </body>
+</html>
