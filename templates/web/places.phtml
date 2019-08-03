@@ -59,7 +59,7 @@
                 <?php foreach ($products as $product) : ?>
                     <li class="collection-item" style="cursor: pointer;">
                         <h5 class="flow-text"><?= $product['name'] ?></h5>
-                        <a class="flow-text" target="_blank" href="<?=$product['arLink']?>">View AR</a>
+                        <a class="flow-text" target="_blank" href="<?= $product['arLink'] ?>">View AR</a>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -69,8 +69,23 @@
 <div class="row">
     <div class="col s12 m12 l12">
         <h3 class="flow-text">Open Data</h3>
-        <div class="card-panel red lighten-2">
-            <strong class="flow-text white-text">No Available Data</strong>
-        </div>
+        <?php if (count($topDestinations) == 0) : ?>
+            <div class="card-panel red lighten-2">
+                <strong class="flow-text white-text">No Available Data</strong>
+            </div>
+        <?php else : $count = 1;?>
+            <ul class="collection">
+                <?php foreach ($topDestinations as $topDestination) : ?>
+                    <li class="collection-item" style="cursor: pointer;" onclick="window.location='/place/<?= $topDestination['id'] ?>'">
+                        <h5 class="flow-text">
+                            <?= "{$count}. {$topDestination['name']}" ?>
+                            <?php if ($topDestination['arEnabled'] == 1) : ?>
+                                <span class="new badge blue" data-badge-caption="AR Available">&nbsp;</span>
+                            <?php endif; ?>
+                        </h5>
+                    </li>
+                <?php $count++; endforeach; ?>
+            </ul>
+        <?php endif; ?>
     </div>
 </div>

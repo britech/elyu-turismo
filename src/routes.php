@@ -773,10 +773,12 @@ return function (App $app) {
         $places = [];
         $points = [];
         $products = [];
+        $topDestinations = 0;
         try {
             $places = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
             $points = array_merge([], $container->townManagementService->listPoi($modifiedTown));
             $products = array_merge([], $container->townManagementService->listProducts($modifiedTown));
+            $topDestinations = array_merge([], $container->openDataDao->listTop5DestinationsByTown($modifiedTown));
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
         }
@@ -794,7 +796,8 @@ return function (App $app) {
             'products' => array_filter($products, function($val) use ($container) {
                 $container->logger->debug(json_encode($val));
                 return $val['enabled'] != 0;
-            }, ARRAY_FILTER_USE_BOTH)
+            }, ARRAY_FILTER_USE_BOTH),
+            'topDestinations' => $topDestinations
         ]);
         return $container->exploreRenderer->render($response, 'places.phtml', $args);
     });
