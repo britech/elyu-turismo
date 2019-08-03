@@ -12,6 +12,9 @@ use gov\pglu\tourism\dao\PoiManagementDaoImpl;
 use gov\pglu\tourism\dao\OpenDataDaoImpl;
 use gov\pglu\tourism\service\OpenDataServiceCsvImpl;
 use gov\pglu\tourism\dao\TownManagementDaoImpl;
+use gov\pglu\tourism\util\ApplicationConstants;
+use gov\pglu\tourism\service\FileManagementServiceFsImpl;
+use gov\pglu\tourism\service\FileManagementServiceScpImpl;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -138,5 +141,10 @@ return function (App $app) {
 
     $container['townManagementService'] = function($c) {
         return new TownManagementDaoImpl($c->database);
+    };
+
+    $container['fileManagementService'] = function() {
+        $useLocalFilesystem = getenv('USE_LOCAL_FILESYSTEM') == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
+        return $useLocalFilesystem ? new FileManagementServiceFsImpl() : new FileManagementServiceScpImpl();
     };
 };

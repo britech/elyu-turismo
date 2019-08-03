@@ -137,7 +137,9 @@ return function (App $app) {
                 $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Place of interest not found!');
                 return $response->withRedirect($container->router->pathFor('poi-list'));
             } else {
-                list('town' => $town) = $result;
+                list('imageName' => $image) = $result;
+                $container->fileManagementService->downloadFile(['file' => $image]);
+
                 $args = array_merge($args, [ 'id' => $id, 'result' => $result ]);
                 return $renderer->render($response, 'poi/info.phtml', $args);
             }
@@ -205,7 +207,10 @@ return function (App $app) {
             'imagebackend' => $imageBackend) = $body;
 
         list('image' => $image) = $request->getUploadedFiles();
-        $filename = FileUtils::uploadFile($image, ['id' => $id, 'directory' => $container->settings['uploadPath']]);
+        $filename = $container->fileManagementService->uploadFile([
+            'file' => $image,
+            'opts' => ['id' => $id]
+        ]);
 
         $inputs = array_merge($inputs, [ 'topicTags' => json_decode($rawTags),
             'classifications' => json_decode($rawClassifications),
@@ -214,7 +219,7 @@ return function (App $app) {
             'commuterguidewysiwyg' => strlen(trim($rawCommuterWysiWyg)) == 0 ? null : json_encode(json_decode($rawCommuterWysiWyg, true)),
             'commuterguide' => strlen(trim($rawCommuterGuide)) == 0 ? null : $rawCommuterGuide,
             'id' => $id,
-            'imagename' => is_null($filename) ? $imageBackend : $filename
+            'imagename' => is_null($filename) ? $imageBackend : basename($filename)
         ]);
 
         $container->logger->debug("Update tourist location => ".json_encode($inputs));
@@ -851,6 +856,10 @@ return function (App $app) {
                 'visitorCount' => $container->openDataDao->countVisitorsByDestination($id),
                 'arLink' => strlen(trim($poi['arLink'])) == 0 ? '#' : trim($poi['arLink'])
             ]);
+
+            list('imageName' => $image) = $poi;
+            $container->fileManagementService->downloadFile(['file' => $image]);
+
             if ($poi['displayable'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
                 return $container->webRenderer->render($response, 'place.phtml', $args);
             } else {
