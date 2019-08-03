@@ -108,6 +108,7 @@ CREATE TABLE `pointofinterest` (
   `latitude` varchar(100) NOT NULL,
   `longitude` varchar(100) NOT NULL,
   `town` varchar(100) NOT NULL,
+  `enabled` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `pointofinterest_town_IDX` (`town`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -198,6 +199,7 @@ CREATE TABLE `townproduct` (
   `name` varchar(500) CHARACTER SET latin1 NOT NULL,
   `arLink` varchar(1000) CHARACTER SET latin1 DEFAULT NULL,
   `town` varchar(100) NOT NULL,
+  `enabled` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `townproduct_town_IDX` (`town`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
