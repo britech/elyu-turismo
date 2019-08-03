@@ -653,6 +653,111 @@ return function (App $app) {
         }
     });
 
+    $app->get('/cpanel/town/{town}/products', function(Request $request, Response $response, array $args) use ($container) {
+        list('town' => $rawTownInput) = $args;
+        $town = ucwords(implode(' ', explode('_', $rawTownInput)));
+        $flash = $container->flash;
+
+        try {
+            $args = array_merge($args, [
+                'tourismCircuits' => ApplicationUtils::TOURISM_CIRCUITS,
+                'products' => $container->townManagementService->listProducts($town),
+                'town' => $town,
+                'url' => "/cpanel/product",
+                'type' => 'products',
+                'townLink' => $rawTownInput,
+                ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY),
+            ]);
+            return $container->townRenderer->render($response, 'town/product.phtml', $args);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('town-landing', ['type' => $town]));
+        }
+    })->setName('product-list');
+
+    $app->post('/cpanel/product', function(Request $request, Response $response, array $args) use ($container) {
+        $body = $request->getParsedBody();
+        list('town' => $rawTown, 'name' => $name, 'arLink' => $arLink) = $body;
+        $town = strtolower(implode('_', explode(' ', $rawTown)));
+        try {
+            $container->townManagementService->addProduct([
+                'name' => $name,
+                'town' => $rawTown,
+                'arLink' => $arLink
+            ]);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            $container->flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+        }
+        return $response->withRedirect($container->router->pathFor('product-list', ['town' => $town]));
+    });
+
+    $app->get('/cpanel/product/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        try {
+            $product = $container->townManagementService->getProduct($id);
+            list('town' => $town) = $product;
+
+            $args = array_merge($args, [
+                'tourismCircuits' => ApplicationUtils::TOURISM_CIRCUITS,
+                'products' => $container->townManagementService->listProducts($town),
+                'town' => $town,
+                'url' => "/cpanel/product/{$id}",
+                'type' => 'product',
+                'product' => $product,
+                'updateMode' => true,
+                'townLink' => strtolower(implode('_', explode(' ', $town))),
+            ]);
+            return $container->townRenderer->render($response, 'town/product.phtml', $args);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            return $response->withRedirect($container->router->pathFor('town-landing', ['type' => 'products']));
+        }
+    });
+
+    $app->post('/cpanel/product/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        list('town' => $rawTown, 'name' => $name, 'arLink' => $arLink, 'enabled' => $enabled) = $request->getParsedBody();
+        try {
+            $container->townManagementService->updateProduct([
+                'name' => $name,
+                'town' => $rawTown,
+                'arLink' => $arLink,
+                'id' => $id,
+                'enabled' => strcasecmp('on', $enabled) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE
+            ]);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            $container->flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+        }
+        $town = strtolower(implode('_', explode(' ', $rawTown)));
+        return $response->withRedirect($container->router->pathFor('product-list', ['town' => $town]));
+    });
+
+    $app->get('/api/product/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        try {
+            $product = $container->townManagementService->getProduct($id);
+            return $response->withJson($product, 200);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            return $response->withStatus(500);
+        }
+    });
+
+    $app->delete('/api/product/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        try {
+            $container->townManagementService->removeProduct($id);
+            return $response->withJson(['message' => 'Town product removed'], 200);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            $container->flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withStatus(500);
+        }
+    });
+
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
         return $container->webRenderer->render($response, 'index.phtml', $args);
     });
