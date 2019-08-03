@@ -145,7 +145,8 @@
                     xAxes: [{
                         ticks: {
                             beginAtZero: true,
-                            suggestedMax: <?= $maxCount ?>
+                            suggestedMin: 0,
+                            suggestedMax: <?= $maxCount == 0 ? 100 : $maxCount ?>
                         }
                     }]
                 }
