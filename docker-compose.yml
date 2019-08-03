@@ -23,6 +23,7 @@ services:
       - db:database
     depends_on:
       - db
+    restart: always
   db:
     container_name: "tourism_db"
     image: "mysql:5.7"
@@ -35,5 +36,6 @@ services:
       - "MYSQL_ROOT_PASSWORD=Xv&kV!pe6Bwa-#h^"
       - "MYSQL_DATABASE=tourism"
       - "TZ=Asia/Manila"
+    restart: always
 volumes:
   tourism_db:
