@@ -767,6 +767,7 @@ return function (App $app) {
         sort($towns, SORT_NATURAL);
 
         $inputData = [];
+        $max = 0;
         try {
             $topDestinations = array_merge([], $container->openDataDao->listTop5Destinations());
             
@@ -776,7 +777,9 @@ return function (App $app) {
                     list('town' => $resultTown) = $val;
                     return strcasecmp($town, $resultTown) == 0;
                 });
-                $inputData = array_merge($inputData, [ count($result) == 0 ? 0 : intval($result[0]['visitorCount'])]);
+                $count = count($result) == 0 ? 0 : intval($result[0]['visitorCount']);
+                $inputData = array_merge($inputData, [$count]);
+                $max += $count;
             }
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
@@ -785,7 +788,8 @@ return function (App $app) {
         $args = array_merge($args, [
             'topDestinations' => $topDestinations,
             'towns' => json_encode($towns),
-            'inputData' => json_encode($inputData)
+            'inputData' => json_encode($inputData),
+            'maxCount' => $max
         ]);
 
         return $container->webRenderer->render($response, 'index.phtml', $args);
