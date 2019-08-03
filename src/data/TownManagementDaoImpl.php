@@ -45,7 +45,7 @@ class TownManagementDaoImpl implements TownManagementDao {
         try {
             $this->pdo->beginTransaction();
             
-            $statement = $this->pdo->prepare("UPDATE pointofinterest SET name=:name, latitude=:latitude, longitude=:longitude, town=:town WHERE id=:id");
+            $statement = $this->pdo->prepare("UPDATE pointofinterest SET name=:name, latitude=:latitude, longitude=:longitude, town=:town, enabled=:enabled WHERE id=:id");
             $statement->execute($map);
 
             $this->pdo->commit();
@@ -59,7 +59,7 @@ class TownManagementDaoImpl implements TownManagementDao {
         try {
             $this->pdo->beginTransaction();
             
-            $statement = $this->pdo->prepare("DELETE pointofinterest WHERE id=:id");
+            $statement = $this->pdo->prepare("DELETE FROM pointofinterest WHERE id=:id");
             $statement->execute(['id' => $id]);
 
             $this->pdo->commit();
