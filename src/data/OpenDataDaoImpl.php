@@ -114,6 +114,24 @@ QUERY;
         }
     }
 
+    public function summarizeVisitors() {
+        $query = <<< QUERY
+            SELECT town, COUNT(id) as visitorCount
+            FROM poivisit poiv
+            JOIN placeofinterest poi ON poiv.placeofinterest = poi.id
+            GROUP BY town
+QUERY;
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $this->logger->debug(json_encode($result));
+            return $result;
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
     public function __set($name, $value) {
         $this->$name = $value;
     }
