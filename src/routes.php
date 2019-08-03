@@ -771,8 +771,12 @@ return function (App $app) {
 
         $modifiedTown = ucwords(implode(' ', explode('_', $town)));
         $places = [];
+        $points = [];
+        $products = [];
         try {
             $places = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
+            $points = array_merge([], $container->townManagementService->listPoi($modifiedTown));
+            $products = array_merge([], $container->townManagementService->listProducts($modifiedTown));
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
         }
@@ -782,6 +786,14 @@ return function (App $app) {
             'places' => array_filter($places, function($val) use ($container) {
                 $container->logger->debug(json_encode($val));
                 return $val['displayable'] != 0;
+            }, ARRAY_FILTER_USE_BOTH),
+            'points' => array_filter($points, function($val) use ($container) {
+                $container->logger->debug(json_encode($val));
+                return $val['enabled'] != 0;
+            }, ARRAY_FILTER_USE_BOTH),
+            'products' => array_filter($products, function($val) use ($container) {
+                $container->logger->debug(json_encode($val));
+                return $val['enabled'] != 0;
             }, ARRAY_FILTER_USE_BOTH)
         ]);
         return $container->exploreRenderer->render($response, 'places.phtml', $args);
