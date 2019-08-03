@@ -96,21 +96,16 @@ return function (App $app) {
 
     // database
     $container['database'] = function($c) {
-        list('DATABASE_HOST' => $host, 'DATABASE_TARGET' => $database, 
-            'DATABASE_USER' => $username, 'DATABASE_PASSWORD' => $password, 'DATABASE_URL' => $herokuDb) = getenv();
+        list('DATABASE_HOST' => $host, 'DATABASE_PORT' => $port, 'DATABASE_TARGET' => $database, 
+            'DATABASE_USER' => $username, 'DATABASE_PASSWORD' => $password) = getenv();
 
-        if (!is_null($herokuDb)) {
-            $c->logger->debug('Initializing connection using heroku db');
-            list('host' => $host, 'port' => $port, 'dbname' => $database, 'user' => $username, 'pass' => $password) = parse_url($herokuDb);
-            $dsn = "mysql:host={$host};port={$port};dbname={$database}";
-        } else {
-            $dsn = "mysql:host={$host};dbname={$database}";
-        }
-
+        $resolvedPort = is_null($port) ? '3306' : $port;
+        $dsn = "mysql:host={$host};port={$resolvedPort};dbname={$database}";
+        
         $connection = new PDO($dsn, $username, $password);
         $connection->setAttribute(PDO::ATTR_PERSISTENT, true);
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+        
         return $connection;
     };
 
