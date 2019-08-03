@@ -9,4 +9,6 @@ interface OpenDataDao {
     public function countVisitors(array $criteria);
 
     public function listTop5DestinationsByTown($town);
+
+    public function listTop5Destinations();
 }

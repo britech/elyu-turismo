@@ -80,12 +80,32 @@ QUERY;
             JOIN placeofinterest poi ON poiv.placeofinterest = poi.id
             WHERE town=:town
             GROUP BY id
-            ORDER BY visitorCount
+            ORDER BY visitorCount DESC
             LIMIT 5
 QUERY;
         try {
             $statement = $this->pdo->prepare($query);
             $statement->execute(['town' => $town]);
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $this->logger->debug(json_encode($result));
+            return $result;
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
+    public function listTop5Destinations() {
+        $query = <<< QUERY
+            SELECT id, name, arEnabled, COUNT(id) as visitorCount
+            FROM poivisit poiv
+            JOIN placeofinterest poi ON poiv.placeofinterest = poi.id
+            GROUP BY id
+            ORDER BY visitorCount DESC
+            LIMIT 5
+QUERY;
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
             $this->logger->debug(json_encode($result));
             return $result;
