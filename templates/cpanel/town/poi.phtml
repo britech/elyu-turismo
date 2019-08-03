@@ -50,19 +50,21 @@ use gov\pglu\tourism\util\ApplicationConstants;
     </thead>
     <tbody>
         <?php foreach ($places as $place) : ?>
-            <td><?= $place['name'] ?></td>
-            <td>
-                <span>
-                    Latitude: <?= $place['latitude'] ?>
-                    <br />
-                    Longitude: <?= $place['longitude'] ?>
-                </span>
-            </td>
-            <td><?= $place['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Active" : "Disabled" ?></td>
-            <td>
-                <a href="<?= "/cpanel/pov/{$place['id']}" ?>"><i class="material-icons left">edit</i></a>
-                <a id="remove-<?= $place['id'] ?>" href="#" data-target="removePoi" class="modal-trigger"><i class="material-icons left">delete</i></a>
-            </td>
+            <tr>
+                <td><?= $place['name'] ?></td>
+                <td>
+                    <span>
+                        Latitude: <?= $place['latitude'] ?>
+                        <br />
+                        Longitude: <?= $place['longitude'] ?>
+                    </span>
+                </td>
+                <td><?= $place['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Active" : "Disabled" ?></td>
+                <td>
+                    <a href="<?= "/cpanel/pov/{$place['id']}" ?>"><i class="material-icons left">edit</i></a>
+                    <a id="remove-<?= $place['id'] ?>" href="#" data-target="removePoi" class="modal-trigger"><i class="material-icons left">delete</i></a>
+                </td>
+            </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
@@ -111,16 +113,15 @@ use gov\pglu\tourism\util\ApplicationConstants;
         });
 
         $('#continueRemove').click(function() {
-            let poiId = $("#poiId").val();
             let id = $("#povId").val();
             $.ajax({
                 url: `/api/pov/${id}`,
                 method: 'DELETE'
             }).done(function(data, status, xhr) {
-                window.location = `/cpanel/town/<?=$townLink?>/pov`
+                window.location = `/cpanel/town/<?= $townLink ?>/pov`
             }).fail(function(xhr, status, err) {
                 console.error(err);
-                window.location = `/cpanel/town/<?=$townLink?>/pov`
+                window.location = `/cpanel/town/<?= $townLink ?>/pov`
             });
         });
     })
