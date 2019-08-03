@@ -12,10 +12,11 @@ class FileManagementServiceScpImpl extends FileManagementServiceFsImpl {
         $filename = parent::uploadFile($contents);
         $localFile = "{$directory}/{$filename}";
         
-        list('SSH_USER' => $username, 'SSH_KEY' => $password, 'SSH_DIRECTORY' => $directory) = getenv();
+        list('SSH_HOST' => $host, 'SSH_USER' => $username, 'SSH_KEY' => $password, 'SSH_DIRECTORY' => $directory) = getenv();
         $remoteFile = "{$directory}/{$filename}";
 
-        $connection = ssh2_connect($username, $password);
+        $connection = ssh2_connect($host);
+        ssh2_auth_password($connection, $username, $password);
         ssh2_scp_send($connection, $localFile, $remoteFile);
         ssh2_disconnect($connection);
         $connection = null;
@@ -27,14 +28,15 @@ class FileManagementServiceScpImpl extends FileManagementServiceFsImpl {
         if (strlen(trim($file)) == 0) {
             return;
         }
-        
+
         list('UPLOAD_PATH' => $destination) = getenv();
 
-        list('SSH_USER' => $username, 'SSH_KEY' => $password, 'SSH_DIRECTORY' => $directory) = getenv();
+        list('SSH_HOST' => $host, 'SSH_USER' => $username, 'SSH_KEY' => $password, 'SSH_DIRECTORY' => $directory) = getenv();
         $remoteFile = "{$directory}/{$file}";
         $localFile = "{$destination}/{$file}";
 
-        $connection = ssh2_connect($username, $password);
+        $connection = ssh2_connect($host);
+        ssh2_auth_password($connection, $username, $password);
         ssh2_scp_recv($connection, $remoteFile, $localFile);
         ssh2_disconnect($connection);
         $connection = null;
