@@ -73,6 +73,27 @@ QUERY;
         }
     }
 
+    public function listTop5DestinationsByTown($town) {
+        $query = <<< QUERY
+            SELECT id, name, arEnabled, COUNT(id) as visitorCount
+            FROM poivisit poiv
+            JOIN placeofinterest poi ON poiv.placeofinterest = poi.id
+            WHERE town=:town
+            GROUP BY id
+            ORDER BY visitorCount
+            LIMIT 5
+QUERY;
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute(['town' => $town]);
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $this->logger->debug(json_encode($result));
+            return $result;
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
     public function __set($name, $value) {
         $this->$name = $value;
     }
