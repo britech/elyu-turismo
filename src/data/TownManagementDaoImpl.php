@@ -109,7 +109,7 @@ class TownManagementDaoImpl implements TownManagementDao {
         try {
             $this->pdo->beginTransaction();
             
-            $statement = $this->pdo->prepare("UPDATE townproduct SET name=:name, arLink=:arLink, town=:town WHERE id=:id");
+            $statement = $this->pdo->prepare("UPDATE townproduct SET name=:name, arLink=:arLink, town=:town, enabled=:enabled WHERE id=:id");
             $statement->execute($map);
 
             $this->pdo->commit();
