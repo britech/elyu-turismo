@@ -5,7 +5,7 @@ use Slim\Views\PhpRenderer;
 use Slim\Flash\Messages as FlashMessage;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
-use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\StreamHandler;
 use gov\pglu\tourism\dao\TagDaoImpl;
 use gov\pglu\tourism\dao\ClassificationDaoImpl;
 use gov\pglu\tourism\dao\PoiManagementDaoImpl;
@@ -84,13 +84,8 @@ return function (App $app) {
 
     // monolog
     $container['logger'] = function ($c) {
-        $settings = $c->get('settings')['logger'];
-        list('logger' => $loggerSettings) = $c->settings;
-        list('name' => $appName, 'path' => $path, 'level' => $logLevel) = $loggerSettings;
-        
-        $logger = new Logger($appName);
-        $logger->pushProcessor(new UidProcessor());
-        $logger->pushHandler(new RotatingFileHandler($path, $logLevel));
+        $logger = new Logger('tourism-app');
+        $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
         return $logger;
     };
 
