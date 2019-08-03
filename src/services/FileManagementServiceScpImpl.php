@@ -20,8 +20,7 @@ class FileManagementServiceScpImpl extends FileManagementServiceFsImpl {
         if (!$sftp->login($username, $password)) {
             throw new \Exception('Access to denied');
         }
-        $sftp->put($remoteFile, $localFile, SFTP::SOURCE_LOCAL_FILE);
-        unset($sftp);
+        $sftp->put($remoteFile, $localFile);
 
         return $filename;
     }
@@ -42,6 +41,5 @@ class FileManagementServiceScpImpl extends FileManagementServiceFsImpl {
             throw new \Exception('Access to denied');
         }
         $sftp->get($remoteFile, $localFile);
-        unset($sftp);
     }
 }
