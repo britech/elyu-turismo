@@ -97,10 +97,12 @@ return function (App $app) {
     // database
     $container['database'] = function($c) {
         list('DATABASE_HOST' => $host, 'DATABASE_TARGET' => $database, 
-            'DATABASE_USER' => $username, 'DATABASE_PASSWORD' => $password) = getenv();
+            'DATABASE_USER' => $username, 'DATABASE_PASSWORD' => $password, 'DATABASE_URL' => $herokuDb) = getenv();
 
-        if (is_null($host) && is_null($database) && is_null($username) && is_null($password)) {
-            $c->logger->debug('DEVELOPMENT Environments missing, assuming heroku setup');
+        if (!is_null($herokuDb)) {
+            $c->logger->debug('Initializing connection using heroku db');
+            list('host' => $host, 'port' => $port, 'dbname' => $database, 'user' => $username, 'pass' => $password) = parse_url($herokuDb);
+            $dsn = "mysql:host={$host};port={$port};dbname={$database}";
         } else {
             $dsn = "mysql:host={$host};dbname={$database}";
         }
