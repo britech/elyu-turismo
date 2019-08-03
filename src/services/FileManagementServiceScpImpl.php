@@ -2,6 +2,7 @@
 
 namespace gov\pglu\tourism\service;
 
+use phpseclib\Net\SFTP;
 use gov\pglu\tourism\service\FileManagementServiceFsImpl;
 
 class FileManagementServiceScpImpl extends FileManagementServiceFsImpl {
@@ -15,12 +16,14 @@ class FileManagementServiceScpImpl extends FileManagementServiceFsImpl {
         list('SSH_HOST' => $host, 'SSH_USER' => $username, 'SSH_KEY' => $password, 'SSH_DIRECTORY' => $directory) = getenv();
         $remoteFile = "{$directory}/{$filename}";
 
-        $connection = ssh2_connect($host);
-        ssh2_auth_password($connection, $username, $password);
-        ssh2_scp_send($connection, $localFile, $remoteFile);
-        ssh2_disconnect($connection);
-        $connection = null;
-        unset($connection);
+        $sftp = new SFTP($host);
+        if (!$sftp->login($username, $password)) {
+            throw new \Exception('Access to denied');
+        }
+        $sftp->put($remoteFile, $localFile, SFTP::SOURCE_LOCAL_FILE);
+        unset($sftp);
+
+        return $filename;
     }
 
     public function downloadFile(array $contents) {
@@ -29,17 +32,16 @@ class FileManagementServiceScpImpl extends FileManagementServiceFsImpl {
             return;
         }
 
-        list('UPLOAD_PATH' => $destination) = getenv();
-
-        list('SSH_HOST' => $host, 'SSH_USER' => $username, 'SSH_KEY' => $password, 'SSH_DIRECTORY' => $directory) = getenv();
+        list('SSH_HOST' => $host, 'SSH_USER' => $username, 'SSH_KEY' => $password, 
+            'SSH_DIRECTORY' => $directory, 'UPLOAD_PATH' => $destination) = getenv();
         $remoteFile = "{$directory}/{$file}";
         $localFile = "{$destination}/{$file}";
 
-        $connection = ssh2_connect($host);
-        ssh2_auth_password($connection, $username, $password);
-        ssh2_scp_recv($connection, $remoteFile, $localFile);
-        ssh2_disconnect($connection);
-        $connection = null;
-        unset($connection);
+        $sftp = new SFTP($host);
+        if (!$sftp->login($username, $password)) {
+            throw new \Exception('Access to denied');
+        }
+        $sftp->get($remoteFile, $localFile);
+        unset($sftp);
     }
 }
