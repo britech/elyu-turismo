@@ -17,6 +17,9 @@ services:
       - "DATABASE_TARGET=tourism"
       - "DATABASE_USER=root"
       - "DATABASE_PASSWORD=Xv&kV!pe6Bwa-#h^"
+      - "UPLOAD_PATH=/var/www/html/public/uploads"
+      - "CSV_GENERATION_PATH=/var/www/html/public/downloads"
+      - "CSV_HTTP_PATH=/downloads"
     ports:
       - '80:80'
     links:

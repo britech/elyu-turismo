@@ -20,10 +20,10 @@ return [
         ],
 
         'csvGeneration' => [
-            'destination' => '/var/www/html/public/downloads',
-            'httpPath' => '/downloads'
+            'destination' => getenv('CSV_GENERATION_PATH'),
+            'httpPath' => getenv('CSV_HTTP_PATH')
         ],
 
-        'uploadPath' => '/var/www/html/public/uploads'
+        'uploadPath' => getenv('UPLOAD_PATH')
     ],
 ];
