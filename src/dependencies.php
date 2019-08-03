@@ -11,6 +11,7 @@ use gov\pglu\tourism\dao\ClassificationDaoImpl;
 use gov\pglu\tourism\dao\PoiManagementDaoImpl;
 use gov\pglu\tourism\dao\OpenDataDaoImpl;
 use gov\pglu\tourism\service\OpenDataServiceCsvImpl;
+use gov\pglu\tourism\dao\TownManagementDaoImpl;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -29,6 +30,15 @@ return function (App $app) {
 
         $renderer = new PhpRenderer("{$templatePath}/cpanel/");
         $renderer->setLayout('layout_poi.phtml');
+        return $renderer;
+    };
+
+    $container['townRenderer'] = function($c) {
+        list('renderer' => $rendererSettings) = $c->settings;
+        list('template_path' => $templatePath) = $rendererSettings;
+
+        $renderer = new PhpRenderer("{$templatePath}/cpanel/");
+        $renderer->setLayout('layout_town.phtml');
         return $renderer;
     };
 
@@ -132,5 +142,9 @@ return function (App $app) {
     $container['csvGenerationSetting'] = function($c) {
         list('csvGeneration' => $settings) = $c->settings;
         return (object) $settings;
+    };
+
+    $container['townManagementService'] = function($c) {
+        return new TownManagementDaoImpl($c->database);
     };
 };
