@@ -6,11 +6,34 @@
     </div>
 </div>
 <div class="row">
-    <div class="col s12 l12">
+    <div class="col s12 m12 l12">
+        <h3 class="flow-text">Tourist Destinations</h3>
         <?php if (count($places) == 0) : ?>
-            <div class="center">
-                <img src="/images/no_records.png" class="responsive-img" />
-                <h6 class="center">Oops! It seems there are no places yet declared in this town. Try again later or check out this <a href="/explore">site</a></h6>
+            <div class="card-panel red lighten-2">
+                <strong class="flow-text white-text">No Available Data</strong>
+            </div>
+        <?php else : ?>
+            <ul class="collection">
+                <?php foreach ($places as $place) : ?>
+                    <li class="collection-item" style="cursor: pointer;" onclick="window.location='/place/<?= $place['id'] ?>'">
+                        <h5 class="flow-text">
+                            <?= $place['name'] ?>
+                            <?php if ($place['arEnabled'] == 1) : ?>
+                                <span class="new badge blue" data-badge-caption="AR Available">&nbsp;</span>
+                            <?php endif; ?>
+                        </h5>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l12">
+        <h3 class="flow-text">Places of Interest</h3>
+        <?php if (count($points) == 0) : ?>
+            <div class="card-panel red lighten-2">
+                <strong class="flow-text white-text">No Available Data</strong>
             </div>
         <?php else : ?>
             <ul class="collection">
@@ -27,5 +50,37 @@
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l12">
+        <h3 class="flow-text">Products</h3>
+        <?php if (count($points) == 0) : ?>
+            <div class="card-panel red lighten-2">
+                <strong class="flow-text white-text">No Available Data</strong>
+            </div>
+        <?php else : ?>
+            <ul class="collection">
+                <?php foreach ($places as $place) : ?>
+                    <li class="collection-item" style="cursor: pointer;" onclick="window.location='/place/<?= $place['id'] ?>'">
+                        <h5>
+                            <?= $place['name'] ?>
+                            <?php if ($place['arEnabled'] == 1) : ?>
+                                <span class="new badge blue" data-badge-caption="AR Available">&nbsp;</span>
+                            <?php endif; ?>
+                        </h5>
+                        <p class="hide-on-small-only"><?= $place['description'] ?></p>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12 l12">
+        <h3 class="flow-text">Open Data</h3>
+        <div class="card-panel red lighten-2">
+            <strong class="flow-text white-text">No Available Data</strong>
+        </div>
     </div>
 </div>
