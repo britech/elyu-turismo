@@ -760,15 +760,32 @@ return function (App $app) {
 
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
         $topDestinations = [];
+        $towns = [];
+        foreach(ApplicationUtils::TOURISM_CIRCUITS as $tourismCircuit => $townList) {
+            $towns = array_merge($towns, $townList);
+        }
+        sort($towns, SORT_NATURAL);
 
+        $inputData = [];
         try {
             $topDestinations = array_merge([], $container->openDataDao->listTop5Destinations());
+            
+            $summaryResult = $container->openDataDao->summarizeVisitors();
+            foreach($towns as $town) {
+                $result = array_filter($summaryResult, function($val) use ($town) {
+                    list('town' => $resultTown) = $val;
+                    return strcasecmp($town, $resultTown) == 0;
+                });
+                $inputData = array_merge($inputData, [ count($result) == 0 ? 0 : intval($result[0]['visitorCount'])]);
+            }
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
         }
 
         $args = array_merge($args, [
-            'topDestinations' => $topDestinations
+            'topDestinations' => $topDestinations,
+            'towns' => json_encode($towns),
+            'inputData' => json_encode($inputData)
         ]);
 
         return $container->webRenderer->render($response, 'index.phtml', $args);

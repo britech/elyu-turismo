@@ -4,11 +4,13 @@
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
         <style>
             i:hover {
                 cursor: pointer
             }
         </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
         <title>Welcome to La Union</title>
     </head>
 
@@ -96,7 +98,59 @@
                     <?php endif; ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <h5 class="flow-text center">Visitor Count per Town</h5>
+                    <canvas id="visitorCountChart" width="400" height="400"></canvas>
+                </div>
+            </div>
         </div>
     </body>
+
+    <script>
+        var ctx = document.getElementById('visitorCountChart');
+        var myChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: <?= $towns ?>,
+                datasets: [{
+                    label: 'Number of Visitors',
+                    backgroundColor: [
+                        'rgba(54, 39, 8, 1)', //agoo
+                        'rgba(1, 113, 133, 1)', //aringay
+                        'rgba(251, 135, 0, 1)', //bacnotan
+                        'rgba(203, 15, 4, 1)', //bagulin
+                        'rgba(71, 34, 7, 1)', //balaoan
+                        'rgba(189, 72, 88, 1)', //bangar
+                        'rgba(55, 104, 39, 1)', //bauang
+                        'rgba(7, 135, 16, 1)', //burgos
+                        'rgba(241, 167, 18, 1)', //caba
+                        'rgba(77, 77, 77, 1)', //luna
+                        'rgba(94, 45, 49, 1)', //naguilian
+                        'rgba(0, 91, 152, 1)', //pugo
+                        'rgba(162, 80, 20, 1)', //rosario
+                        'rgba(255, 1, 0, 1)', //san fernando
+                        'rgba(69, 122, 236, 1)', //san gabriel
+                        'rgba(5, 98, 255, 1)', //san juan
+                        'rgba(141, 71, 37, 1)', //santo tomas
+                        'rgba(68, 127, 17, 1)', //santol
+                        'rgba(6, 70, 20, 1)', //sudipen
+                        'rgba(2, 187, 0, 1)' //tubao
+                    ],
+                    data: <?= $inputData ?>
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            suggestedMax: 100
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 
 </html>
