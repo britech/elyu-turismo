@@ -816,12 +816,30 @@ return function (App $app) {
         $places = [];
         $points = [];
         $products = [];
-        $topDestinations = 0;
+        $placesBackend = [];
+        $visitorCounts = [];
+        $maxCount = 0;
         try {
             $places = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
             $points = array_merge([], $container->townManagementService->listPoi($modifiedTown));
             $products = array_merge([], $container->townManagementService->listProducts($modifiedTown));
-            $topDestinations = array_merge([], $container->openDataDao->listTop5DestinationsByTown($modifiedTown));
+
+            foreach($places as $place) {
+                list('name' => $name) = $place;
+                $placesBackend = array_merge($placesBackend, [$name]);
+            }
+            
+            foreach($container->openDataDao->summarizeVisitorsByTown($modifiedTown) as $row) {
+                list('name' => $name, 'visitorcount' => $visitorCount) = $row;
+                $container->logger->debug(json_encode($row));
+                $result = array_filter($placesBackend, function($val) use ($name) {
+                    return strcasecmp($val, $name) == 0;
+                }, ARRAY_FILTER_USE_BOTH);
+
+                $count = count($result) == 0 ? 0 : $visitorCount;
+                $maxCount += $count;
+                $visitorCounts = array_merge($visitorCounts, [$count]);
+            }
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
         }
@@ -840,7 +858,11 @@ return function (App $app) {
                 $container->logger->debug(json_encode($val));
                 return $val['enabled'] != 0;
             }, ARRAY_FILTER_USE_BOTH),
-            'topDestinations' => $topDestinations
+            'openData' => [
+                'places' => json_encode($placesBackend),
+                'values' => json_encode($visitorCounts),
+                'maxCount' => $maxCount
+            ]
         ]);
         return $container->exploreRenderer->render($response, 'places.phtml', $args);
     });

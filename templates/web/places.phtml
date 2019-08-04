@@ -69,23 +69,37 @@
 <div class="row">
     <div class="col s12 m12 l12">
         <h3 class="flow-text">Open Data</h3>
-        <?php if (count($topDestinations) == 0) : ?>
+        <?php if (count($places) == 0) : ?>
             <div class="card-panel red lighten-2">
                 <strong class="flow-text white-text">No Available Data</strong>
             </div>
-        <?php else : $count = 1;?>
-            <ul class="collection">
-                <?php foreach ($topDestinations as $topDestination) : ?>
-                    <li class="collection-item" style="cursor: pointer;" onclick="window.location='/place/<?= $topDestination['id'] ?>'">
-                        <h5 class="flow-text">
-                            <?= "{$count}. {$topDestination['name']}" ?>
-                            <?php if ($topDestination['arEnabled'] == 1) : ?>
-                                <span class="new badge blue" data-badge-caption="AR Available">&nbsp;</span>
-                            <?php endif; ?>
-                        </h5>
-                    </li>
-                <?php $count++; endforeach; ?>
-            </ul>
+        <?php else : ?>
+            <canvas id="visitorCountChart" width="400" height="200"></canvas>
         <?php endif; ?>
     </div>
 </div>
+<script>
+    var ctx = document.getElementById('visitorCountChart');
+    var myChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: <?= $openData['places'] ?>,
+            datasets: [{
+                label: 'Number of Visitors',
+                data: <?= $openData['values'] ?>
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: <?= floor($openData['maxCount'] * 0.25) ?>,
+                        suggestedMin: 0,
+                        suggestedMax: <?= $openData['maxCount'] + 100 ?>
+                    }
+                }]
+            }
+        }
+    });
+</script>
