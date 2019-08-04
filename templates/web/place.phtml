@@ -45,7 +45,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
         <div class="container">
             <div class="row valign-wrapper" style="margin-top: 10px;">
                 <div class="col l6 hide-on-med-and-down">
-                    <img class="responsive-img" src="/uploads/<?= $poi['imageName'] ?>" />
+                    <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet"/>
                 </div>
                 <div class="col l6 hide-on-med-and-down">
                     <h3><?= $poi['name'] ?></h3>
@@ -135,7 +135,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <div class="row">
                 <div class="col s12 hide-on-large-only">
                     <div class="center">
-                        <img class="responsive-img" src="/uploads/<?= $poi['imageName'] ?>" />
+                        <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet"/>
                         <h3><?= $poi['name'] ?></h3>
                     </div>
                     <table>

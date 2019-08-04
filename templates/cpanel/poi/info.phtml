@@ -7,7 +7,7 @@
                 <?php if (is_null($result['imageName']) || strlen($result['imageName']) == 0) : ?>
                     <strong>No Image Yet</strong>
                 <?php else : ?>
-                    <a href="/uploads/<?= $result['imageName'];?>" target="_blank">Image Source</a>
+                    <a href="<?= $imageSrc ?>" target="_blank">Image Source</a>
                 <?php endif; ?>
             </td>
         </tr>

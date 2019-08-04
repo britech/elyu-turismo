@@ -137,10 +137,14 @@ return function (App $app) {
                 $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Place of interest not found!');
                 return $response->withRedirect($container->router->pathFor('poi-list'));
             } else {
-                list('imageName' => $image) = $result;
-                $container->fileManagementService->downloadFile(['file' => $image]);
+                list('imageName' => $imageName) = $result;
+                $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$imageName}" : $imageName;
 
-                $args = array_merge($args, [ 'id' => $id, 'result' => $result ]);
+                $args = array_merge($args, [
+                    'id' => $id, 
+                    'result' => $result, 
+                    'imageSrc' => $imageSrc
+                ]);
                 return $renderer->render($response, 'poi/info.phtml', $args);
             }
         } catch (\PDOException $ex) {
@@ -204,12 +208,13 @@ return function (App $app) {
             'description' => $rawDescription,
             'commuterguidewysiwyg' => $rawCommuterWysiWyg,
             'commuterguide' => $rawCommuterGuide,
-            'imagebackend' => $imageBackend) = $body;
+            'imagebackend' => $imageBackend, 'name' => $name) = $body;
 
         list('image' => $image) = $request->getUploadedFiles();
-        $filename = $container->fileManagementService->uploadFile([
+        $filename = $container->fileUploadService->uploadFile([
             'file' => $image,
-            'opts' => ['id' => $id]
+            'opts' => ['id' => $id],
+            'name' => $name
         ]);
 
         $inputs = array_merge($inputs, [ 'topicTags' => json_decode($rawTags),
@@ -219,7 +224,7 @@ return function (App $app) {
             'commuterguidewysiwyg' => strlen(trim($rawCommuterWysiWyg)) == 0 ? null : json_encode(json_decode($rawCommuterWysiWyg, true)),
             'commuterguide' => strlen(trim($rawCommuterGuide)) == 0 ? null : $rawCommuterGuide,
             'id' => $id,
-            'imagename' => is_null($filename) ? $imageBackend : basename($filename)
+            'imagename' => is_null($filename) ? $imageBackend : $filename
         ]);
 
         $container->logger->debug("Update tourist location => ".json_encode($inputs));
@@ -848,17 +853,18 @@ return function (App $app) {
             $schedules = $container->poiManagementService->listSchedules($id);
             $fees = $container->poiManagementService->listFees($id);
             $container->openDataDao->captureVisit($id);
+
+            list('imageName' => $imageName) = $poi;
+            $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$imageName}" : $imageName;
             
             $args = array_merge($args, [
                 'poi' => $poi,
                 'schedules' => $schedules,
                 'fees' => $fees,
                 'visitorCount' => $container->openDataDao->countVisitorsByDestination($id),
-                'arLink' => strlen(trim($poi['arLink'])) == 0 ? '#' : trim($poi['arLink'])
+                'arLink' => strlen(trim($poi['arLink'])) == 0 ? '#' : trim($poi['arLink']),
+                'imageSrc' => $imageSrc
             ]);
-
-            list('imageName' => $image) = $poi;
-            $container->fileManagementService->downloadFile(['file' => $image]);
 
             if ($poi['displayable'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
                 return $container->webRenderer->render($response, 'place.phtml', $args);

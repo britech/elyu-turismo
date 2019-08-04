@@ -107,6 +107,7 @@
         </div>
     </body>
 
+    <?php $maxCount+=100; ?>
     <script>
         var ctx = document.getElementById('visitorCountChart');
         var myChart = new Chart(ctx, {
@@ -145,8 +146,9 @@
                     xAxes: [{
                         ticks: {
                             beginAtZero: true,
+                            stepSize: <?= floor($maxCount * 0.25) ?>,
                             suggestedMin: 0,
-                            suggestedMax: <?= $maxCount == 0 ? 100 : $maxCount ?>
+                            suggestedMax: <?= $maxCount ?>
                         }
                     }]
                 }

@@ -13,8 +13,8 @@ use gov\pglu\tourism\dao\OpenDataDaoImpl;
 use gov\pglu\tourism\service\OpenDataServiceCsvImpl;
 use gov\pglu\tourism\dao\TownManagementDaoImpl;
 use gov\pglu\tourism\util\ApplicationConstants;
-use gov\pglu\tourism\service\FileManagementServiceFsImpl;
-use gov\pglu\tourism\service\FileManagementServiceScpImpl;
+use gov\pglu\tourism\service\FileUploadServiceDefaultImpl;
+use gov\pglu\tourism\service\FileUploadServiceImgurImpl;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -143,8 +143,14 @@ return function (App $app) {
         return new TownManagementDaoImpl($c->database);
     };
 
-    $container['fileManagementService'] = function() {
+    $container['fileUploadService'] = function($c) {
         $useLocalFilesystem = getenv('USE_LOCAL_FILESYSTEM') == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
-        return $useLocalFilesystem ? new FileManagementServiceFsImpl() : new FileManagementServiceScpImpl();
+        if ($useLocalFilesystem) {
+            return new FileUploadServiceDefaultImpl();
+        } else {
+            $service = new FileUploadServiceImgurImpl();
+            $service->logger = $c->logger;
+            return $service;
+        }
     };
 };
