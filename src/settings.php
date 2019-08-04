@@ -4,7 +4,7 @@ use Monolog\Logger;
 
 return [
     'settings' => [
-        'displayErrorDetails' => true, // set to false in production
+        'displayErrorDetails' => intval(getenv('DISPLAY_ERROR_DETAILS')) == 1, // set to false in production
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 
         // Renderer settings

@@ -21,6 +21,7 @@ services:
       - "CSV_GENERATION_PATH=/var/www/html/public/downloads"
       - "CSV_HTTP_PATH=/downloads"
       - "USE_LOCAL_FILESYSTEM=1"
+      - "DISPLAY_ERROR_DETAILS=1"
       - "IMGUR_URL=https://api.imgur.com/3/image"
       - "IMGUR_CLIENT_ID=013b73a127469db"
       - "IMGUR_ACCESS_TOKEN=6ae45baa5d6ce314a208231c7857519590f4ab3b"
