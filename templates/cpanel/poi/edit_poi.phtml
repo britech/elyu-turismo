@@ -65,15 +65,22 @@
         <input type="hidden" name="commuterguide" value='<?= $result['commuterguide'];?>'/>
         <div id="commuterGuide">&nbsp;</div>
     </div>
-    <div class="file-field input-field">
-      <div class="btn indigo darken-4">
-        <span>image</span>
-        <input type="file" name="image" accept="image/*">
-        <input type="hidden" name="imagebackend" value="<?= $result['imageName']?>"/>
-      </div>
-      <div class="file-path-wrapper">
-        <input class="file-path validate" type="text">
-      </div>
+    <div class="row">
+        <div class="file-field input-field col l7">
+            <p>Image</p>
+            <div class="btn indigo darken-4">
+                <span>image</span>
+                <input type="file" name="image" accept="image/*">
+                <input type="hidden" name="imagebackend" value="<?= $result['imageName']?>"/>
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+            </div>
+        </div>
+        <div class="input-field col l5">
+            <p>Photo Credit</p>
+            <textarea name="photocredit" class="materialize-textarea validate" required><?= $result['photoCredit'] ?></textarea>
+        </div>
     </div>
     <div style="margin-top: 20px;" class="right">
         <button class="btn waves-effect waves-light" type="submit">update<i class="material-icons left">edit</i></button>

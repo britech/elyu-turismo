@@ -8,6 +8,7 @@
                     <strong>No Image Yet</strong>
                 <?php else : ?>
                     <a href="<?= $imageSrc ?>" target="_blank">Image Source</a>
+                    <span style="display: block;">Photo Credit: <?= strlen(trim($result['photoCredit'])) == 0 ? "Not Available" : $result['photoCredit'] ?></span>
                 <?php endif; ?>
             </td>
         </tr>
