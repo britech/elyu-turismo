@@ -515,6 +515,10 @@ QUERY;
     }
 
     private function createObjectMapArray($entries) {
+        if (is_null($entries)) {
+            return [];
+        }
+        
         return array_map(function($val) {
             list($id, $name) = explode('=', $val);
             return ['id' => $id, 'name' => $name];
