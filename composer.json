@@ -11,7 +11,6 @@
     "require": {
         "php": ">=5.6",
         "monolog/monolog": "^1.17",
-        "phpseclib/phpseclib": "^2.0",
         "slim/flash": "^0.4.0",
         "slim/php-view": "^2.0",
         "slim/slim": "^3.1"
