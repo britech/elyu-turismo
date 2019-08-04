@@ -31,7 +31,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <div class="row" style="margin-top: 10px;">
                 <div class="col s12 l12">
                     <div class="center">
-                        <h5>Discover the beauty of La Union, like you've never seen before.</h5>
+                        <h5 class="flow-text">Discover the beauty of La Union, like you've never seen before.</h5>
                     </div>
                 </div>
             </div>
@@ -40,16 +40,13 @@ use gov\pglu\tourism\util\ApplicationConstants;
                     <?php if (count($places) == 0) : ?>
                         <div class="center">
                             <img src="/images/no_records.png" class="responsive-img" />
-                            <h6 class="center">Oops! It seems there are no places yet declared. Try again later or check out this <a href="/explore">site</a></h6>
+                            <h6 class="center flow-text">Oops! It seems there are no places yet declared. Try again later or check out this <a href="/explore">site</a></h6>
                         </div>
                     <?php else : ?>
                         <ul class="collection">
                             <?php foreach ($places as $place) : ?>
                                 <li class="collection-item" style="cursor: pointer;" onclick="window.location='/place/<?= $place['id'] ?>'">
-                                    <h5>
-                                        <?= $place['name'] ?>
-                                    </h5>
-                                    <p class="hide-on-small-only"><?= $place['description'] ?></p>
+                                    <h5 class="flow-text"><?= $place['name'] ?></h5>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
