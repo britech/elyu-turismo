@@ -984,4 +984,8 @@ return function (App $app) {
             return $response->withStatus(500, $ex->getMessage());
         }
     });
+
+    $app->get('/about', function(Request $request, Response $response, array $args) use ($container) {
+        return $container->exploreRenderer->render($response, 'about.phtml', $args);
+    });
 };
