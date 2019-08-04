@@ -60,6 +60,7 @@ class PoiManagementDaoImpl implements PoiManagementDao {
             arEnabled,
             displayable,
             imageName,
+            photoCredit,
             GROUP_CONCAT(DISTINCT(CONCAT(classification.id, '=', classification.name)) SEPARATOR '|') as classifications,
             GROUP_CONCAT(DISTINCT(CONCAT(tag.id, '=', tag.name)) SEPARATOR '|') as topicTags
         FROM placeofinterest poi
@@ -111,7 +112,8 @@ QUERY;
                 longitude=:longitude,
                 descriptionwysiwyg=:descriptionwysiwyg,
                 commuterguidewysiwyg=:commuterguidewysiwyg,
-                imageName=:imagename
+                imageName=:imagename,
+                photoCredit=:photocredit
             WHERE id=:id
 QUERY;
 
@@ -472,6 +474,7 @@ QUERY;
             arEnabled,
             displayable,
             imageName,
+            photoCredit,
             GROUP_CONCAT(DISTINCT(CONCAT(classification.id, '=', classification.name)) SEPARATOR '|') as classifications,
             GROUP_CONCAT(DISTINCT(CONCAT(tag.id, '=', tag.name)) SEPARATOR '|') as topicTags
         FROM placeofinterest poi
