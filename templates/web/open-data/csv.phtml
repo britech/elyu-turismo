@@ -7,8 +7,9 @@
     <h5 style="margin-bottom: 30px;">Other Reports</h5>
 
     <form action="/open-data/csv" method="post" style="margin-top: 20px;">
+        <input type="hidden" id="poiListBackend" value='<?= $poiListBackend ?>' />
         <div class="row">
-            <div class="input-field col l6">
+            <div class="input-field col l6 s12">
                 <p>Report Type</p>
                 <select name="reportType">
                     <?php foreach ($reportTypes as $id => $reportName) : ?>
@@ -16,26 +17,38 @@
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="input-field col l6">
+            <div class="input-field col l6 hide-on-med-and-down">
                 <p class="tooltip" data-position="top" data-tooltip="Use this option to filter the places of interest you want in your report">Places of Interest</p>
-                <div id="poi"></div>
+                <div class="poi"></div>
                 <input type="hidden" name="places" />
-                <input type="hidden" id="poiListBackend" value='<?= $poiListBackend ?>' />
             </div>
         </div>
         <div class="row">
-            <div class="input-field col l6">
+            <div class="input-field col s12 hide-on-large-only">
+                <p class="tooltip" data-position="top" data-tooltip="Use this option to filter the places of interest you want in your report">Places of Interest</p>
+                <div class="poi"></div>
+                <input type="hidden" name="places" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col l6 s12">
                 <p>Start date</p>
                 <input type="text" class="datepicker" name="startDate">
-                <button class="btn waves-effect waves-light" type="submit" name="action">Generate Report<i class="material-icons right">cloud_download</i></button>
             </div>
-            <div class="input-field col l6">
+            <div class="input-field col l6 hide-on-med-and-down">
                 <p>End date</p>
                 <input type="text" class="datepicker" name="endDate">
             </div>
         </div>
-
-        
+        <div class="row">
+            <div class="input-field col s12 hide-on-large-only">
+                <p>End date</p>
+                <input type="text" class="datepicker" name="endDate">
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Generate Report<i class="material-icons right">cloud_download</i></button>
+        </div>
     </form>
 </div>
 
@@ -51,7 +64,7 @@
             format: 'yyyy-mm-dd'
         });
 
-        $("#poi").chips({
+        $(".poi").chips({
             placeholder: 'Place of Interest',
             secondaryPlaceholder: 'Place of Interest',
             autocompleteOptions: {

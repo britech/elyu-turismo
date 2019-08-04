@@ -10,52 +10,30 @@
     </head>
 
     <body>
-        <div class="container hide-on-med-and-down">
-            <nav class="indigo darken-4">
-                <div class="nav-wrapper">
+        <div class="navbar-fixed">
+            <nav class="blue darken-4">
+                <div class="nav-wrapper blue darken-4 container">
                     <a href="/open-data" class="brand-logo center">Open Data</a>
-                    <ul id="nav-mobile" class="right">
-                        <li><a href="/">Tourism Homepage</a></li>
+                    <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="/">Home</a></li>
                     </ul>
                 </div>
             </nav>
-            
+        </div>
+        <ul class="sidenav" id="mobile-menu">
+            <li class="flow-text"><a href="/">Home</a></li>
+        </ul>
+        <div class="container">
             <?= $content ?>
-
-            <footer class="page-footer grey">
-                <div class="container">
-                    <div class="row">
-                        <div class="col l6 s12">
-                            <h5 class="white-text">Footer Content</h5>
-                            <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-                        </div>
-                        <div class="col l4 offset-l2 s12">
-                            <h5 class="white-text">Links</h5>
-                            <ul>
-                                <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                                <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                                <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                                <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-copyright">
-                    <div class="container">
-                        &copy; <?php echo date('Y') ?> Copyright
-                        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-                    </div>
-                </div>
-            </footer>
         </div>
-        <div class="container hide-on-large-only">
-            <div class="row" style="margin-top: 20px;">
-                <div class="center">
-                    <i class="material-icons center large">mobile_off</i>
-                    <p>Oops! You are attempting to view a site that is not compatible for mobile and tablet devices.</p>
-                </div>
-            </div>
-        </div>
+        <?php include_once __DIR__."../../../cpanel/footer.phtml";?>
     </body>
+
+    <script>
+        $(document).ready(function() {
+            $('.sidenav').sidenav();
+        });
+    </script>
 
 </html>
