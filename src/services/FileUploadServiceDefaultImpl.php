@@ -2,13 +2,12 @@
 
 namespace gov\pglu\tourism\service;
 
-use gov\pglu\tourism\service\FileManagementService;
+use gov\pglu\tourism\service\FileUploadService;
 
+class FileUploadServiceDefaultImpl implements FileUploadService {
 
-class FileManagementServiceFsImpl implements FileManagementService {
-
-    public function uploadFile(array $contents) {
-        list('file' => $file, 'opts' => $opts) = $contents;
+    public function uploadFile(array $fileDescriptor) {
+        list('file' => $file, 'opts' => $opts) = $fileDescriptor;
 
         if ($file->getError() !== UPLOAD_ERR_OK) {
             return null;
@@ -23,9 +22,5 @@ class FileManagementServiceFsImpl implements FileManagementService {
         $file->moveTo("{$directory}/{$filename}");
 
         return $filename;
-    }
-
-    public function downloadFile(array $contents) {
-        return;   
     }
 }
