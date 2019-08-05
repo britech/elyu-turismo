@@ -23,9 +23,7 @@ services:
       - "USE_LOCAL_FILESYSTEM=1"
       - "DISPLAY_ERROR_DETAILS=1"
       - "IMGUR_URL=https://api.imgur.com/3/image"
-      - "IMGUR_CLIENT_ID=013b73a127469db"
-      - "IMGUR_ACCESS_TOKEN=6ae45baa5d6ce314a208231c7857519590f4ab3b"
-      - "IMGURL_REFRESH_TOKEN=4b3cdc2d7208afa04ea1f81a92446c2a8b266b3e"
+      - "IMGUR_CLIENT_ID=96e1640a3a2bded"
     ports:
       - '80:80'
     links:
