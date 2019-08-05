@@ -785,7 +785,8 @@ return function (App $app) {
             foreach($towns as $town) {
                 $result = array_filter($summaryResult, function($val) use ($town) {
                     list('town' => $resultTown) = $val;
-                    return strcasecmp(trim($town), trim($resultTown)) == 0;
+                    $this->logger->debug(strcasecmp($town, $resultTown));
+                    return strcasecmp($town, $resultTown) == 0;
                 });
                 $this->logger->debug(json_encode($summaryResult));
                 $this->logger->debug(json_encode($result));
