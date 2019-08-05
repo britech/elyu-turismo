@@ -17,6 +17,7 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
         
         list('name' => $name) = $fileDescriptor;
         list('IMGUR_URL' => $url, 'IMGUR_ACCESS_TOKEN' => $token) = getenv();
+        $this->logger->debug("URL => {$url}");
         
         $curl = curl_init();
         curl_setopt_array($curl, [
