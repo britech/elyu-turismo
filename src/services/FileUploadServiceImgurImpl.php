@@ -14,7 +14,6 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
 
     public function uploadFile(array $fileDescriptor) {
         list('file' => $file, 'name' => $name) = $fileDescriptor;
-        $this->logger->debug(json_encode($file));
         $image = self::convertImageToBase64(strval($file->getStream()));
 
         list('IMGUR_URL' => $url, 'IMGUR_ACCESS_TOKEN' => $token) = getenv();
