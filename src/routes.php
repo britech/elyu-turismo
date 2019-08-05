@@ -787,7 +787,9 @@ return function (App $app) {
                     list('town' => $resultTown) = $val;
                     return strcasecmp($town, $resultTown) == 0;
                 });
-                $count = count($result) == 0 ? 0 : intval($result[0]['visitorCount']);
+                list($row) = $result;
+                list('visitorCount' => $visitorCount) = $row;
+                $count = is_null($visitorCount) ? 0 : intval($visitorCount);
                 $inputData = array_merge($inputData, [$count]);
                 $max += $count;
             }
