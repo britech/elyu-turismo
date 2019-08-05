@@ -13,10 +13,11 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
     private $logger;
 
     public function uploadFile(array $fileDescriptor) {
-        list('file' => $file, 'name' => $name) = $fileDescriptor;
-        $image = self::convertImageToBase64(strval($file->getStream()));
-
-        list('IMGUR_URL' => $url, 'IMGUR_ACCESS_TOKEN' => $token) = getenv();
+        list('image' => $image) = json_decode(parent::uploadFile($fileDescriptor), true);
+        $file = self::convertImageToBase64($image);
+        
+        list('name' => $name) = $fileDescriptor;
+        list('IMGUR_URL' => $url, 'IMGUR_CLIENT_ID' => $clientId) = getenv();
         
         $curl = curl_init();
         curl_setopt_array($curl, [
@@ -29,10 +30,10 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => [
-                'image' => $image,
+                'image' => $file,
                 'title' => $name
             ],
-            CURLOPT_HTTPHEADER => ["Authorization: Bearer {$token}"]
+            CURLOPT_HTTPHEADER => ["Authorization: Client-ID {$clientId}"]
         ]);
 
         $response = curl_exec($curl);
@@ -55,7 +56,11 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
     }
 
     private static function convertImageToBase64($file) {
-        return base64_encode($file);
+        list('UPLOAD_PATH' => $uploadDirectory) = getenv();
+
+        $uploadedFile = "{$uploadDirectory}/{$file}";
+        $image = file_get_contents($uploadedFile);
+        return base64_encode($image);
     }
 
     public function __set($name, $value) {

@@ -24,8 +24,6 @@ services:
       - "DISPLAY_ERROR_DETAILS=1"
       - "IMGUR_URL=https://api.imgur.com/3/image"
       - "IMGUR_CLIENT_ID=96e1640a3a2bded"
-      - "IMGUR_ACCESS_TOKEN=50b571ca8f030db6f033cd81210e9a0f4c1aa176"
-      - "IMGUR_REFRESH_TOKEN=b7d6382c5993fc28a6d1540c429933d9fbfa2f1c"
     ports:
       - '80:80'
     links:
