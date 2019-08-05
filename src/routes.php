@@ -784,12 +784,10 @@ return function (App $app) {
             $summaryResult = $container->openDataDao->summarizeVisitors();
             foreach($towns as $town) {
                 $result = array_filter($summaryResult, function($val) use ($town) {
-                    $this->logger->debug("Town: {$town}");
                     list('town' => $resultTown) = $val;
-                    $this->logger->debug("Current Town: {$resultTown}");
-                    $this->logger->debug(strcasecmp($town, $resultTown));
                     return strcasecmp($town, $resultTown) == 0;
                 });
+                $this->logger->debug("{$town}=>".json_encode($result));
                 list($row) = $result;
                 list('visitorCount' => $visitorCount) = $row;
                 $count = is_null($visitorCount) ? 0 : intval($visitorCount);
