@@ -146,7 +146,9 @@ return function (App $app) {
     $container['fileUploadService'] = function($c) {
         $useLocalFilesystem = getenv('USE_LOCAL_FILESYSTEM') == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
         if ($useLocalFilesystem) {
-            return new FileUploadServiceDefaultImpl();
+            $service = new FileUploadServiceDefaultImpl();
+            $service->logger = $c->logger;
+            return $service;
         } else {
             $service = new FileUploadServiceImgurImpl();
             $service->logger = $c->logger;
