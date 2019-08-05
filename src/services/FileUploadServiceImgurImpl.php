@@ -13,9 +13,11 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
     private $logger;
 
     public function uploadFile(array $fileDescriptor) {
-        list('file' => $file, 'name' => $name) = $fileDescriptor;
+        list('name' => $name) = $fileDescriptor;
+        list('image' => $file) = $_FILES;
+        list('name' => $name, 'tmp_name' => $rawFile) = $file;
         $this->logger->debug(json_encode($file));
-        $image = self::convertImageToBase64(strval($file->getStream()));
+        $image = self::convertImageToBase64($rawFile);
 
         list('IMGUR_URL' => $url, 'IMGUR_ACCESS_TOKEN' => $token) = getenv();
         
@@ -56,7 +58,7 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
     }
 
     private static function convertImageToBase64($file) {
-        return base64_encode($file);
+        return base64_encode(file_get_contents($file));
     }
 
     public function __set($name, $value) {
