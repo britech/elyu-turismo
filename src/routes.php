@@ -555,7 +555,7 @@ return function (App $app) {
         ]);
         return $container->townRenderer->render($response, 'town/index.phtml', $args);
     })->setName('town-landing');
-    
+
     $app->get('/cpanel/town/{town}/products', function(Request $request, Response $response, array $args) use ($container) {
         list('town' => $rawTownInput) = $args;
         $town = ucwords(implode(' ', explode('_', $rawTownInput)));
@@ -662,6 +662,10 @@ return function (App $app) {
     });
 
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
+        return $container->webRenderer->render($response, 'index.phtml', $args);
+    });
+
+    $app->get('/home', function(Request $request, Response $response, array $args) use ($container) {
         $topDestinations = [];
         $towns = [];
         foreach(ApplicationUtils::TOURISM_CIRCUITS as $tourismCircuit => $townList) {
@@ -691,7 +695,7 @@ return function (App $app) {
             'maxCount' => $max
         ]);
 
-        return $container->webRenderer->render($response, 'index.phtml', $args);
+        return $container->webRenderer->render($response, 'home.phtml', $args);
     });
 
     $app->get('/explore', function(Request $request, Response $response, array $args) use ($container) {
