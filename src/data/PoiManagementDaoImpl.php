@@ -64,10 +64,10 @@ class PoiManagementDaoImpl implements PoiManagementDao {
             GROUP_CONCAT(DISTINCT(CONCAT(classification.id, '=', classification.name)) SEPARATOR '|') as classifications,
             GROUP_CONCAT(DISTINCT(CONCAT(tag.id, '=', tag.name)) SEPARATOR '|') as topicTags
         FROM placeofinterest poi
-            JOIN poiclassification poic ON poic.placeofinterest = poi.id
-            JOIN classification classification ON classification.id = poic.classification
-            JOIN poitag poit ON poit.placeofinterest = poi.id
-            JOIN topictag tag ON tag.id = poit.tag
+            LEFT JOIN poiclassification poic ON poic.placeofinterest = poi.id
+            LEFT JOIN classification classification ON classification.id = poic.classification
+            LEFT JOIN poitag poit ON poit.placeofinterest = poi.id
+            LEFT JOIN topictag tag ON tag.id = poit.tag
         WHERE poi.id = :id
 QUERY;
 
@@ -478,10 +478,10 @@ QUERY;
             GROUP_CONCAT(DISTINCT(CONCAT(classification.id, '=', classification.name)) SEPARATOR '|') as classifications,
             GROUP_CONCAT(DISTINCT(CONCAT(tag.id, '=', tag.name)) SEPARATOR '|') as topicTags
         FROM placeofinterest poi
-            JOIN poiclassification poic ON poic.placeofinterest = poi.id
-            JOIN classification classification ON classification.id = poic.classification
-            JOIN poitag poit ON poit.placeofinterest = poi.id
-            JOIN topictag tag ON tag.id = poit.tag
+            LEFT JOIN poiclassification poic ON poic.placeofinterest = poi.id
+            LEFT JOIN classification classification ON classification.id = poic.classification
+            LEFT JOIN poitag poit ON poit.placeofinterest = poi.id
+            LEFT JOIN topictag tag ON tag.id = poit.tag
         WHERE MATCH(poi.name) AGAINST (:name)
 QUERY;
 
