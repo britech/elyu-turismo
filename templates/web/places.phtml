@@ -31,20 +31,7 @@
 <div class="row">
     <div class="col s12 m12 l12">
         <h3 class="flow-text">Points of Interest</h3>
-        <?php if (count($points) == 0) : ?>
-            <div class="card-panel red lighten-2">
-                <strong class="flow-text white-text">No Available Data</strong>
-            </div>
-        <?php else : ?>
-            <ul class="collection">
-                <?php foreach ($points as $point) : ?>
-                    <li class="collection-item" style="cursor: pointer;">
-                        <h5 class="flow-text"><?= $point['name'] ?></h5>
-                        <a class="flow-text" target="_blank" href="https://www.google.com/maps/search/?api=1&query=<?= "{$point['latitude']},{$point['longitude']}" ?>">View on Google Maps</a>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
+        <a href="https://www.google.com/maps/search/?api=1&query=<?= implode('+', explode(' ', $town)).",+La+Union" ?>" class="flow-text" style="display: block" target="_blank">View in Google Maps</a>
     </div>
 </div>
 <div class="row">
