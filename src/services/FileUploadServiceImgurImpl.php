@@ -44,8 +44,11 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
             return null;
         } else {
             $jsonResponse = json_decode($response, true);
+            $this->logger->debug(json_encode($jsonResponse));
             list('data' => $data) = $jsonResponse;
+            $this->logger->debug(json_encode($data));
             list('link' => $link) = $data;
+            $this->logger->debug(json_encode($link));
             return $link;
         }
     }
