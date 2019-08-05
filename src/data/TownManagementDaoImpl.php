@@ -14,71 +14,7 @@ class TownManagementDaoImpl implements TownManagementDao {
     public function __construct(\PDO $pdo) {
         $this->pdo = $pdo;
     }
-
-    public function addPoi(array $map) {
-        try {
-            $this->pdo->beginTransaction();
-            
-            $statement = $this->pdo->prepare("INSERT INTO pointofinterest(name, latitude, longitude, town) VALUES(:name, :latitude, :longitude, :town)");
-            $statement->execute($map);
-
-            $this->pdo->commit();
-        } catch (\PDOException $ex) {
-            $this->pdo->rollBack();
-            throw $ex;
-        }
-    }
-
-    public function getPoi($id) {
-        try {
-            $statement = $this->pdo->prepare('SELECT * from pointofinterest WHERE id=:id');
-            $statement->execute(['id' => $id]);
-
-            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
-            return count($result) == 0 ? null : $result[0];
-        } catch (\PDOException $ex) {
-            throw $ex;
-        }
-    }
-
-    public function updatePoi(array $map) {
-        try {
-            $this->pdo->beginTransaction();
-            
-            $statement = $this->pdo->prepare("UPDATE pointofinterest SET name=:name, latitude=:latitude, longitude=:longitude, town=:town, enabled=:enabled WHERE id=:id");
-            $statement->execute($map);
-
-            $this->pdo->commit();
-        } catch (\PDOException $ex) {
-            $this->pdo->rollBack();
-            throw $ex;
-        }
-    }
-
-    public function removePoi($id) {
-        try {
-            $this->pdo->beginTransaction();
-            
-            $statement = $this->pdo->prepare("DELETE FROM pointofinterest WHERE id=:id");
-            $statement->execute(['id' => $id]);
-
-            $this->pdo->commit();
-        } catch (\PDOException $ex) {
-            $this->pdo->rollBack();
-            throw $ex;
-        }
-    }
-
-    public function listPoi($town) {
-        try {
-            $statement = $this->pdo->prepare("SELECT * FROM pointofinterest WHERE town=:town");
-            $statement->execute(['town' => $town]);
-            return $statement->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $ex) {
-            throw $ex;
-        }
-    }
-
+    
     public function addProduct(array $map) {
         try {
             $this->pdo->beginTransaction();
