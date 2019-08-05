@@ -787,6 +787,8 @@ return function (App $app) {
                     list('town' => $resultTown) = $val;
                     return strcasecmp($town, $resultTown) == 0;
                 });
+                $this->logger->debug(json_encode($summaryResult));
+                $this->logger->debug(json_encode($result));
                 list($row) = $result;
                 list('visitorCount' => $visitorCount) = $row;
                 $count = is_null($visitorCount) ? 0 : intval($visitorCount);
