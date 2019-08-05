@@ -60,4 +60,14 @@ final class ApplicationUtils {
             }
         }
     }
+
+    public static function getVisitorCountByTown(array $inputArray, $town) {
+        foreach($inputArray as $input) {
+            list('town' => $inputTown, 'visitorCount' => $count) = $input;
+            if (strcasecmp($town, $inputTown) == 0) {
+                return $count;
+            }
+        }
+        return 0;
+    }
 }

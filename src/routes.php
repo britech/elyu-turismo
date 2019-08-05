@@ -783,14 +783,7 @@ return function (App $app) {
             
             $summaryResult = $container->openDataDao->summarizeVisitors();
             foreach($towns as $town) {
-                $result = array_filter($summaryResult, function($val) use ($town) {
-                    list('town' => $resultTown) = $val;
-                    return strcasecmp($town, $resultTown) == 0;
-                });
-                $this->logger->debug("{$town}=>".json_encode($result));
-                list($row) = $result;
-                list('visitorCount' => $visitorCount) = $row;
-                $count = is_null($visitorCount) ? 0 : intval($visitorCount);
+                $count = ApplicationUtils::getVisitorCountByTown($summaryResult, $town);
                 $inputData = array_merge($inputData, [$count]);
                 $max += $count;
             }
