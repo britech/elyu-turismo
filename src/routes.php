@@ -784,7 +784,9 @@ return function (App $app) {
             $summaryResult = $container->openDataDao->summarizeVisitors();
             foreach($towns as $town) {
                 $result = array_filter($summaryResult, function($val) use ($town) {
+                    $this->logger->debug("Current Town => {$town}");
                     list('town' => $resultTown) = $val;
+                    $this->logger->debug("Town => {$resultTown}");
                     return strcasecmp($town, $resultTown) == 0;
                 });
                 $this->logger->debug(json_encode($summaryResult));
