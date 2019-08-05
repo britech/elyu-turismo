@@ -138,8 +138,7 @@ return function (App $app) {
                 return $response->withRedirect($container->router->pathFor('poi-list'));
             } else {
                 list('imageName' => $imageName) = $result;
-                list('image' => $image) = json_decode($imageName, true);
-                $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$image}" : $image;
+                $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$imageName}" : $imageName;
 
                 $args = array_merge($args, [
                     'id' => $id, 
@@ -878,8 +877,7 @@ return function (App $app) {
             $container->openDataDao->captureVisit($id);
 
             list('imageName' => $imageName) = $poi;
-            list('image' => $image) = json_decode($imageName, true);
-            $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$image}" : $image;
+            $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$imageName}" : $imageName;
             
             $args = array_merge($args, [
                 'poi' => $poi,
