@@ -10,8 +10,6 @@ use gov\pglu\tourism\service\FileUploadServiceDefaultImpl;
  */
 class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
 
-    private $logger;
-
     public function uploadFile(array $fileDescriptor) {
         $file = self::convertImageToBase64(parent::uploadFile($fileDescriptor));
         
@@ -59,13 +57,5 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
         $uploadedFile = "{$uploadDirectory}/{$file}";
         $image = file_get_contents($uploadedFile);
         return base64_encode($image);
-    }
-
-    public function __set($name, $value) {
-        $this->$name = $value;
-    }
-
-    public function __get($name) {
-        return $this->$name;
     }
 }
