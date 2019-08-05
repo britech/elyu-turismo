@@ -21,8 +21,6 @@ class FileUploadServiceDefaultImpl implements FileUploadService {
         $filename = sprintf('image_%s_%s.%0.8s', $basename, $id, $extension);
         $file->moveTo("{$directory}/{$filename}");
 
-        return json_encode([
-            'image' => $filename
-        ]);
+        return $filename;
     }
 }

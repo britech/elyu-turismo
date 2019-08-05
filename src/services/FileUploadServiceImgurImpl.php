@@ -13,11 +13,11 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
     private $logger;
 
     public function uploadFile(array $fileDescriptor) {
-        list('image' => $image) = json_decode(parent::uploadFile($fileDescriptor), true);
-        $file = self::convertImageToBase64($image);
+        $file = self::convertImageToBase64(parent::uploadFile($fileDescriptor));
         
         list('name' => $name) = $fileDescriptor;
-        list('IMGUR_URL' => $url, 'IMGUR_CLIENT_ID' => $clientId) = getenv();
+        list('IMGUR_URL' => $url, 'IMGUR_ACCESS_TOKEN' => $token) = getenv();
+        $this->logger->debug("URL => {$url}");
         
         $curl = curl_init();
         curl_setopt_array($curl, [
@@ -33,7 +33,7 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
                 'image' => $file,
                 'title' => $name
             ],
-            CURLOPT_HTTPHEADER => ["Authorization: Client-ID {$clientId}"]
+            CURLOPT_HTTPHEADER => ["Authorization: Bearer {$token}"]
         ]);
 
         $response = curl_exec($curl);
@@ -45,13 +45,12 @@ class FileUploadServiceImgurImpl extends FileUploadServiceDefaultImpl {
             return null;
         } else {
             $jsonResponse = json_decode($response, true);
-            $this->logger->debug('Result'. json_encode($jsonResponse));
+            $this->logger->debug(json_encode($jsonResponse));
             list('data' => $data) = $jsonResponse;
-            list('link' => $link, 'deletehash' => $imageId) = $data;
-            return json_encode([
-                'image' => $link,
-                'id' => $imageId
-            ]);
+            $this->logger->debug(json_encode($data));
+            list('link' => $link) = $data;
+            $this->logger->debug(json_encode($link));
+            return $link;
         }
     }
 
