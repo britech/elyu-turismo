@@ -12,6 +12,35 @@ return function (App $app) {
     $logger = $container->logger;
 
     $app->get('/cpanel', function(Request $request, Response $response, array $args) use ($container) {
+        $topDestinations = [];
+        $towns = [];
+        foreach(ApplicationUtils::TOURISM_CIRCUITS as $tourismCircuit => $townList) {
+            $towns = array_merge($towns, $townList);
+        }
+        sort($towns, SORT_NATURAL);
+
+        $inputData = [];
+        $max = 0;
+        try {
+            $topDestinations = array_merge([], $container->openDataDao->listTop5Destinations());
+            
+            $summaryResult = $container->openDataDao->summarizeVisitors();
+            foreach($towns as $town) {
+                $count = ApplicationUtils::getVisitorCountByTown($summaryResult, $town);
+                $inputData = array_merge($inputData, [$count]);
+                $max += $count;
+            }
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+        }
+
+        $args = array_merge($args, [
+            'topDestinations' => $topDestinations,
+            'towns' => json_encode($towns),
+            'inputData' => json_encode($inputData),
+            'maxCount' => $max
+        ]);
+        
         return $container->cpanelRenderer->render($response, 'index.phtml', $args);
     });
 
