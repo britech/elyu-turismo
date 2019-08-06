@@ -46,19 +46,25 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <div class="row valign-wrapper" style="margin-top: 10px;">
                 <div class="col l6 hide-on-med-and-down">
                     <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet"/>
-                    <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($poi['photoCredit'])) == 0 ? "Not Available" : $poi['photoCredit']; ?></span>
+                    <?php if(strlen(trim($imageSrc)) > 0): ?>
+                        <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($poi['photoCredit'])) == 0 ? "Not Available" : $poi['photoCredit']; ?></span>
+                    <?php endif;?>
                 </div>
                 <div class="col l6 hide-on-med-and-down">
                     <h3><?= $poi['name'] ?></h3>
                     <table>
                         <tbody>
                             <tr>
-                                <th class="flow-text">Location</th>
+                                <th class="flow-text" style="width: 25%">Location</th>
                                 <td class="flow-text">
                                     <?= $poi['address']; ?>
                                     <br />
                                     <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<?= "{$poi['latitude']},{$poi['longitude']}" ?>">View on Google Maps</a>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th class="flow-text">Level of Development</th>
+                                <td class="flow-text"><?= $poi['developmentLevel']; ?></td>
                             </tr>
                             <tr>
                                 <th class="flow-text">Classifications</th>
@@ -137,7 +143,9 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 <div class="col s12 hide-on-large-only">
                     <div class="center">
                         <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet"/>
-                        <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($poi['photoCredit'])) == 0 ? "Not Available" : $poi['photoCredit']; ?></span>
+                        <?php if(strlen(trim($imageSrc)) > 0): ?>
+                            <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($poi['photoCredit'])) == 0 ? "Not Available" : $poi['photoCredit']; ?></span>
+                        <?php endif;?>
                         <h3><?= $poi['name'] ?></h3>
                     </div>
                     <table>
@@ -149,6 +157,10 @@ use gov\pglu\tourism\util\ApplicationConstants;
                                     <br />
                                     <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<?= "{$poi['latitude']},{$poi['longitude']}" ?>">View on Google Maps</a>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th class="flow-text">Level of Development</th>
+                                <td class="flow-text"><?= $poi['developmentLevel']; ?></td>
                             </tr>
                             <tr>
                                 <th class="flow-text">Classifications</th>

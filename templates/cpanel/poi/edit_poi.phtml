@@ -6,12 +6,12 @@
         <input name="name" type="text" class="validate" required value="<?= $result['name'] ?>" />
         <label>Name</label>
     </div>
+    <div class="input-field">
+        <textarea name="address" class="materialize-textarea validate" required><?= $result['address'] ?></textarea>
+        <label>Address</label>
+    </div>
     <div class="row">
-        <div class="input-field col l8">
-            <textarea name="address" class="materialize-textarea validate" required><?= $result['address'] ?></textarea>
-            <label>Address</label>
-        </div>
-        <div class="input-field col l4">
+        <div class="input-field col l6">
             <select name="town" class="validate" required>
                 <option value="" disabled selected>Select town</option>
                 <?php foreach ($circuits as $circuit => $towns) : ?>
@@ -27,6 +27,19 @@
                 <?php endforeach; ?>
             </select>
             <label>Tourism Ciruit and Town</label>
+        </div>
+        <div class="input-field col l6">
+            <select name="developmentlevel" class="validate" required>
+                <option value="" disabled selected>Select Level of Development</option>
+                <?php foreach($developmentLevels as $developmentLevel): ?>
+                    <?php if (strcasecmp($result['developmentLevel'], $developmentLevel) == 0): ?>
+                        <option value="<?= $developmentLevel?>" selected><?= $developmentLevel ?></option>
+                    <?php else : ?>
+                            <option value="<?= $developmentLevel ?>"><?= $developmentLevel ?></option>
+                    <?php endif;?>
+                <?php endforeach;?>
+            </select>
+            <label>Level of Development</label>
         </div>
     </div>
     <div class="row">
