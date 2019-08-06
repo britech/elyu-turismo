@@ -179,8 +179,9 @@ return function (App $app) {
                     'tags' => ApplicationUtils::convertArrayToAutocompleteData($tags, 'name'),
                     'tagsBackend' => json_encode($tags),
                     'assignedTags' => ApplicationUtils::convertArrayToTagData($assignedTags, 'name'),
-                    'assignedTagsBackend' => ApplicationUtils::convertTagResultToBackendReferences($assignedTags, 'id'), ]
-                );
+                    'assignedTagsBackend' => ApplicationUtils::convertTagResultToBackendReferences($assignedTags, 'id'), 
+                    'developmentLevels' => ApplicationConstants::DEVELOPMENT_TYPES   
+                ]);
                 return $renderer->render($response, 'poi/edit_poi.phtml', $args);
             }
         } catch (\PDOException $ex) {

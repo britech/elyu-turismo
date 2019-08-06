@@ -11,4 +11,8 @@ final class ApplicationConstants {
     ];
     CONST INDICATOR_NUMERIC_TRUE = 1;
     CONST INDICATOR_NUMERIC_FALSE = 0;
+    const DEVELOPMENT_TYPES = [
+        'Major Destination', 
+        'On-going Development'
+    ];
 }
