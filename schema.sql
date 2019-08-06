@@ -46,6 +46,7 @@ CREATE TABLE `placeofinterest` (
   `town` varchar(100) NOT NULL,
   `latitude` varchar(100) NOT NULL,
   `longitude` varchar(100) NOT NULL,
+  `developmentLevel` varchar(100) DEFAULT NULL,
   `arenabled` tinyint(4) DEFAULT '0',
   `displayable` tinyint(4) DEFAULT '0',
   `descriptionWysiwyg` json DEFAULT NULL,
