@@ -582,13 +582,21 @@ return function (App $app) {
 
     $app->post('/cpanel/product', function(Request $request, Response $response, array $args) use ($container) {
         $body = $request->getParsedBody();
-        list('town' => $rawTown, 'name' => $name, 'arLink' => $arLink) = $body;
+        list('town' => $rawTown, 'name' => $name, 'arLink' => $arLink, 'description' => $description, 'imageBackend' => $imageBackend) = $body;
         $town = strtolower(implode('_', explode(' ', $rawTown)));
         try {
+            list('image' => $image) = $request->getUploadedFiles();
+            $filename = $container->fileUploadService->uploadFile([
+                'file' => $image,
+                'name' => $name
+            ]);
+
             $container->townManagementService->addProduct([
                 'name' => $name,
                 'town' => $rawTown,
-                'arLink' => $arLink
+                'arLink' => $arLink,
+                'description' => $description,
+                'imageFile' => is_null($filename) ? $imageBackend : $filename
             ]);
         } catch (\Exception $ex) {
             $container->logger->error($ex);
@@ -608,7 +616,7 @@ return function (App $app) {
                 'products' => $container->townManagementService->listProducts($town),
                 'town' => $town,
                 'url' => "/cpanel/product/{$id}",
-                'type' => 'product',
+                'type' => 'products',
                 'product' => $product,
                 'updateMode' => true,
                 'townLink' => strtolower(implode('_', explode(' ', $town))),
@@ -622,14 +630,23 @@ return function (App $app) {
 
     $app->post('/cpanel/product/{id}', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
-        list('town' => $rawTown, 'name' => $name, 'arLink' => $arLink, 'enabled' => $enabled) = $request->getParsedBody();
+        list('town' => $rawTown, 'name' => $name, 'arLink' => $arLink, 'enabled' => $enabled, 
+            'description' => $description, 'imageBackend' => $imageBackend) = $request->getParsedBody();
         try {
+            list('image' => $image) = $request->getUploadedFiles();
+            $filename = $container->fileUploadService->uploadFile([
+                'file' => $image,
+                'name' => $name
+            ]);
+
             $container->townManagementService->updateProduct([
                 'name' => $name,
                 'town' => $rawTown,
                 'arLink' => $arLink,
                 'id' => $id,
-                'enabled' => strcasecmp('on', $enabled) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE
+                'enabled' => strcasecmp('on', $enabled) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE,
+                'description' => $description,
+                'imageFile' => is_null($filename) ? $imageBackend : $filename
             ]);
         } catch (\Exception $ex) {
             $container->logger->error($ex);
