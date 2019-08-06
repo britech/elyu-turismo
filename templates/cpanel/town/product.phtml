@@ -3,7 +3,7 @@
 use gov\pglu\tourism\util\ApplicationConstants;
 ?>
 <h6 style="margin-bottom: 30px;">Manage Products</h6>
-<form method="post" action="<?= $url ?>">
+<form method="post" action="<?= $url ?>" enctype="multipart/form-data">
     <div class="input-field">
         <input name="town" type="text" value="<?= $town ?>" readonly />
         <label>Town</label>
@@ -13,8 +13,22 @@ use gov\pglu\tourism\util\ApplicationConstants;
         <label>Name</label>
     </div>
     <div class="input-field">
-        <input name="arLink" type="text" class="validate" required value="<?= $product['arLink'] ?>" />
+        <textarea name="description" class="materialize-textarea"><?= $product['description']?></textarea>
+        <label>Description</label>
+    </div>
+    <div class="input-field">
+        <input name="arLink" type="text" class="validate" value="<?= $product['arLink'] ?>" />
         <label>Augmented Reality Link</label>
+    </div>
+    <div class="file-field input-field">
+        <div class="btn indigo darken-4">
+            <span>image</span>
+            <input type="file" name="image" accept="image/*">
+            <input type="hidden" name="imageBackend" value="<?= $result['imageFile'] ?>" />
+        </div>
+        <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+        </div>
     </div>
     <?php if ($updateMode) : ?>
         <div style="margin-bottom: 20px;">
@@ -36,22 +50,32 @@ use gov\pglu\tourism\util\ApplicationConstants;
 <table class="striped">
     <thead>
         <tr>
-            <th style="width: 45%">Name</th>
-            <th style="width: 25%">Link</th>
-            <th style="width: 15%">Status</th>
-            <th>Actions</th>
+            <th style="width: 20%">Name</th>
+            <th style="width: 25%">Description</th>
+            <th style="width: 15%">AR Link</th>
+            <th style="width: 15%">Image</th>
+            <th style="width: 10%">Status</th>
+            <th style="width: 15%">Actions</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($products as $product) : ?>
             <tr>
                 <td><?= $product['name'] ?></td>
+                <td><?= $product['description'] ?></td>
                 <td>
                     <?php if (strlen(trim($product['arLink'])) == 0) : ?>
                         <strong>No Link Yet</strong>
                     <?php else : ?>
-                        <a href="<?= $product['arLink'] ?>" target="_blank">AR Link</a>
+                        <a href="<?= $product['arLink'] ?>" target="_blank">Link</a>
                     <?php endif; ?>
+                </td>
+                <td>
+                    <?php if(strlen(trim($product['imageFile'])) == 0): ?>
+                        <strong>No Link Yet</strong>
+                    <?php else: ?>
+                        <a href="<?= getenv('USE_LOCAL_FILESYSTEM') == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$product['imageFile']}" : $product['imageFile']; ?>" target="_blank">Image</a>
+                    <?php endif;?>
                 </td>
                 <td><?= $product['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Active" : "Disabled" ?></td>
                 <td>

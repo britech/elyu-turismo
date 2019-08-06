@@ -1,3 +1,7 @@
+<?php
+
+use gov\pglu\tourism\util\ApplicationConstants;
+?>
 <div class="row" style="margin-top: 10px;">
     <div class="col s12 l12">
         <div class="center">
@@ -31,7 +35,7 @@
 <div class="row">
     <div class="col s12 m12 l12">
         <h3 class="flow-text">Points of Interest</h3>
-        <a href="https://www.google.com/maps/search/?api=1&query=<?= implode('+', explode(' ', $town)).",+La+Union" ?>" class="flow-text" style="display: block" target="_blank">View in Google Maps</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=<?= implode('+', explode(' ', $town)) . ",+La+Union" ?>" class="flow-text" style="display: block" target="_blank">View in Google Maps</a>
     </div>
 </div>
 <div class="row">
@@ -45,8 +49,11 @@
             <ul class="collection">
                 <?php foreach ($products as $product) : ?>
                     <li class="collection-item" style="cursor: pointer;">
-                        <h5 class="flow-text"><?= $product['name'] ?></h5>
-                        <a class="flow-text" target="_blank" href="<?= $product['arLink'] ?>">View AR</a>
+                        <h5 class="flow-text"><?= $product['name']; ?></h5>
+                        <p class="flow-text"><?= $product['description']; ?></p>
+                        <a class="flow-text" target="_blank" href="<?= $product['arLink'] ?>">View in AR</a>
+                        &nbsp;&vert;&nbsp;
+                        <a class="flow-text" target="_blank" href="<?= getenv('USE_LOCAL_FILESYSTEM') == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$product['imageFile']}" : $product['imageFile'] ?>">View Image</a>
                     </li>
                 <?php endforeach; ?>
             </ul>
