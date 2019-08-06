@@ -200,6 +200,8 @@ CREATE TABLE `townproduct` (
   `name` varchar(500) CHARACTER SET latin1 NOT NULL,
   `arLink` varchar(1000) CHARACTER SET latin1 DEFAULT NULL,
   `town` varchar(100) NOT NULL,
+  `description` text,
+  `imageFile` text,
   `enabled` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `townproduct_town_IDX` (`town`) USING BTREE
