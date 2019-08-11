@@ -2,12 +2,21 @@
 <table class="striped" style="margin-top: 10px;">
     <tbody>
         <tr>
-            <th style="width: 25%">Image</th>
+            <th style="width: 25%">Images</th>
             <td>
                 <?php if (is_null($result['imageName']) || strlen($result['imageName']) == 0) : ?>
                     <strong>No Image Yet</strong>
                 <?php else : ?>
-                    <a href="<?= $imageSrc ?>" target="_blank">Image Source</a>
+                    <ul class="browser-default">
+                        <li>
+                            <a href="<?= $imageSrc; ?>" target="_blank" class="collection-item">Primary Image</a>
+                        </li>
+                        <?php $count = 1; foreach ($images as $image) : ?>
+                            <li>
+                                <a href="<?= $image ?>" target="_blank" class="collection-item"><?= "Image #{$count}"?></a>
+                            </li>
+                        <?php $count++; endforeach; ?>
+                    </ul>
                     <span style="display: block;">Photo Credit: <?= strlen(trim($result['photoCredit'])) == 0 ? "Not Available" : $result['photoCredit'] ?></span>
                 <?php endif; ?>
             </td>
@@ -36,7 +45,7 @@
         </tr>
         <tr>
             <th>Level of Development</th>
-            <td><?= $result['developmentLevel']?></td>
+            <td><?= $result['developmentLevel'] ?></td>
         </tr>
         <tr>
             <th>Classifications</th>

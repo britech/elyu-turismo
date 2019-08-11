@@ -214,13 +214,22 @@ return function (App $app) {
                 $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Place of interest not found!');
                 return $response->withRedirect($container->router->pathFor('poi-list'));
             } else {
-                list('imageName' => $imageName) = $result;
-                $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$imageName}" : $imageName;
+                list('imageName' => $imageName, 'images' => $images) = $result;
+                $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
+                $imageSrc = $useLocalFileSystem ? "/uploads/{$imageName}" : $imageName;
+                
+                $imageList = [];
+                foreach(explode(',', $images) as $imageEntry) {
+                    $file = $useLocalFileSystem ? "/uploads/{$imageEntry}" : $imageEntry;
+                    $imageList = array_merge($imageList, [$file]);
+                }
+                $container->logger->debug(json_encode($imageList));
 
                 $args = array_merge($args, [
                     'id' => $id, 
                     'result' => $result, 
-                    'imageSrc' => $imageSrc
+                    'imageSrc' => $imageSrc,
+                    'images' => $imageList
                 ]);
                 return $renderer->render($response, 'poi/info.phtml', $args);
             }
