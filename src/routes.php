@@ -157,24 +157,50 @@ return function (App $app) {
         return $container->cpanelRenderer->render($response, 'poi/create.phtml', $args);
     });
 
-    $app->post('/api/poi/add', function(Request $request, Response $response, array $args) use ($logger, $container) {
+    $app->post('/cpanel/poi/add', function(Request $request, Response $response, array $args) use ($container) {
         $body = $request->getParsedBody();
-        $inputs = array_filter($body, function($key) {
-            return strcasecmp('topicTags', $key) !=0 && strcasecmp('classifications', $key) != 0;
+        list('name' => $name, 'classifications' => $rawClassifications, 'topicTags' => $rawTags, 
+            'schedules' => $rawSchedules, 'fees' => $rawFees, 'contacts' => $rawContacts) = $body;
+
+        list('primaryImage' => $image, 'images' => $images) = $request->getUploadedFiles();
+        $primaryImage = $container->fileUploadService->uploadFile([
+            'file' => $image,
+            'name' => $name
+        ]);
+        $imageList = [];
+        foreach($images as $imageEntry) {
+            $imageFile = $container->fileUploadService->uploadFile([
+                'file' => $imageEntry,
+                'name' => $name
+            ]);
+            $imageList = array_merge($imageList, [$imageFile]);
+        }
+
+        $input = array_filter($body, function($key) {
+            return strcasecmp('topicTags', $key) !=0 && strcasecmp('classifications', $key) != 0
+                && strcasecmp('schedules', $key) != 0 && strcasecmp('fees', $key) != 0
+                && strcasecmp('contacts', $key) != 0 && strcasecmp('openingTime', $key) != 0 
+                && strcasecmp('closingTime', $key) != 0 && strcasecmp('scheduleNotes', $key) != 0
+                && strcasecmp('feeDescription', $key) != 0 && strcasecmp('amount', $key) != 0
+                && strcasecmp('contactValue', $key) != 0 && strcasecmp('action', $key) != 0;
         }, ARRAY_FILTER_USE_KEY);
-
-        list('topicTags' => $rawTags, 'classifications' => $rawClassifications, 'name' => $name) = $body;
-        $inputs = array_merge($inputs, array('topicTags' => json_decode($rawTags)));
-        $inputs = array_merge($inputs, array('classifications' => json_decode($rawClassifications)));
-
-        $logger->debug("Inserting the entry => ".json_encode($inputs));
         
+
         try {
-            $id = $container->poiManagementService->createPoi($inputs);
-            return $response->withJson(array('message' => "Tourist Location {$name} has been added", 'id' => $id), 200);
-        } catch (\PDOException $ex) {
-            $logger->error($ex);
-            return $response->withJson(array('message' => "Tourist Location {$name} cannot be added. Try again later"), 500);
+            $poi = $container->poiManagementService->createPoi(array_merge($input, [
+                'imageName' => $primaryImage,
+                'images' => implode(',', $imageList),
+                'classifications' => json_decode($rawClassifications, true),
+                'topicTags' => json_decode($rawTags, true),
+                'schedules' => json_decode($rawSchedules, true),
+                'fees' => json_decode($rawFees, true),
+                'contacts' => json_decode($rawContacts, true)
+            ]));
+            return $response->withRedirect($container->router->pathFor('poi-info', ['id' => $poi]));
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            $container->flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
         }
     });
 
