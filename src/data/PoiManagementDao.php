@@ -54,4 +54,12 @@ interface PoiManagementDao {
     public function removeFee($id);
     
     public function removePoi($id);
+
+    public function addContact(array $map);
+
+    public function listContacts($poi);
+
+    public function updateContact(array $map);
+
+    public function removeContact($id);
 }

@@ -645,6 +645,50 @@ QUERY;
         }
     }
 
+    public function addContact(array $map) {
+        try {
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare('INSERT INTO poicontact(placeofinterest, type, value) VALUES(:placeOfInterest, :type, :value)');
+            $statement->execute($map);
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
+    public function listContacts($poi) {
+        try {
+            $statement = $this->pdo->prepare('SELECT * FROM poicontact WHERE placeofinterest=:poi');
+            $statement->execute(['poi' => $poi]);
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
+    public function updateContact(array $map) {
+        try {
+            $this->pdo->beginTransaction();
+            $this->pdo->prepare('UPDATE poicontact SET type=:type, value=:value, enabled:enabled WHERE id=:id')->execute($map);
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
+    public function removeContact($id) {
+        try {
+            $this->pdo->beginTransaction();
+            $this->pdo->prepare('DELETE FROM poicontact WHERE id=:id')->execute(['id' => $id]);
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         if (is_null($entries)) {
             return [];
