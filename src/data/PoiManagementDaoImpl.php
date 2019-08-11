@@ -21,21 +21,138 @@ class PoiManagementDaoImpl implements PoiManagementDao {
 
     public function createPoi(array $map) {
         $poiSetupInput = array_filter($map, function($key) { 
-            return strcasecmp('topicTags', $key) != 0 && strcasecmp('classifications', $key) != 0 && strcasecmp('action', $key) != 0;  }, ARRAY_FILTER_USE_KEY);
+            return strcasecmp('topicTags', $key) != 0 && strcasecmp('classifications', $key) != 0 
+                && strcasecmp('schedules', $key) != 0 && strcasecmp('fees', $key) != 0
+                && strcasecmp('contacts', $key) != 0 && strcasecmp('action', $key) != 0;  
+            }, ARRAY_FILTER_USE_KEY);
         
-        list('topicTags' => $topicTags, 'classifications' => $classifications) = $map;
+        list('topicTags' => $topicTags, 
+            'classifications' => $classifications,
+            'schedules' => $schedules,
+            'fees' => $fees,
+            'contacts' => $contacts) = $map;
 
         try {
             $this->pdo->beginTransaction();
-            $this->pdo->prepare('INSERT INTO placeofinterest(name, address, town, latitude, longitude) VALUE(:name, :address, :town, :latitude, :longitude)')->execute($poiSetupInput);
+            $poiInsertQuery = <<< QUERY
+                INSERT INTO placeofinterest(name, 
+                    address, 
+                    town, 
+                    latitude, 
+                    longitude,
+                    developmentLevel,
+                    description,
+                    descriptionWysiwyg,
+                    commuterGuide,
+                    commuterGuideWysiwyg,
+                    imageName,
+                    images,
+                    photoCredit)
+                    VALUES (
+                        :name,
+                        :address,
+                        :town,
+                        :latitude,
+                        :longitude,
+                        :developmentLevel,
+                        :description,
+                        :descriptionWysiwyg,
+                        :commuterGuide,
+                        :commuterGuideWysiwyg,
+                        :imageName,
+                        :images,
+                        :photoCredit
+                    )
+QUERY;
+            $this->pdo->prepare($poiInsertQuery)->execute($poiSetupInput);
 
             $poiId = $this->pdo->lastInsertId();
             foreach($classifications as $classification) {
-                $this->pdo->prepare('INSERT INTO poiclassification VALUES(:placeOfInterest, :classification)')->execute(array('placeOfInterest' => $poiId, 'classification' => $classification));
+                $this->pdo->prepare('INSERT INTO poiclassification VALUES(:placeOfInterest, :classification)')->execute([
+                    'placeOfInterest' => $poiId, 
+                    'classification' => $classification
+                ]);
             }
 
             foreach($topicTags as $topicTag) {
-                $this->pdo->prepare('INSERT INTO poitag VALUES(:placeOfInterest, :topicTag)')->execute(array('placeOfInterest' => $poiId, 'topicTag' => $topicTag));
+                $this->pdo->prepare('INSERT INTO poitag VALUES(:placeOfInterest, :topicTag)')->execute([
+                    'placeOfInterest' => $poiId, 
+                    'topicTag' => $topicTag
+                ]);
+            }
+
+            foreach($schedules as $schedule) {
+                list('open7d' => $openEveryday, 
+                    'open24h' => $openAllDay, 
+                    'days' => $days, 
+                    'date' => $rawDate, 
+                    'notes' => $notes,
+                    'openingTime' => $rawOpeningTime,
+                    'closingTime' => $rawClosingTime) = $schedule;
+
+
+                $date = strlen(trim($rawDate)) == 0 || is_null($rawDate) ? null : date('Y-m-d', strtotime($rawDate));
+                $openingTime = strlen(trim($rawOpeningTime)) == 0 || is_null($rawOpeningTime) ? null : date('H:i:s', strtotime($rawOpeningTime));
+                $closingTime = strlen(trim($rawClosingTime)) == 0 || is_null($rawClosingTime) ? null : date('H:i:s', strtotime($rawClosingTime));
+
+                if ($openEveryday && $openAllDay) {
+                    $this->pdo->prepare('INSERT INTO poischedule(placeofinterest, open7d, open24h, notes) VALUES(:placeOfInterest, :openEveryday, :openAllDay, :notes)')->execute([
+                        'placeOfInterest' => $poiId,
+                        'openEveryday' => 1,
+                        'openAllDay' => 1,
+                        'notes' => $notes
+                    ]);
+                } else if ($openEveryday) {
+                    $this->pdo->prepare('INSERT INTO poischedule(placeofinterest, open7d, openingTime, closingTime, notes) VALUES(:placeOfInterest, :openEveryday, :openingTime, :closingTime, :notes)')->execute([
+                        'placeOfInterest' => $poiId,
+                        'openEveryday' => 1,
+                        'openingTime' => $openingTime,
+                        'closingTime' => $closingTime,
+                        'notes' => $notes
+                    ]);
+                }
+                if (!is_null($date)) {
+                    $this->pdo->prepare('INSERT INTO poischedule(placeofinterest, date, open24h, openingTime, closingTime, notes) VALUES(:placeOfInterest, :date, :openAllDay, :openingTime, :closingTime, :notes)')->execute([
+                        'placeOfInterest' => $poiId,
+                        'date' => $date,
+                        'openAllDay' => $openAllDay ? 1 : 0,
+                        'openingTime' => $openingTime,
+                        'closingTime' => $closingTime,
+                        'notes' => $notes
+                    ]);
+                }
+
+                if (!$openEveryday) {
+                    foreach($days as $day) {
+                        $this->pdo->prepare('INSERT INTO poischedule(placeofinterest, day, open24h, openingTime, closingTime, notes) VALUES(:placeOfInterest, :day, :openAllDay, :openingTime, :closingTime, :notes)')->execute([
+                            'placeOfInterest' => $poiId,
+                            'day' => $day,
+                            'openAllDay' => $openAllDay ? 1 : 0,
+                            'openingTime' => $openingTime,
+                            'closingTime' => $closingTime,
+                            'notes' => $notes
+                        ]);
+                    }
+                }   
+            }
+
+            foreach($fees as $fee) {
+                list('description' => $description, 'amount' => $amount, 'freePrice' => $freePrice) = $fee;
+                $this->pdo->prepare('INSERT INTO poifee(placeofinterest, description, amount, freePrice) VALUES(:placeOfInterest, :description, :amount, :freePrice)')->execute([
+                    'placeOfInterest' => $poiId,
+                    'description' => $description,
+                    'amount' => strlen(trim($amount)) == 0 ? null : $amount,
+                    'freePrice' => $freePrice ? 1 : 0
+                ]);
+            }
+
+            foreach($contacts as $contact) {
+                list('type' => $type, 'value' => $value) = $contact;
+                $this->pdo->prepare('INSERT INTO poicontact(placeofinterest, type, value) VALUES(:placeOfInterest, :type, :value)')->execute([
+                    'placeOfInterest' => $poiId,
+                    'type' => $type,
+                    'value' => $value
+                ]);
             }
 
             $this->pdo->commit();
