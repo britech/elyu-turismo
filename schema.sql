@@ -216,6 +216,9 @@ CREATE TABLE `townproduct` (
   `arLink` varchar(1000) CHARACTER SET latin1 DEFAULT NULL,
   `town` varchar(100) NOT NULL,
   `enabled` tinyint(4) DEFAULT '1',
+  `description` text,
+  `imageFile` text,
+  `images` text,
   PRIMARY KEY (`id`),
   KEY `townproduct_town_IDX` (`town`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
