@@ -177,6 +177,7 @@ QUERY;
             arEnabled,
             displayable,
             imageName,
+            images,
             photoCredit,
             developmentLevel,
             GROUP_CONCAT(DISTINCT(CONCAT(classification.id, '=', classification.name)) SEPARATOR '|') as classifications,
@@ -232,7 +233,8 @@ QUERY;
                 commuterguidewysiwyg=:commuterguidewysiwyg,
                 imageName=:imagename,
                 photoCredit=:photocredit,
-                developmentLevel=:developmentlevel
+                developmentLevel=:developmentlevel,
+                images=:images
             WHERE id=:id
 QUERY;
 
