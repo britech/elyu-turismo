@@ -516,6 +516,18 @@ QUERY;
         }
     }
 
+    public function removePoi($id) {
+        try {
+            $this->pdo->beginTransaction();
+            $statement = $this->pdo->prepare('DELETE FROM placeofinterest WHERE id=:id');
+            $statement->execute(['id' => $id]);
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
     private function createObjectMapArray($entries) {
         if (is_null($entries)) {
             return [];
