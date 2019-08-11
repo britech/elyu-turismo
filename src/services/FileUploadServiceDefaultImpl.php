@@ -13,7 +13,7 @@ class FileUploadServiceDefaultImpl implements FileUploadService {
     private $logger;
 
     public function uploadFile(array $fileDescriptor) {
-        list('file' => $file, 'opts' => $opts) = $fileDescriptor;
+        list('file' => $file) = $fileDescriptor;
         $this->logger->debug('File => '. json_encode($file));
 
         if ($file->getError() !== UPLOAD_ERR_OK) {
@@ -21,12 +21,11 @@ class FileUploadServiceDefaultImpl implements FileUploadService {
             return null;
         }
 
-        list('id' => $id) = $opts;
         list('UPLOAD_PATH' => $directory) = getenv();
 
         $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
         $basename = bin2hex(random_bytes(8));
-        $filename = sprintf('image_%s_%s.%0.8s', $basename, $id, $extension);
+        $filename = sprintf('image_%s.%0.8s', $basename, $extension);
         $file->moveTo("{$directory}/{$filename}");
 
         return $filename;
