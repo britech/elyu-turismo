@@ -17,4 +17,10 @@ interface OpenDataDao {
     public function countVisitorsByDestination($destination);
 
     public function summarizeVisitorsByTown($town);
+
+    public function listDestinations(array $map);
+
+    public function trackDownload(array $map);
+
+    public function listDownloads(array $criteria);
 }

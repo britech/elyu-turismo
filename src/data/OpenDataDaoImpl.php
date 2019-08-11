@@ -171,6 +171,66 @@ QUERY;
         }
     }
 
+    public function listDestinations(array $map) {
+        list('limit' => $limit, 'town' => $town) = $map;
+
+        $limitClause = is_null($limit) ? "" : "LIMIT {$limit}";
+        $whereClause = is_null($town) ? "" : "WHERE town=:town";
+
+        $query = <<< QUERY
+            SELECT id, name, arEnabled, COUNT(id) as visitorCount
+            FROM poivisit poiv
+            JOIN placeofinterest poi ON poiv.placeofinterest = poi.id
+            {$whereClause}
+            GROUP BY id
+            ORDER BY visitorCount DESC
+            {$limitClause}
+QUERY;
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute($map);
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
+    public function trackDownload(array $map) {
+        try {
+            $this->pdo->beginTransaction();
+            $this->pdo->prepare('INSERT INTO opendatalog(email, reportType) VALUES(:email, :reportType)')->execute($map);
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
+    public function listDownloads(array $criteria) {
+        list('byType' => $byType, 'byUser' => $byUser) = $criteria;
+
+        $groupClause = $byType ? "GROUP BY reportType" : ($byUser ? "GROUP BY email" : "GROUP BY reportType");
+        $limitClause = $byUser ? "LIMIT 5": "";
+
+        $query = <<< QUERY
+            SELECT email,
+                reportType,
+                COUNT(reportType) as downloadCount
+            FROM opendatalog
+            {$groupClause}
+            ORDER BY downloadCount DESC
+            {$limitClause}
+QUERY;
+
+        try {
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $ex) {
+            throw $ex;
+        }
+    }
+
     public function __set($name, $value) {
         $this->$name = $value;
     }
