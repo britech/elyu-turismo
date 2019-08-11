@@ -1,29 +1,24 @@
 <h2>Tourist Destinations</h2>
 <a class="waves-light btn-large" href="/cpanel/poi/add"><i class="material-icons left">create</i>Create</a>
-<table>
-    <thead>
-        <tr>
-            <th style="width: 35%;">Name</th>
-            <th style="width: 30%;">Location</th>
-            <th style="width: 15%;">Tourism Circuit</th>
-            <th style="width: 20%;">Town</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($poiList as $poi) : ?>
-            <tr>
-                <td><a href="<?= "/cpanel/poi/{$poi['id']}" ?>"><?= $poi['name'] ?></a></td>
-                <td>
-                    <?= $poi['address'] ?>
-                    <br />
-                    Coordinates: <?= $poi['latitude'] ?>, <?= $poi['longitude'] ?>
-                </td>
-                <td><?= $poi['tourismCircuit'] ?></td>
-                <td><?= $poi['town'] ?></td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+<div id="poiList" style="margin-top: 50px; margin-bottom: 20px;"></div>
+<div id="removeDestination" class="modal">
+    <div class="modal-content">
+        <h4>Do you want to remove this Tourist Destination ?</h4>
+        <table>
+            <tbody>
+                <tr>
+                    <th style="width: 25%">Name</th>
+                    <td id="name"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="poi" />
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn green lighten-1">No</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn red lighten-1" id="continueRemove">Yes</a>
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function() {
         <?php if (isset($notification)) : ?>
@@ -31,5 +26,115 @@
                 html: '<?= $notification ?>'
             });
         <?php endif; ?>
+
+        $("#poiList").jqxDataTable({
+            width: '100%',
+            theme: 'material',
+            filterable: true,
+            selectionMode: 'singleRow',
+            pageable: true,
+            pagerMode: 'advanced',
+            pageSizeOptions: ['10', '50', '100'],
+            altRows: true,
+            sortable: true,
+            source: new $.jqx.dataAdapter({
+                localData: <?= $poiList ?>,
+                dataType: 'array',
+                dataFields: [{
+                        name: 'id',
+                        type: 'number'
+                    },
+                    {
+                        name: 'name',
+                        type: 'string'
+                    },
+                    {
+                        name: 'address',
+                        type: 'string'
+                    },
+                    {
+                        name: 'tourismCircuit',
+                        type: 'string'
+                    },
+                    {
+                        name: 'latitude',
+                        type: 'string'
+                    },
+                    {
+                        name: 'longitude',
+                        type: 'string'
+                    },
+                    {
+                        name: 'town',
+                        type: 'string'
+                    }
+                ]
+            }),
+            groups: ['tourismCircuit'],
+            groupsRenderer: function(value, rowData, level) {
+                return `<span style="font-weight: bold; display: block; text-align: center;">${value}</span>`;
+            },
+            columns: [{
+                text: 'Name',
+                dataField: 'name',
+                width: '35%',
+                align: 'center',
+                cellsRenderer: function(row, column, value, rowData) {
+                    return `<span id="entry-${rowData.id}">${rowData.name}</span>`
+                }
+            }, {
+                text: 'Location',
+                width: '35%',
+                align: 'center',
+                cellsRenderer: function(row, column, value, rowData) {
+                    return `Complete Address: ${rowData.address}<br/>Coordinates: ${rowData.latitude}, ${rowData.longitude}`
+                }
+            }, {
+                text: 'Tourism Circuit',
+                dataField: 'tourismCircuit',
+                hidden: true
+            }, {
+                text: 'Town',
+                dataField: 'town',
+                width: '15%',
+                align: 'center',
+            }, {
+                text: 'Actions',
+                filterable: false,
+                sortable: false,
+                cellsAlign: 'center',
+                align: 'center',
+                cellsRenderer: function(row, column, value, rowData) {
+                    return `<a href="/cpanel/poi/${rowData.id}">View</a>&nbsp;|&nbsp;<a href="#" id="remove-${rowData.id}" data-target="removeDestination" class="modal-trigger">Remove</a>`
+                }
+            }]
+        });
+
+        $('.modal').modal({
+            onOpenStart: function(e, t) {
+                let entries = t.id.split("-");
+                let id = entries[1];
+                let name = $(`#entry-${id}`).html();
+                $("#name").html(name);
+                $("#poi").val(id);
+            }
+        });
+
+        $("#continueRemove").click(function() {
+            let id = $("#poi").val();
+            let name = $("#name").html();
+            $.ajax({
+                url: `/api/poi/${id}`,
+                method: 'DELETE',
+                data: {
+                    name: name
+                }
+            }).done(function(data, status, xhr) {
+                window.location = `/cpanel/poi`
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                window.location = `/cpanel/poi`
+            });
+        });
     });
 </script>
