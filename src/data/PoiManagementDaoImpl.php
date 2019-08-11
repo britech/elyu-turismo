@@ -672,7 +672,7 @@ QUERY;
     public function updateContact(array $map) {
         try {
             $this->pdo->beginTransaction();
-            $this->pdo->prepare('UPDATE poicontact SET type=:type, value=:value, enabled:enabled WHERE id=:id')->execute($map);
+            $this->pdo->prepare('UPDATE poicontact SET type=:type, value=:value, enabled=:enabled WHERE id=:id')->execute($map);
             $this->pdo->commit();
         } catch (\PDOException $ex) {
             $this->pdo->rollBack();
@@ -687,6 +687,17 @@ QUERY;
             $this->pdo->commit();
         } catch (\PDOException $ex) {
             $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
+    public function getContact($id) {
+        try {
+            $statement = $this->pdo->prepare('SELECT * FROM poicontact WHERE id=:id');
+            $statement->execute(['id' => $id]);
+            $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            return count($rows) == 0 ? null : $rows[0];
+        } catch (\PDOException $ex) {
             throw $ex;
         }
     }
