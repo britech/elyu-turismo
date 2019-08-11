@@ -15,4 +15,10 @@ final class ApplicationConstants {
         'Major Destination', 
         'On-going Development'
     ];
+    const CONTACT_TYPES = [
+        'Phone',
+        'Email',
+        'Web',
+        'Online Messaging'
+    ];
 }
