@@ -104,7 +104,7 @@
                         </div>
                         <div class="input-field">
                             <p>Photo Credits</p>
-                            <textarea name="photocredit" class="materialize-textarea validate" required><?= $result['photoCredit'] ?></textarea>
+                            <textarea name="photoCredit" class="materialize-textarea validate" required></textarea>
                         </div>
                         <div class="step-actions">
                             <button class="waves-effect waves-dark btn light-green next-step">Next</button>
@@ -417,7 +417,7 @@
             placeholder: 'Compose a descriptive text about the location...'
         });
         descriptionField.on('text-change', function() {
-            $("[name=descriptionwysiwyg]").val(JSON.stringify(descriptionField.getContents()));
+            $("[name=descriptionWysiwyg]").val(JSON.stringify(descriptionField.getContents()));
             $("[name=description]").val(descriptionField.getText().trim());
         });
 
@@ -459,8 +459,8 @@
             placeholder: 'Compose a guide on how to travel on this location...'
         });
         commuterGuideField.on('text-change', function() {
-            $("[name=commuterguidewysiwyg]").val(JSON.stringify(commuterGuideField.getContents()));
-            $("[name=commuterguide]").val(commuterGuideField.getText().trim());
+            $("[name=commuterGuideWysiwyg]").val(JSON.stringify(commuterGuideField.getContents()));
+            $("[name=commuterGuide]").val(commuterGuideField.getText().trim());
         });
 
         $("[name=open7d]").change(function() {
@@ -614,7 +614,7 @@
 
                 if (currentStepId === 'basic-step') {
                     return $("[name=classifications]").val().length > 0 && $("[name=topicTags]").val().length > 0 &&
-                        $("[name=description]").val().length > 0 && $("[name=commuterguide]").val().length > 0
+                        $("[name=description]").val().length > 0 && $("[name=commuterGuide]").val().length > 0
                 } else if (currentStepId === 'schedules-step') {
                     return schedules.length > 0;
                 } else if (currentStepId === 'fees-step') {
