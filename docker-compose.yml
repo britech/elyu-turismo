@@ -11,6 +11,7 @@ services:
       - ./public/downloads:/var/www/html/public/downloads
       - ./public/images:/var/www/html/public/images
       - ./public/uploads:/var/www/html/public/uploads
+      - ./public/assets:/var/www/html/public/assets
       - ./logs:/var/www/html/logs
     environment:
       - "DATABASE_HOST=database"
