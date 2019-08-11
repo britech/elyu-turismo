@@ -1,113 +1,333 @@
-<div class="col l2">
-    &nbsp;
-</div>
+<h2>Declare a Tourist Location</h2>
+<div class="row">
+    <div class="col l12">
+        <form action="/cpanel/poi/add" method="post" enctype="multipart/form-data">
+            <ul class="stepper">
+                <li class="step active">
+                    <div class="step-title waves-effect">Basic Information</div>
+                    <div class="step-content" id="basic-step">
+                        <div class="input-field">
+                            <input name="name" type="text" class="validate" required />
+                            <label>Name</label>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col l8">
+                                <textarea name="address" class="materialize-textarea validate" required></textarea>
+                                <label>Address</label>
+                            </div>
+                            <div class="input-field col l4">
+                                <select name="town" class="validate" required>
+                                    <option value="" disabled selected>Select town</option>
+                                    <?php foreach ($circuits as $circuit => $towns) : ?>
+                                        <optgroup label="<?= $circuit ?>">
+                                            <?php foreach ($towns as $town) : ?>
+                                                <option value="<?= $town ?>"><?= $town ?></option>
+                                            <?php endforeach; ?>
+                                        </optgroup>
+                                    <?php endforeach; ?>
+                                </select>
+                                <label>Tourism Ciruit and Town</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col l6">
+                                <input name="latitude" type="text" class="validate" required />
+                                <label>Latitude</label>
+                            </div>
+                            <div class="input-field col l6">
+                                <input name="longitude" type="text" class="validate" required />
+                                <label>Longitude</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col l4">
+                                <p>Development Level</p>
+                                <select name="developmentLevel" class="validate" required>
+                                    <option value="" disabled selected>Select level of development</option>
+                                    <?php foreach ($developmentLevels as $developmentLevel) : ?>
+                                        <option value="<?= $developmentLevel ?>"><?= $developmentLevel ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="input-field col l4">
+                                <p>Classifications</p>
+                                <div id="tourist-classification"></div>
+                                <input type="hidden" name="classifications" />
+                                <input type="hidden" id="classificationsBackend" value='<?= $classificationsBackend ?>' />
+                            </div>
+                            <div class="input-field col l4">
+                                <p>Topic Tags</p>
+                                <div id="tourist-tags"></div>
+                                <input type="hidden" name="topicTags" />
+                                <input type="hidden" id="tagsBackend" value='<?= $tagsBackend ?>' />
+                            </div>
+                        </div>
+                        <div>
+                            <p>Description</p>
+                            <input type="hidden" name="descriptionwysiwyg" />
+                            <input type="hidden" name="description" />
+                            <div id="description-editor" style="height: 350px;">&nbsp;</div>
+                        </div>
+                        <div>
+                            <p>Commuter's Guide</p>
+                            <input type="hidden" name="commuterguidewysiwyg" />
+                            <input type="hidden" name="commuterguide" />
+                            <div id="commuterGuide" style="height: 350px;">&nbsp;</div>
+                        </div>
+                        <div class="step-actions">
+                            <button class="waves-effect waves-dark btn light-green next-step">Next</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="step">
+                    <div class="step-title waves-effect">Images</div>
+                    <div class="step-content" id="images-step">
+                        <div class="file-field">
+                            <p>Primary Image</p>
+                            <div class="btn indigo darken-4">
+                                <span>image</span>
+                                <input type="file" name="primaryImage" accept="image/*" required>
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                        <div class="file-field">
+                            <p>Image List</p>
+                            <div class="btn indigo darken-4">
+                                <span>image</span>
+                                <input type="file" multiple name="imageList" accept="image/*" required>
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                        <div class="input-field">
+                            <p>Photo Credits</p>
+                            <textarea name="photocredit" class="materialize-textarea validate" required><?= $result['photoCredit'] ?></textarea>
+                        </div>
+                        <div class="step-actions">
+                            <button class="waves-effect waves-dark btn light-green next-step">Next</button>
+                            <button class="waves-effect waves-dark btn light-blue previous-step">Back</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="step">
+                    <div class="step-title waves-effect">Schedules</div>
+                    <div class="step-content" id="schedules-step">
+                        <div class="row">
+                            <div class="col l6">
+                                <div class="input-field">
+                                    <h6>Open Everyday</h6>
+                                    <div class="switch">
+                                        <label>
+                                            No
+                                            <input type="checkbox" name="open7d">
+                                            <span class="lever"></span>
+                                            Yes
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <h6>Available Days</h6>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" name="day[]" value="Monday" />
+                                            <span>Monday</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" name="day[]" value="Tuesday" />
+                                            <span>Tuesday</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" name="day[]" value="Wednesday" />
+                                            <span>Wednesday</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" name="day[]" value="Thursday" />
+                                            <span>Thursday</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" name="day[]" value="Friday" />
+                                            <span>Friday</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" name="day[]" value="Saturday" />
+                                            <span>Saturday</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" name="day[]" value="Sunday" />
+                                            <span>Sunday</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" id="customDate" />
+                                            <span>Specific Date</span>
+                                            <input type="text" class="datepicker" name="date" disabled>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col l6">
+                                <div class="input-field">
+                                    <h6>Open All Day</h6>
+                                    <div class="switch">
+                                        <label>
+                                            No
+                                            <input type="checkbox" name="open24h">
+                                            <span class="lever"></span>
+                                            Yes
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6>Opening Time</h6>
+                                    <input type="text" class="timepicker" name="openingTime">
+                                </div>
+                                <div>
+                                    <h6>Closing Time</h6>
+                                    <input type="text" class="timepicker" name="closingTime">
+                                </div>
+                                <div>
+                                    <h6>Additional Notes</h6>
+                                    <textarea class="materialize-textarea" name="scheduleNotes"></textarea>
+                                </div>
+                                <a class="waves-effect waves-dark btn" id="addSchedule">Add</a>
+                            </div>
+                        </div>
+                        <table class="striped">
+                            <thead>
+                                <th style="width: 30%">Day</th>
+                                <th style="width: 30%">Operating Hours</th>
+                                <th style="width: 20%">Notes</th>
+                                <th style="width: 20%">&nbsp;</th>
+                            </thead>
+                            <tbody id="schedules">
 
-<div class="col l8">
-    <div class="section">
-        <h3>Declare a Tourist Location</h3>
-    </div>
-    <div class="row">
-        <form method="post" class="col l12" name="poiForm">
-            <div class="input-field">
-                <input name="name" type="text" class="validate" required/>
-                <label>Name</label>
-            </div>
-            <div class="row">
-                <div class="input-field col l8">
-                    <textarea name="address" class="materialize-textarea validate" required></textarea>
-                    <label>Address</label>
-                </div>
-                <div class="input-field col l4">
-                    <select name="town" class="validate" required>
-                        <option value="" disabled selected>Select town</option>
-                        <?php foreach($circuits as $circuit => $towns): ?>
-                            <optgroup label="<?=$circuit?>">
-                                <?php foreach($towns as $town): ?>
-                                    <option value="<?=$town?>"><?=$town?></option>
-                                <?php endforeach;?>
-                            </optgroup>
-                        <?php endforeach;?>
-                    </select>
-                    <label>Tourism Ciruit and Town</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col l6">
-                    <input name="latitude" type="text" class="validate" required/>
-                    <label>Latitude</label>
-                </div>
-                <div class="input-field col l6">
-                    <input name="longitude" type="text" class="validate" required/>
-                    <label>Longitude</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col l6">
-                    <p>Classifications</p>
-                    <div id="tourist-classification"></div>
-                    <input type="hidden" name="classifications"/>
-                    <input type="hidden" id="classificationsBackend" value='<?=$classificationsBackend?>'/>
-                </div>
-                <div class="input-field col l6">
-                    <p>Topic Tags</p>
-                    <div id="tourist-tags"></div>
-                    <input type="hidden" name="topicTags"/>
-                    <input type="hidden" id="tagsBackend" value='<?=$tagsBackend?>'/>
-                </div>
-            </div>
-            <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add_location</i></button>
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="schedules" />
+                        <div class="step-actions">
+                            <button class="waves-effect waves-dark btn light-green next-step">Next</button>
+                            <button class="waves-effect waves-dark btn light-blue previous-step">Back</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="step">
+                    <div class="step-title waves-effect">Fees</div>
+                    <div class="step-content" id="fees-step">
+                        <div class="input-field">
+                            <label>Description</label>
+                            <input type="text" name="feeDescription" />
+                        </div>
+                        <div class="row">
+                            <div class="col l3">
+                                <h6>Free Admission</h6>
+                                <div class="switch">
+                                    <label>
+                                        No
+                                        <input type="checkbox" name="freePrice">
+                                        <span class="lever"></span>
+                                        Yes
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col l9">
+                                <div class="input-field">
+                                    <input type="number" name="amount" step=".01" />
+                                    <label>Price</label>
+                                </div>
+                                <a class="waves-effect waves-dark btn" id="addFee">Add</a>
+                            </div>
+                        </div>
+                        <table class="striped">
+                            <thead>
+                                <th style="width: 50%">Description</th>
+                                <th style="width: 30%">Price</th>
+                                <th style="width: 20%">&nbsp;</th>
+                            </thead>
+                            <tbody id="fees">
+
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="fees" />
+                        <div class="step-actions">
+                            <button class="waves-effect waves-dark btn light-green next-step">Next</button>
+                            <button class="waves-effect waves-dark btn light-blue previous-step">Back</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="step">
+                    <div class="step-title waves-effect">Contact Details</div>
+                    <div class="step-content" id="contacts-step">
+                        <div class="row">
+                            <div class="input-field col l4">
+                                <select name="contactType" class="validate">
+                                    <option value="" disabled selected>Select Contact Detail Type</option>
+                                    <?php foreach ($contactTypes as $contactType) : ?>
+                                        <option value="<?= $contactType ?>"><?= $contactType ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <label>Contact Detail Type</label>
+                            </div>
+                            <div class="input-field col l8">
+                                <input type="text" name="contactValue" />
+                                <label>Contact Detail</label>
+                            </div>
+                        </div>
+                        <a class="waves-effect waves-dark btn" id="addContact">Add</a>
+                        <table class="striped">
+                            <thead>
+                                <th style="width: 30%">Type</th>
+                                <th style="width: 50%">Detail</th>
+                                <th style="width: 20%">&nbsp;</th>
+                            </thead>
+                            <tbody id="contacts">
+
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="contacts" />
+                        <div class="step-actions">
+                            <button class="waves-effect waves-dark btn light-green next-step">Next</button>
+                            <button class="waves-effect waves-dark btn light-blue previous-step">Back</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="step">
+                    <div class="step-title waves-effect">Confirmation</div>
+                    <div class="step-content">
+                        <p class="flow-text">Do you want to add this tourist destination? You can go back to the previous steps to change your entries.</p>
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add_location</i></button>
+                    </div>
+                </li>
+            </ul>
         </form>
     </div>
 </div>
 
-<div class="col l2">
-    &nbsp;
-</div>
 
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function() {
         $('select').formSelect();
-
-        $("[name=poiForm]").submit(function() {
-            event.preventDefault();
-            $.ajax({
-                url: '/api/poi/add',
-                method: 'POST',
-                data: {
-                    name: $("[name=name]").val(),
-                    address: $("[name=address]").val(),
-                    town: $("[name=town]").val(),
-                    latitude: $("[name=latitude]").val(),
-                    longitude: $("[name=longitude]").val(),
-                    classifications: $("[name=classifications]").val(),
-                    topicTags: $("[name=topicTags]").val()
-                }
-            }).done(function(data, status, xhr) {
-                console.log(data);
-                M.toast({ 
-                    html: data.message,
-                    displayLength: 500,
-                    completeCallback: function() {
-                        window.location = `/cpanel/poi/${data.id}`
-                    }
-                });
-            }).fail(function(xhr, status, err) {
-                console.error(err);
-                M.toast({ 
-                    html: 'Something went wrong. Try again later',
-                    displayLength: 2000,
-                    completeCallback: function() {
-                        window.location = "/cpanel/poi"
-                    }
-                })
-            });
-        });
 
         $("#tourist-classification").chips({
             placeholder: 'Classification',
             secondaryPlaceholder: 'Classification',
             autocompleteOptions: {
-                data: <?=$classifications?>
+                data: <?= $classifications ?>
             },
             onChipAdd: function(e, chip) {
                 let rawData = $("#classificationsBackend").val();
@@ -135,7 +355,7 @@
             placeholder: 'Topic Tags',
             secondaryPlaceholder: 'Topic Tags',
             autocompleteOptions: {
-                data: <?=$tags?>
+                data: <?= $tags ?>
             },
             onChipAdd: function(e, chip) {
                 let rawData = $("#tagsBackend").val();
@@ -156,6 +376,253 @@
                     tags.push(result[0]);
                 }
                 $("[name=topicTags]").val(JSON.stringify(tags));
+            }
+        })
+
+        var descriptionField = new Quill('#description-editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{
+                        'header': [1, 2, 3, 4, 5, 6, false]
+                    }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote'],
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }],
+                    [{
+                        'script': 'sub'
+                    }, {
+                        'script': 'super'
+                    }],
+                    [{
+                        'indent': '-1'
+                    }, {
+                        'indent': '+1'
+                    }],
+                    [{
+                        'color': []
+                    }, {
+                        'background': []
+                    }],
+                    [{
+                        'align': []
+                    }],
+                    ['link', 'clean']
+                ]
+            },
+            placeholder: 'Compose a descriptive text about the location...'
+        });
+        descriptionField.on('text-change', function() {
+            $("[name=descriptionwysiwyg]").val(JSON.stringify(descriptionField.getContents()));
+            $("[name=description]").val(descriptionField.getText().trim());
+        });
+
+        var commuterGuideField = new Quill('#commuterGuide', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{
+                        'header': [1, 2, 3, 4, 5, 6, false]
+                    }],
+                    ['bold', 'italic', 'underline'],
+                    ['blockquote'],
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }],
+                    [{
+                        'script': 'sub'
+                    }, {
+                        'script': 'super'
+                    }],
+                    [{
+                        'indent': '-1'
+                    }, {
+                        'indent': '+1'
+                    }],
+                    [{
+                        'color': []
+                    }, {
+                        'background': []
+                    }],
+                    [{
+                        'align': []
+                    }],
+                    ['link', 'clean']
+                ]
+            },
+            placeholder: 'Compose a guide on how to travel on this location...'
+        });
+        commuterGuideField.on('text-change', function() {
+            $("[name=commuterguidewysiwyg]").val(JSON.stringify(commuterGuideField.getContents()));
+            $("[name=commuterguide]").val(commuterGuideField.getText().trim());
+        });
+
+        $("[name=open7d]").change(function() {
+            let isChecked = $(this).is(":checked")
+            $("[name*=day]").prop('checked', isChecked).prop('disabled', isChecked);
+            if (isChecked && $("#customDate").is(':checked')) {
+                $("#customDate").prop('checked', !isChecked);
+                $(".datepicker").prop('disabled', true);
+            }
+        });
+
+        $("#customDate").change(function() {
+            let isChecked = $(this).is(":checked")
+            $(".datepicker").prop('disabled', !isChecked);
+            if (isChecked) {
+                $("[name*=day]").prop('checked', !isChecked).prop('disabled', !isChecked);
+                $("[name=open7d]").prop('checked', !isChecked);
+            }
+        })
+
+        $('.datepicker').datepicker({
+            showClearBtn: true,
+            autoClose: true
+        });
+
+        $('.timepicker').timepicker({
+            showClearBtn: true,
+            onSelect: function() {
+                $("[name=open24h]").prop('checked', false);
+            }
+        });
+
+        $("[name=open24h]").change(function() {
+            let isChecked = $(this).is(":checked");
+            $('.timepicker').prop('disabled', isChecked);
+        })
+
+        M.textareaAutoResize($('[name=scheduleNotes]'));
+        let schedules = [];
+        let scheduleId = 1;
+        $("#addSchedule").click(function() {
+            let schedule = {
+                'id': scheduleId,
+                'open7d': $("[name=open7d]").prop('checked'),
+                'open24h': $("[name=open24h]").prop('checked'),
+                'date': $("[name=date]").val(),
+                'openingTime': $("[name=openingTime]").val(),
+                'closingTime': $("[name=closingTime]").val(),
+                'notes': $("[name=scheduleNotes]").val()
+            }
+
+            let days = []
+            for (let entry of $("[name*=day]:checked").get()) {
+                days.push(entry.value);
+            }
+            schedule['days'] = days;
+            schedules.push(schedule);
+            console.log(schedules);
+
+            let dayCell = schedule.open7d ? "Everyday" : (schedule.days.length > 0 ? schedule.days.join('<br/>') : schedule.date);
+            let hourCell = schedule.open24h ? "24 hours" : `${schedule.openingTime} - ${schedule.closingTime}`;
+
+            $("#schedules").append(`<tr id="schedule-${schedule.id}"><td>${dayCell}</td><td>${hourCell}</td><td>${schedule.notes}</td><td class="center"><a class="waves-effect waves-light red lighten-1 btn" id="removeSchedule-${schedule.id}"><i class="material-icons left">delete</i>remove</a></td></tr>`);
+
+            $("[name=schedules]").val(JSON.stringify(schedules));
+            $("[name=open7d]").prop('checked', false);
+            $("[name=open24h]").prop('checked', false);
+            $("[name*=day]").prop('checked', false);
+            $("[name*=day]").prop('disabled', false);
+            $("#customDate").prop('checked', false);
+            $(".datepicker").prop('disabled', true);
+            $(".timepicker").prop('disabled', false);
+            $("[name=scheduleNotes]").val('');
+            $("[name=openingTime]").val('');
+            $("[name=closingTime]").val('');
+            $("[name=date]").val('');
+            scheduleId++;
+        });
+
+        $(document).on('click', "[id^=removeSchedule]", function() {
+            let scheduleId = $(this).prop('id').split('-')[1];
+            $(this).parent().parent().remove();
+            schedules = schedules.filter(schedule => schedule.id != scheduleId);
+            $("[name=schedules]").val(JSON.stringify(schedules));
+        })
+
+        $("[name=freePrice]").change(function() {
+            $("[name=amount]").prop('disabled', $(this).is(':checked'));
+            $("[name=amount]").val(null);
+        });
+        let fees = [];
+        let feeId = 1;
+        $("#addFee").click(function() {
+            let fee = {
+                id: feeId,
+                description: $("[name=feeDescription]").val(),
+                freePrice: $("[name=freePrice]").prop('checked'),
+                amount: $("[name=amount]").val()
+            }
+            fees.push(fee);
+
+            let priceCell = fee.freePrice ? 'Free Admission' : fee.amount
+            $("#fees").append(`<tr id="fee-${fee.id}"><td>${fee.description}</td><td>${priceCell}</td><td class="center"><a class="waves-effect waves-light red lighten-1 btn" id="removeFee-${fee.id}"><i class="material-icons left">delete</i>remove</a></td></tr>`)
+
+            $("[name=fees]").val(JSON.stringify(fees));
+            $("[name=freePrice]").prop('checked', false);
+            $("[name=amount]").val(null);
+            $("[name=amount]").prop('disabled', false);
+            $("[name=feeDescription]").val('');
+            feeId++;
+        });
+
+        $(document).on('click', "[id^=removeFee]", function() {
+            let feeId = $(this).prop('id').split('-')[1];
+            $(this).parent().parent().remove();
+            fees = fees.filter(schedule => schedule.id != feeId);
+            $("[name=fees]").val(JSON.stringify(fees));
+        })
+
+        let contacts = [];
+        let contactId = 1;
+        $("#addContact").click(function() {
+            let contact = {
+                id: contactId,
+                type: $("[name=contactType]").val(),
+                value: $("[name=contactValue]").val()
+            }
+            contacts.push(contact);
+
+            $("#contacts").append(`<tr><td>${contact.type}</td><td>${contact.value}</td><td class="center"><a class="waves-effect waves-light red lighten-1 btn" id="removeContact-${contact.id}"><i class="material-icons left">delete</i>remove</a></td></tr>`)
+
+            $("[name=contacts]").val(JSON.stringify(contacts));
+            $("[name=contactType]").val(null);
+            $("[name=contactValue]").val(null)
+            contactId++;
+        });
+
+        $(document).on('click', "[id^=removeContact]", function() {
+            let contactId = $(this).prop('id').split('-')[1];
+            $(this).parent().parent().remove();
+            contacts = contacts.filter(contact => contact.id != contactId);
+            $("[name=contacts]").val(JSON.stringify(contacts));
+        })
+
+        let stepper = new MStepper(document.querySelector('.stepper'), {
+            validationFunction: function(stepperForm, activeStepContent) {
+                let currentStepId = activeStepContent.id;
+                var inputs = activeStepContent.querySelectorAll('input, textarea, select');
+                for (let i = 0; i < inputs.length; i++)
+                    if (!inputs[i].checkValidity()) return false;
+
+                if (currentStepId === 'basic-step') {
+                    return $("[name=classifications]").val().length > 0 && $("[name=topicTags]").val().length > 0 &&
+                        $("[name=description]").val().length > 0 && $("[name=commuterguide]").val().length > 0
+                } else if (currentStepId === 'schedules-step') {
+                    return schedules.length > 0;
+                } else if (currentStepId === 'fees-step') {
+                    return fees.length > 0;
+                } else if (currentStepId === 'contacts-step') {
+                    return contacts.length > 0;
+                }
+                return true;
             }
         })
     });

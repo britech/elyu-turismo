@@ -145,11 +145,15 @@ return function (App $app) {
         $classifications = $container->classificationService->getClassifications();
         $tags = $container->tagService->getTags();
 
-        $args = array_merge($args, [ 'circuits' => ApplicationUtils::TOURISM_CIRCUITS, 
+        $args = array_merge($args, [ 
+            'circuits' => ApplicationUtils::TOURISM_CIRCUITS, 
             'classifications' => ApplicationUtils::convertArrayToAutocompleteData($classifications, 'name'),
             'classificationsBackend' => json_encode($classifications),
             'tags' => ApplicationUtils::convertArrayToAutocompleteData($tags, 'name'),
-            'tagsBackend' => json_encode($tags) ]);
+            'tagsBackend' => json_encode($tags),
+            'developmentLevels' => ApplicationConstants::DEVELOPMENT_TYPES,
+            'contactTypes' => ApplicationConstants::CONTACT_TYPES
+        ]);
         return $container->cpanelRenderer->render($response, 'poi/create.phtml', $args);
     });
 
