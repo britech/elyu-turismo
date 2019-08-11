@@ -115,7 +115,7 @@ return function (App $app) {
         $flash = $container->flash;
         try {
             $result = $container->poiManagementService->listPoi();
-            $args = array_merge($args, ['poiList' => $result]);
+            $args = array_merge($args, ['poiList' => count($result) == 0 ? '[]' : json_encode($result)]);
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
         }
