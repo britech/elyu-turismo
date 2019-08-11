@@ -12,5 +12,5 @@ interface TownManagementDao {
 
     public function removeProduct($id);
 
-    public function listProducts($town);
+    public function listProducts(array $criteria);
 }

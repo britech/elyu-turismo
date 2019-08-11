@@ -69,10 +69,13 @@ class TownManagementDaoImpl implements TownManagementDao {
         }
     }
 
-    public function listProducts($town) {
+    public function listProducts(array $criteria) {
+        list('town' => $town) = $criteria;
+        $whereClause = strlen(trim($town)) == 0 ? "" : "WHERE town=:town";
+        $params = strlen(trim($town)) == 0 ? [] : ['town' => $town];
         try {
-            $statement = $this->pdo->prepare("SELECT * FROM townproduct WHERE town=:town");
-            $statement->execute(['town' => $town]);
+            $statement = $this->pdo->prepare("SELECT * FROM townproduct {$whereClause}");
+            $statement->execute($params);
             return $statement->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $ex) {
             throw $ex;
