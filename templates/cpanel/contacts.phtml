@@ -1,0 +1,144 @@
+<?php
+
+use gov\pglu\tourism\util\ApplicationConstants;
+?>
+<div class="section">
+    <h5>Manage Contact Details</h5>
+</div>
+<form method="post" action="<?= $url ?>">
+    <div class="row">
+        <div class="input-field col l4">
+            <select name="type" class="validate" required>
+                <option value="" disabled selected>Select Contact Detail Type</option>
+                <?php foreach ($contactTypes as $contactType) : ?>
+                    <?php if (strcasecmp($contact['type'], $contactType) == 0) : ?>
+                        <option value="<?= $contactType ?>" selected><?= $contactType ?></option>
+                    <?php else : ?>
+                        <option value="<?= $contactType ?>"><?= $contactType ?></option>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </select>
+            <label>Contact Detail Type</label>
+        </div>
+        <div class="input-field col l8">
+            <input type="text" name="value" value="<?= $contact['value'] ?>" required />
+            <label>Contact Detail</label>
+
+            <?php if ($updateMode) : ?>
+                <div>
+                    <h6>Enable Contact Detail</h6>
+                    <div class="switch">
+                        <label>
+                            No
+                            <input type="checkbox" name="enabled" <?= $updateMode ? ($contact['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "checked" : "") : "" ?>>
+                            <span class="lever"></span>
+                            Yes
+                        </label>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <input type="hidden" name="poi" value="<?= $poi ?>" />
+    <?php if ($updateMode) : ?>
+        <input type="hidden" name="id" value="<?= $contact['id'] ?>" />
+    <?php endif; ?>
+    <?php if ($updateMode) : ?>
+        <button class="btn waves-effect waves-light blue lighten-1" type="submit" name="action">Update<i class="material-icons left">edit</i></button>
+    <?php else : ?>
+        <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add</i></button>
+    <?php endif; ?>
+</form>
+<table class="striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <td colspan="3"><?= $name ?></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="width: 20%">Type</th>
+            <th style="width: 55%">Contact Detail</th>
+            <th style="width: 10%">Enabled</th>
+            <th style="width: 15%">Actions</th>
+        </tr>
+        <?php foreach ($contacts as $contact) : ?>
+            <?php list('id' => $id) = $contact; ?>
+            <tr>
+                <td id="type-<?= $id ?>"><?= $contact['type'] ?></td>
+                <td id="value-<?= $id ?>"><?= $contact['value'] ?></td>
+                <td id="enabled-<?= $id ?>"><?= $contact['enabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Yes" : "No" ?></td>
+                <td>
+                    <a href="<?= "/cpanel/contact/{$contact['id']}" ?>"><i class="material-icons left">edit</i></a>
+                    <a id="remove-<?= $contact['id'] ?>" href="#" data-target="removeContact" class="modal-trigger"><i class="material-icons left">delete</i></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<div id="removeContact" class="modal">
+    <div class="modal-content">
+        <h4>Do you want to remove this contact detail ?</h4>
+        <table>
+            <tbody>
+                <tr>
+                    <th style="width: 25%">Type</th>
+                    <td id="typeRow"></td>
+                </tr>
+                <tr>
+                    <th>Contact Detail</th>
+                    <td id="detailRow"></td>
+                </tr>
+                <tr>
+                    <th>Enabled</th>
+                    <td id="enabledRow"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="contactId" />
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn green lighten-1">No</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn red lighten-1" id="continueRemove">Yes</a>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
+
+        $('select').formSelect();
+
+        $('.modal').modal({
+            onOpenStart: function(e, t) {
+                let entries = t.id.split("-");
+                let id = entries[1];
+                $("#typeRow").html($(`#type-${id}`).html());
+                $("#detailRow").html($(`#value-${id}`).html());
+                $("#enabledRow").html($(`#enabled-${id}`).html());
+                $("#contactId").val(id);
+            }
+        });
+
+        $('#continueRemove').click(function() {
+            let id = $("#contactId").val();
+            $.ajax({
+                url: `/api/contact/${id}`,
+                method: 'DELETE',
+                data: {
+                    poi: <?= $id ?>
+                }
+            }).done(function(data, status, xhr) {
+                window.location = data.url;
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                window.location = `/cpanel/poi/<?= $id ?>/contacts`
+            });
+        });
+    });
+</script>

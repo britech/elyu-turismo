@@ -602,6 +602,113 @@ return function (App $app) {
         }
     });
 
+    $app->get('/cpanel/poi/{id}/contacts', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        $flash = $container->flash;
+        $service = $container->poiManagementService;
+        try {
+            $result = $service->getPoi($id);
+            list('name' => $name) = $result;
+            $args = array_merge($args, [
+                'url' => '/cpanel/contact',
+                'name' => $name,
+                'poi' => $id,
+                'contacts' => $service->listContacts($id),
+                'contactTypes' => ApplicationConstants::CONTACT_TYPES,
+                ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
+            ]);
+            return $container->poiRenderer->render($response, 'contacts.phtml', $args);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while loading Tourist Location info. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    })->setName('contacts');
+
+    $app->post('/cpanel/contact', function(Request $request, Response $response, array $args) use ($container) {
+        list('poi' => $poi, 'type' => $type, 'value' => $value) = $request->getParsedBody();
+        $flash = $container->flash;
+        try {
+            $container->poiManagementService->addContact([
+                'placeOfInterest' => $poi,
+                'type' => $type,
+                'value' => $value
+            ]);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Contact Detail successfully added');
+            return $response->withRedirect($container->router->pathFor('contacts', ['id' => $poi]));
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    });
+
+    $app->get('/cpanel/contact/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        $flash = $container->flash;
+        $service = $container->poiManagementService;
+        try {
+            $contact = $service->getContact($id);
+            list('placeofinterest' => $poi) = $contact;
+            $placeOfInterest = $service->getPoi($poi);
+            if (is_null($contact) || is_null($placeOfInterest)) {
+                $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+                return $response->withRedirect($container->router->pathFor('poi-list'));
+            }            
+            list('name' => $name) = $placeOfInterest;
+
+            $args = array_merge($args, [
+                'url' => "/cpanel/contact/{$id}",
+                'name' => $name,
+                'poi' => $poi,
+                'contacts' => $service->listContacts($poi),
+                'updateMode' => true,
+                'contact' => $contact,
+                'id' => $poi,
+                'contactTypes' => ApplicationConstants::CONTACT_TYPES,
+                ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
+            ]);
+            return $container->poiRenderer->render($response, 'contacts.phtml', $args);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    });
+
+    $app->post('/cpanel/contact/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        $container->logger->debug('hello@');
+        list('id' => $id) = $args;
+        list('poi' => $poi, 'type' => $type, 'value' => $value, 'enabled' => $enabled) = $request->getParsedBody();
+        $flash = $container->flash;
+        try {
+            $container->poiManagementService->updateContact([
+                'id' => $id,
+                'type' => $type,
+                'value' => $value,
+                'enabled' => strcasecmp('on', $enabled) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE
+            ]);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Contact successfully updated');
+            return $response->withRedirect($container->router->pathFor('contacts', ['id' => $poi]));
+        } catch(\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('poi-list'));
+        }
+    });
+
+    $app->delete('/api/contact/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $contact) = $args;
+        list('poi' => $poi) = $request->getParsedBody();
+        try {
+            $container->poiManagementService->removeContact($contact);
+            return $response->withJson(['url' => $container->router->pathFor('contacts', ['id' => $poi])], 200);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            return $response->withJson(['message' => $ex->getMessage()], 500);
+        }
+    });
+
     $app->get('/cpanel/poi/{id}/admin', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         $flash = $container->flash;
