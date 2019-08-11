@@ -123,6 +123,24 @@ return function (App $app) {
         return $container->cpanelRenderer->render($response, 'poi/index.phtml', $args);
     })->setName('poi-list');
 
+    $app->delete('/api/poi/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('name' => $name) = $request->getParsedBody();
+        list('id' => $id) = $args;
+        $flash = $container->flash;
+        $message = "";
+        try {
+            $container->poiManagementService->removePoi($id);
+            $message = "Tourist Location {$name} has been removed.";
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, $message);
+            return $response->withJson(array('message' => $message), 200);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $message = "Tourist Location {$name} cannot be removed. Try again later.";
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, $message);
+            return $response->withJson(array('message' => $message), 500);
+        }
+    });
+
     $app->get('/cpanel/poi/add', function(Request $request, Response $response, array $args) use($container) {
         $classifications = $container->classificationService->getClassifications();
         $tags = $container->tagService->getTags();
