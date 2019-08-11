@@ -246,7 +246,8 @@ return function (App $app) {
             } else {
                 list('classifications' => $assignedClassifications, 'topicTags' => $assignedTags) = $result;
 
-                $args = array_merge($args, [ 'id' => $id, 
+                $args = array_merge($args, [ 
+                    'id' => $id, 
                     'result' => $result, 
                     'circuits' => ApplicationUtils::TOURISM_CIRCUITS ,
                     'classifications' => ApplicationUtils::convertArrayToAutocompleteData($classifications, 'name'),
@@ -278,7 +279,8 @@ return function (App $app) {
                 && strcasecmp('commuterguide', $key) != 0
                 && strcasecmp('descriptionwysiwyg', $key)  != 0
                 && strcasecmp('description', $key)  != 0
-                && strcasecmp('imagebackend', $key) != 0;
+                && strcasecmp('imagebackend', $key) != 0
+                && strcasecmp('imagesbackend', $key);
         }, ARRAY_FILTER_USE_KEY);
 
         list('topicTags' => $rawTags, 'classifications' => $rawClassifications, 
@@ -286,14 +288,26 @@ return function (App $app) {
             'description' => $rawDescription,
             'commuterguidewysiwyg' => $rawCommuterWysiWyg,
             'commuterguide' => $rawCommuterGuide,
-            'imagebackend' => $imageBackend, 'name' => $name) = $body;
+            'imagebackend' => $imageBackend,
+            'imagesbackend' => $imagesBackend,
+            'name' => $name) = $body;
 
-        list('image' => $image) = $request->getUploadedFiles();
-        $filename = $container->fileUploadService->uploadFile([
+        list('image' => $image, 'images' => $images) = $request->getUploadedFiles();
+        $primaryImage = $container->fileUploadService->uploadFile([
             'file' => $image,
-            'opts' => ['id' => $id],
             'name' => $name
         ]);
+        $imageList = [];
+        foreach($images as $imageEntry) {
+            $imageFile = $container->fileUploadService->uploadFile([
+                'file' => $imageEntry,
+                'name' => $name
+            ]);
+            if (is_null($imageFile)) {
+                continue;
+            }
+            $imageList = array_merge($imageList, [$imageFile]);
+        }
 
         $inputs = array_merge($inputs, [ 'topicTags' => json_decode($rawTags),
             'classifications' => json_decode($rawClassifications),
@@ -302,7 +316,8 @@ return function (App $app) {
             'commuterguidewysiwyg' => strlen(trim($rawCommuterWysiWyg)) == 0 ? null : json_encode(json_decode($rawCommuterWysiWyg, true)),
             'commuterguide' => strlen(trim($rawCommuterGuide)) == 0 ? null : $rawCommuterGuide,
             'id' => $id,
-            'imagename' => is_null($filename) ? $imageBackend : $filename
+            'imagename' => is_null($primaryImage) ? $imageBackend : $primaryImage,
+            'images' => count($imageList) == 0 ? $imagesBackend : implode(',', $imageList)
         ]);
 
         $container->logger->debug("Update tourist location => ".json_encode($inputs));
