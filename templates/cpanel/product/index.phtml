@@ -93,7 +93,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 cellsAlign: 'center',
                 align: 'center',
                 cellsRenderer: function(row, column, value, rowData) {
-                    return `<a href="/cpanel/product/${rowData.id}">View</a>&nbsp;|&nbsp;<a href="#" id="remove-${rowData.id}" data-target="removeProduct" class="modal-trigger">Remove</a>`
+                    return `<a href="/cpanel/product/${rowData.id}">View</a>&nbsp;|&nbsp;<a href="/cpanel/product/${rowData.id}/edit">Edit</a>&nbsp;|&nbsp;<a href="#" id="remove-${rowData.id}" data-target="removeProduct" class="modal-trigger">Remove</a>`
                 }
             }]
         });
