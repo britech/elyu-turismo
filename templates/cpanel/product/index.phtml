@@ -1,0 +1,126 @@
+<?php
+
+use gov\pglu\tourism\util\ApplicationConstants;
+?>
+<h2 style="margin-bottom: 30px;">Products</h2>
+<a class="waves-light btn-large" href="/cpanel/product/add"><i class="material-icons left">create</i>Create</a>
+<div id="productList" style="margin-top: 50px; margin-bottom: 20px;"></div>
+<div id="removeProduct" class="modal">
+    <div class="modal-content">
+        <h4>Do you want to remove this Product ?</h4>
+        <table>
+            <tbody>
+                <tr>
+                    <th style="width: 25%">Name</th>
+                    <td id="productName"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="productId" />
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn green lighten-1">No</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn red lighten-1" id="continueRemove">Yes</a>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
+
+        $("#productList").jqxDataTable({
+            width: '100%',
+            theme: 'material',
+            filterable: true,
+            selectionMode: 'singleRow',
+            pageable: true,
+            pagerMode: 'advanced',
+            pageSizeOptions: ['10', '50', '100'],
+            altRows: true,
+            sortable: true,
+            source: new $.jqx.dataAdapter({
+                localData: <?= $products ?>,
+                dataType: 'array',
+                dataFields: [
+                    { name: 'id', type: 'number' },
+                    { name: 'name', type: 'string' },
+                    { name: 'town', type: 'string' },
+                    { name: 'arLink', type: 'string' },
+                    { name: 'imageFile', type: 'string' }
+                ]
+            }),
+            groups: ['town'],
+            groupsRenderer: function(value, rowData, level) {
+                return `<span style="font-weight: bold; display: block; text-align: center;">${value}</span>`;
+            },
+            columns: [{
+                text: 'Product',
+                dataField: 'name',
+                width: '40%',
+                align: 'center',
+                cellsRenderer: function(row, column, value, rowData) {
+                    return `<span id="entry-${rowData.id}">${rowData.name}</span>`
+                }
+            }, {
+                text: 'Augmented Reality Link',
+                dataField: 'arLink',
+                width: '20%',
+                align: 'center',
+                cellsAlign: 'center',
+                cellsRenderer: function(row, column, value, rowData) {
+                    return rowData.arLink.length > 0 ? `<a href="${rowData.arLink}">Link</a>` : "No Link"
+                }
+            }, {
+                text: 'Primary Image',
+                dataField: 'imageFile',
+                width: '20%',
+                align: 'center',
+                cellsAlign: 'center',
+                cellsRenderer: function(row, column, value, rowData) {
+                    return rowData.imageFile != null ? `<a href="${rowData.imageFile}">Image</a>` : "No Image"
+                }
+            }, {
+                text: 'Town',
+                dataField: 'town',
+                hidden: true
+            }, {
+                text: 'Actions',
+                filterable: false,
+                sortable: false,
+                cellsAlign: 'center',
+                align: 'center',
+                cellsRenderer: function(row, column, value, rowData) {
+                    return `<a href="/cpanel/product/${rowData.id}">View</a>&nbsp;|&nbsp;<a href="#" id="remove-${rowData.id}" data-target="removeProduct" class="modal-trigger">Remove</a>`
+                }
+            }]
+        });
+
+        $("#removeProduct").modal({
+            onOpenStart: function(e, t) {
+                let entries = t.id.split("-");
+                let id = entries[1];
+                $("#productId").val(id);
+                $("#productName").html($(`#entry-${id}`).html());
+            }
+        });
+
+        $('#continueRemove').click(function() {
+            let id = $("#productId").val();
+            $.ajax({
+                url: `/api/product/${id}`,
+                method: 'DELETE',
+                data: {
+                    name: $("#productName").html()
+                }
+            }).done(function(data, status, xhr) {
+                window.location = `/cpanel/products`
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                window.location = `/cpanel/products`
+            });
+        });
+    });
+</script>
