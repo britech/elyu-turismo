@@ -1035,6 +1035,9 @@ return function (App $app) {
             $imageList = [];
             foreach(explode(',', $images) as $imageEntry) {
                 $file = $useLocalFileSystem ? "/uploads/{$imageEntry}" : $imageEntry;
+                if (strlen(trim($file)) == 0) {
+                    continue;
+                }
                 $imageList = array_merge($imageList, [$file]);
             }
 
