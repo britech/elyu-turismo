@@ -45,7 +45,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
         <div class="container">
             <div class="row valign-wrapper" style="margin-top: 10px;">
                 <div class="col l6 hide-on-med-and-down">
-                    <?php if (count($images) >= 0): ?>
+                    <?php if (count($images) > 0): ?>
                         <div class="carousel carousel-slider">
                             <?php foreach($images as $image): ?>
                                 <a href="#!" class="carousel-item"><img src="<?=$image?>" class="responsive-img" alt="Image"></a>
@@ -150,7 +150,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <div class="row">
                 <div class="col s12 hide-on-large-only">
                     <div class="center">
-                        <?php if (count($images) >= 0): ?>
+                        <?php if (count($images) > 0): ?>
                             <div class="carousel carousel-slider">
                                 <?php foreach($images as $image): ?>
                                     <a href="#!" class="carousel-item"><img src="<?=$image?>" class="responsive-img" alt="Image"></a>
