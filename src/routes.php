@@ -994,6 +994,7 @@ return function (App $app) {
                 $count = ApplicationUtils::getVisitorCountByPoi($countResult, $name);
                 $maxCount += $count;
                 $visitorCounts = array_merge($visitorCounts, [$count]);
+                $placesBackend = array_merge($placesBackend, [$name]);
             }
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
