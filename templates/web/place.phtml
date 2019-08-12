@@ -45,7 +45,15 @@ use gov\pglu\tourism\util\ApplicationConstants;
         <div class="container">
             <div class="row valign-wrapper" style="margin-top: 10px;">
                 <div class="col l6 hide-on-med-and-down">
-                    <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet"/>
+                    <?php if (count($images) >= 0): ?>
+                        <div class="carousel carousel-slider">
+                            <?php foreach($images as $image): ?>
+                                <a href="#!" class="carousel-item"><img src="<?=$image?>" class="responsive-img" alt="Image"></a>
+                            <?php endforeach;?>
+                        </div>
+                    <?php else: ?>
+                        <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet"/>
+                    <?php endif;?>
                     <?php if(strlen(trim($imageSrc)) > 0): ?>
                         <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($poi['photoCredit'])) == 0 ? "Not Available" : $poi['photoCredit']; ?></span>
                     <?php endif;?>
@@ -142,7 +150,15 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <div class="row">
                 <div class="col s12 hide-on-large-only">
                     <div class="center">
-                        <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet"/>
+                        <?php if (count($images) >= 0): ?>
+                            <div class="carousel carousel-slider">
+                                <?php foreach($images as $image): ?>
+                                    <a href="#!" class="carousel-item"><img src="<?=$image?>" class="responsive-img" alt="Image"></a>
+                                <?php endforeach;?>
+                            </div>
+                        <?php else: ?>
+                            <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet"/>
+                        <?php endif;?>
                         <?php if(strlen(trim($imageSrc)) > 0): ?>
                             <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($poi['photoCredit'])) == 0 ? "Not Available" : $poi['photoCredit']; ?></span>
                         <?php endif;?>
@@ -268,6 +284,11 @@ use gov\pglu\tourism\util\ApplicationConstants;
             })
             commuterGuideMobileView.disable();
             commuterGuideMobileView.setContents(<?= $poi['commuterguidewysiwyg']; ?>);
+
+            $(".carousel").carousel({
+                fullWidth: true,
+                indicators: true
+            })
         });
     </script>
 

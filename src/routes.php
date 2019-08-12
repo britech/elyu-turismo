@@ -1028,16 +1028,23 @@ return function (App $app) {
             $fees = $container->poiManagementService->listFees($id);
             $container->openDataDao->captureVisit($id);
 
-            list('imageName' => $imageName) = $poi;
-            $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$imageName}" : $imageName;
+            list('imageName' => $imageName, 'images' => $images) = $poi;
+            $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
+            $imageSrc = $useLocalFileSystem ? "/uploads/{$imageName}" : $imageName;
             
+            $imageList = [];
+            foreach(explode(',', $images) as $imageEntry) {
+                $file = $useLocalFileSystem ? "/uploads/{$imageEntry}" : $imageEntry;
+                $imageList = array_merge($imageList, [$file]);
+            }
+
             $args = array_merge($args, [
                 'poi' => $poi,
                 'schedules' => $schedules,
                 'fees' => $fees,
                 'visitorCount' => $container->openDataDao->countVisitorsByDestination($id),
-                'arLink' => strlen(trim($poi['arLink'])) == 0 ? '#' : trim($poi['arLink']),
-                'imageSrc' => $imageSrc
+                'imageSrc' => $imageSrc,
+                'images' => $imageList
             ]);
 
             if ($poi['displayable'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
