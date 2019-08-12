@@ -72,7 +72,7 @@ final class ApplicationUtils {
     }
 
     public static function getVisitorCountByPoi(array $inputArray, array $map) {
-        list('name' => $name, 'visitorCount' => $visitorCount) = $map;
+        list('name' => $name, 'visitorcount' => $visitorCount) = $map;
         foreach($inputArray as $input) {
             if (strcasecmp($name, $input) == 0) {
                 return $visitorCount;
