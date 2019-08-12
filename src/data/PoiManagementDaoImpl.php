@@ -47,7 +47,9 @@ class PoiManagementDaoImpl implements PoiManagementDao {
                     commuterGuideWysiwyg,
                     imageName,
                     images,
-                    photoCredit)
+                    photoCredit,
+                    arLink,
+                    arenabled)
                     VALUES (
                         :name,
                         :address,
@@ -61,7 +63,9 @@ class PoiManagementDaoImpl implements PoiManagementDao {
                         :commuterGuideWysiwyg,
                         :imageName,
                         :images,
-                        :photoCredit
+                        :photoCredit,
+                        :arLink,
+                        :arEnabled
                     )
 QUERY;
             $this->pdo->prepare($poiInsertQuery)->execute($poiSetupInput);
