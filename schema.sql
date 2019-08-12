@@ -61,7 +61,7 @@ CREATE TABLE `placeofinterest` (
   `latitude` varchar(100) NOT NULL,
   `longitude` varchar(100) NOT NULL,
   `arenabled` tinyint(4) DEFAULT '0',
-  `displayable` tinyint(4) DEFAULT '0',
+  `displayable` tinyint(4) DEFAULT '1',
   `descriptionWysiwyg` json DEFAULT NULL,
   `commuterGuideWysiwyg` json DEFAULT NULL,
   `imageName` text,
