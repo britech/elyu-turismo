@@ -71,11 +71,11 @@ final class ApplicationUtils {
         return 0;
     }
 
-    public static function getVisitorCountByPoi(array $inputArray, array $map) {
-        list('name' => $name, 'visitorcount' => $visitorCount) = $map;
+    public static function getVisitorCountByPoi(array $inputArray, $name) {
         foreach($inputArray as $input) {
-            if (strcasecmp($name, $input) == 0) {
-                return $visitorCount;
+            list('name' => $inputName, 'visitorcount' => $count) = $input;
+            if (strcasecmp($name, $inputName) == 0) {
+                return $count;
             }
         }
         return 0;

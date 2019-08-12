@@ -987,15 +987,11 @@ return function (App $app) {
         try {
             $places = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
             $products = array_merge([], $container->townManagementService->listProducts(['town' => $modifiedTown]));
+            $countResult = $container->openDataDao->summarizeVisitorsByTown($modifiedTown);
 
             foreach($places as $place) {
                 list('name' => $name) = $place;
-                $placesBackend = array_merge($placesBackend, [$name]);
-            }
-            
-            foreach($container->openDataDao->summarizeVisitorsByTown($modifiedTown) as $row) {
-                $container->logger->debug(json_encode($row));
-                $count = ApplicationUtils::getVisitorCountByPoi($placesBackend, $row);
+                $count = ApplicationUtils::getVisitorCountByPoi($countResult, $name);
                 $maxCount += $count;
                 $visitorCounts = array_merge($visitorCounts, [$count]);
             }
