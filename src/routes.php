@@ -949,7 +949,7 @@ return function (App $app) {
         $inputData = [];
         $max = 0;
         try {
-            $topDestinations = array_merge([], $container->openDataDao->listTop5Destinations());
+            $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
             
             $summaryResult = $container->openDataDao->summarizeVisitors();
             foreach($towns as $town) {
