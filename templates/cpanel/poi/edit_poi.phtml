@@ -104,6 +104,10 @@
         <p>Photo Credit</p>
         <textarea name="photocredit" class="materialize-textarea validate" required><?= $result['photoCredit'] ?></textarea>
     </div>
+    <div class="input-field">
+        <p>Augmented Reality Link</p>
+        <input type="text" name="arLink" value="<?= $result['arLink'] ?>"/>
+    </div>
     <button class="btn waves-effect waves-light" type="submit">update<i class="material-icons left">edit</i></button>
 </form>
 <script type="text/javascript">

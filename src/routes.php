@@ -285,6 +285,7 @@ return function (App $app) {
         list('id' => $id) = $args;
 
         $body = $request->getParsedBody();
+        $container->logger->debug(json_encode($body));
         $inputs = array_filter($body, function($key) {
             return strcasecmp('topicTags', $key) !=0 && strcasecmp('classifications', $key) != 0 
                 && strcasecmp('commuterguidewysiwyg', $key) != 0
@@ -302,7 +303,8 @@ return function (App $app) {
             'commuterguide' => $rawCommuterGuide,
             'imagebackend' => $imageBackend,
             'imagesbackend' => $imagesBackend,
-            'name' => $name) = $body;
+            'name' => $name,
+            'arLink' => $arLink) = $body;
 
         list('image' => $image, 'images' => $images) = $request->getUploadedFiles();
         $primaryImage = $container->fileUploadService->uploadFile([
@@ -321,7 +323,8 @@ return function (App $app) {
             $imageList = array_merge($imageList, [$imageFile]);
         }
 
-        $inputs = array_merge($inputs, [ 'topicTags' => json_decode($rawTags),
+        $inputs = array_merge($inputs, [ 
+            'topicTags' => json_decode($rawTags),
             'classifications' => json_decode($rawClassifications),
             'descriptionwysiwyg' => strlen(trim($rawDescriptionWysiwyg)) == 0 ? null : json_encode(json_decode($rawDescriptionWysiwyg, true)),
             'description' => strlen(trim($rawDescription)) == 0 ? null : $rawDescription,
@@ -329,7 +332,8 @@ return function (App $app) {
             'commuterguide' => strlen(trim($rawCommuterGuide)) == 0 ? null : $rawCommuterGuide,
             'id' => $id,
             'imagename' => is_null($primaryImage) ? $imageBackend : $primaryImage,
-            'images' => count($imageList) == 0 ? $imagesBackend : implode(',', $imageList)
+            'images' => count($imageList) == 0 ? $imagesBackend : implode(',', $imageList),
+            'arEnabled' => strlen(trim($arLink)) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_FALSE : ApplicationConstants::INDICATOR_NUMERIC_TRUE
         ]);
 
         $container->logger->debug("Update tourist location => ".json_encode($inputs));

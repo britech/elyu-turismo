@@ -239,7 +239,9 @@ QUERY;
                 imageName=:imagename,
                 photoCredit=:photocredit,
                 developmentLevel=:developmentlevel,
-                images=:images
+                images=:images,
+                arenabled=:arEnabled,
+                arLink=:arLink
             WHERE id=:id
 QUERY;
 
