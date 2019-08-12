@@ -994,13 +994,8 @@ return function (App $app) {
             }
             
             foreach($container->openDataDao->summarizeVisitorsByTown($modifiedTown) as $row) {
-                list('name' => $name, 'visitorcount' => $visitorCount) = $row;
                 $container->logger->debug(json_encode($row));
-                $result = array_filter($placesBackend, function($val) use ($name) {
-                    return strcasecmp($val, $name) == 0;
-                }, ARRAY_FILTER_USE_BOTH);
-
-                $count = count($result) == 0 ? 0 : $visitorCount;
+                $count = ApplicationUtils::getVisitorCountByPoi($placesBackend, $row);
                 $maxCount += $count;
                 $visitorCounts = array_merge($visitorCounts, [$count]);
             }
