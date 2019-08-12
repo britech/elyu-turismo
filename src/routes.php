@@ -786,7 +786,7 @@ return function (App $app) {
 
     $app->post('/cpanel/product', function(Request $request, Response $response, array $args) use ($container) {
         $body = $request->getParsedBody();
-        list('town' => $town, 'name' => $name, 'arLink' => $arLink, 'description' => $description) = $body;
+        list('town' => $town, 'name' => $name, 'arLink' => $arLink, 'description' => $description, 'photoCredit' => $photoCredit) = $body;
         try {
             list('image' => $image, 'images' => $images) = $request->getUploadedFiles();
             $primaryImage = $container->fileUploadService->uploadFile([
@@ -809,7 +809,8 @@ return function (App $app) {
                 'arLink' => $arLink,
                 'description' => $description,
                 'imageFile' => $primaryImage,
-                'images' => implode(',', $imageList)
+                'images' => implode(',', $imageList),
+                'photoCredit' => $photoCredit
             ]);
         } catch (\Exception $ex) {
             $container->logger->error($ex);
