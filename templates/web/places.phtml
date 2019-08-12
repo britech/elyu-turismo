@@ -17,18 +17,19 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 <strong class="flow-text white-text">No Available Data</strong>
             </div>
         <?php else : ?>
-            <ul class="collection">
-                <?php foreach ($places as $place) : ?>
-                    <li class="collection-item" style="cursor: pointer;" onclick="window.location='/place/<?= $place['id'] ?>'">
-                        <h5 class="flow-text">
-                            <?= $place['name'] ?>
-                            <?php if ($place['arEnabled'] == 1) : ?>
-                                <span class="new badge blue" data-badge-caption="AR Available">&nbsp;</span>
-                            <?php endif; ?>
-                        </h5>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+            <?php foreach ($places as $place) : ?>
+                <div class="card small">
+                    <div class="card-image">
+                        <img src="<?= $place['imageName'] ?>" class="responsive-img" alt="No Image"/>
+                    </div>
+                    <div class="card-content">
+                        <p class="flow-text"><?= $place['name']; ?></p>
+                    </div>
+                    <div class="card-action">
+                        <a href="/place/<?= $place['id'] ?>">View</a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         <?php endif; ?>
     </div>
 </div>
@@ -41,22 +42,24 @@ use gov\pglu\tourism\util\ApplicationConstants;
 <div class="row">
     <div class="col s12 m12 l12">
         <h3 class="flow-text">Products</h3>
-        <?php if (count($products) == 0) : ?>
+        <?php if (count($townProducts) == 0) : ?>
             <div class="card-panel red lighten-2">
                 <strong class="flow-text white-text">No Available Data</strong>
             </div>
         <?php else : ?>
-            <ul class="collection">
-                <?php foreach ($products as $product) : ?>
-                    <li class="collection-item" style="cursor: pointer;">
-                        <h5 class="flow-text"><?= $product['name']; ?></h5>
-                        <p class="flow-text"><?= $product['description']; ?></p>
-                        <a class="flow-text" target="_blank" href="<?= $product['arLink'] ?>">View in AR</a>
-                        &nbsp;&vert;&nbsp;
-                        <a class="flow-text" target="_blank" href="<?= getenv('USE_LOCAL_FILESYSTEM') == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$product['imageFile']}" : $product['imageFile'] ?>">View Image</a>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+            <?php foreach ($townProducts as $product) : ?>
+                <div class="card small">
+                    <div class="card-image">
+                        <img src="<?= $product['imageFile'] ?>" class="responsive-img" alt="No Image"/>
+                    </div>
+                    <div class="card-content">
+                        <p class="flow-text"><?= $product['name']; ?></p>
+                    </div>
+                    <div class="card-action">
+                        <a href="/product/<?= $product['id'] ?>">View</a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         <?php endif; ?>
     </div>
 </div>
