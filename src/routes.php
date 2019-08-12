@@ -877,34 +877,48 @@ return function (App $app) {
         }
     });
 
-    $app->post('/cpanel/product/{id}', function(Request $request, Response $response, array $args) use ($container) {
+    $app->post('/cpanel/product/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
-        list('town' => $rawTown, 'name' => $name, 'arLink' => $arLink, 'enabled' => $enabled, 
-            'description' => $description, 'imageBackend' => $imageBackend) = $request->getParsedBody();
+        list('town' => $town, 'name' => $name, 'arLink' => $arLink, 'description' => $description, 
+            'photoCredit' => $photoCredit, 'enabled' => $enabled, 
+            'imageBackend' => $imageBackend, 'imagesBackend' => $imagesBackend) = $request->getParsedBody();
         try {
-            list('image' => $image) = $request->getUploadedFiles();
-            $filename = $container->fileUploadService->uploadFile([
+            list('image' => $image, 'images' => $images) = $request->getUploadedFiles();
+            $primaryImage = $container->fileUploadService->uploadFile([
                 'file' => $image,
                 'name' => $name
             ]);
 
+            $imageList = [];
+            foreach($images as $imageEntry) {
+                $filename = $container->fileUploadService->uploadFile([
+                    'file' => $imageEntry,
+                    'name' => $name,
+                ]);
+                if (is_null($filename)) {
+                    continue;
+                }
+                $imageList = array_merge($imageList, [$filename]);
+            }
+
             $container->townManagementService->updateProduct([
-                'name' => $name,
-                'town' => $rawTown,
-                'arLink' => $arLink,
                 'id' => $id,
-                'enabled' => strcasecmp('on', $enabled) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE,
+                'name' => $name,
+                'town' => $town,
+                'arLink' => $arLink,
                 'description' => $description,
-                'imageFile' => is_null($filename) ? $imageBackend : $filename
+                'imageFile' => is_null($primaryImage) ? $imageBackend : $primaryImage,
+                'images' => count($imageList) == 0 ? $imagesBackend : implode(',', $imageList),
+                'photoCredit' => $photoCredit,
+                'enabled' => strcasecmp($enabled, 'on') == 0 ? ApplicationConstants::INDICATOR_NUMERIC_TRUE : ApplicationConstants::INDICATOR_NUMERIC_FALSE
             ]);
+            return $response->withRedirect($container->router->pathFor('product', ['id' => $id]));
         } catch (\Exception $ex) {
             $container->logger->error($ex);
-            $container->flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('product-list'));
         }
-        $town = strtolower(implode('_', explode(' ', $rawTown)));
-        return $response->withRedirect($container->router->pathFor('product-list', ['town' => $town]));
     });
-
+    
     $app->delete('/api/product/{id}', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
         list('name' => $name) = $request->getParsedBody();
