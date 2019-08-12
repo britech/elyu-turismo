@@ -3,7 +3,7 @@
 
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
-        <meta http-equiv="refresh" content="5;url=/home" />
+        <meta http-equiv="refresh" content="5;url=/explore" />
         <title>Loading Page</title>
     </head>
 
@@ -14,15 +14,15 @@
                 <div class="progress">
                     <div class="determinate" id="progress-bar"></div>
                 </div>
-                <span class="flow-text" style="display: block;">Does not redirect? <a href="/home">Click here.</a></span>
+                <span class="flow-text" style="display: block;">Does not redirect? <a href="/explore">Click here.</a></span>
             </div>
         </div>
 
         <script>
             let width = 20;
             setInterval(() => {
-                if (width > 100) {
-                    window.location = "/home"
+                if (width >= 100) {
+                    window.location = "/explore"
                 }
                 document.getElementById('progress-bar').style.width = `${width}%`
                 width += 20;
