@@ -780,7 +780,12 @@ return function (App $app) {
     })->setName('product-list');
 
     $app->get('/cpanel/product/add', function(Request $request, Response $response, array $args) use ($container) {
-        $args = array_merge($args, ['circuits' => ApplicationUtils::TOURISM_CIRCUITS]);
+        $args = array_merge($args, [
+            'circuits' => ApplicationUtils::TOURISM_CIRCUITS,
+            'formTitle' => 'Add a Product',
+            'updateMode' => false,
+            'url' => '/cpanel/product'
+        ]);
         return $container->cpanelRenderer->render($response, 'product/form.phtml', $args);
     });
 
@@ -844,6 +849,28 @@ return function (App $app) {
                 'images' => $images
             ]);
             return $container->cpanelRenderer->render($response, 'product/info.phtml', $args);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            return $response->withRedirect($container->router->pathFor('product-list'));
+        }
+    });
+
+    $app->get('/cpanel/product/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        try {
+            $product = $container->townManagementService->getProduct($id);
+            if(is_null($product)) {
+                return $response->withRedirect($container->router->pathFor('product-list'));
+            }
+
+            $args = array_merge($args, [
+                'product' => $product,
+                'circuits' => ApplicationUtils::TOURISM_CIRCUITS,
+                'formTitle' => 'Update a Product',
+                'url' => "/cpanel/product/{$id}/edit",
+                'updateMode' => true
+            ]);
+            return $container->cpanelRenderer->render($response, 'product/form.phtml', $args);
         } catch (\Exception $ex) {
             $container->logger->error($ex);
             return $response->withRedirect($container->router->pathFor('product-list'));

@@ -1,5 +1,5 @@
-<h2>Add a Product</h2>
-<form method="post" action="/cpanel/product" enctype="multipart/form-data">
+<h2><?= $formTitle; ?></h2>
+<form method="post" action="<?= $url ?>" enctype="multipart/form-data">
     <div class="row">
         <div class="input-field col l4">
             <select name="town" class="validate" required>
@@ -7,7 +7,11 @@
                 <?php foreach ($circuits as $circuit => $towns) : ?>
                     <optgroup label="<?= $circuit ?>">
                         <?php foreach ($towns as $town) : ?>
-                            <option value="<?= $town ?>"><?= $town ?></option>
+                            <?php if (strcasecmp($product['town'], $town) == 0) : ?>
+                                <option value="<?= $town ?>" selected><?= $town ?></option>
+                            <?php else : ?>
+                                <option value="<?= $town ?>"><?= $town ?></option>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </optgroup>
                 <?php endforeach; ?>
@@ -15,19 +19,19 @@
             <label>Tourism Ciruit and Town</label>
         </div>
         <div class="input-field col l8">
-            <input name="name" type="text" class="validate" required />
+            <input name="name" type="text" class="validate" required value="<?= $product['name'] ?>" />
             <label>Name</label>
         </div>
     </div>
     <div class="row">
         <div class="input-field col l12">
-            <textarea name="description" class="materialize-textarea"></textarea>
+            <textarea name="description" class="materialize-textarea"><?= $product['description'] ?></textarea>
             <label>Description</label>
         </div>
     </div>
     <div class="row">
         <div class="input-field col l12">
-            <input name="arLink" type="text" class="validate" />
+            <input name="arLink" type="text" class="validate" value="<?= $product['arLink'] ?>" />
             <label>Augmented Reality Link</label>
         </div>
     </div>
@@ -42,6 +46,9 @@
                 <div class="file-path-wrapper">
                     <input class="file-path validate" type="text">
                 </div>
+                <?php if ($updateMode) : ?>
+                    <input type="hidden" name="imageBackend" value="<?= $product['imageFile'] ?>" />
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -57,16 +64,38 @@
                     <input class="file-path validate" type="text">
                 </div>
             </div>
-            
+            <?php if ($updateMode) : ?>
+                <input type="hidden" name="imagesBackend" value="<?= $product['images'] ?>" />
+            <?php endif; ?>
         </div>
     </div>
     <div class="row">
         <div class="input-field col l12">
-            <textarea name="photoCredit" class="materialize-textarea"></textarea>
+            <textarea name="photoCredit" class="materialize-textarea"><?= $product['photoCredit']; ?></textarea>
             <label>Photo Credit</label>
+            <?php if (!$updateMode) : ?>
+                <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add</i></button>
+            <?php endif; ?>
         </div>
-        <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add</i></button>
     </div>
+    <?php if ($updateMode) : ?>
+        <div class="row">
+            <div class="col l12">
+                <div style="margin-bottom: 20px;">
+                    <h6>Display to Site</h6>
+                    <div class="switch">
+                        <label>
+                            No
+                            <input type="checkbox" name="enabled" <?= $product['enabled'] == 1 ? "checked" : "" ?>>
+                            <span class="lever"></span>
+                            Yes
+                        </label>
+                    </div>
+                </div>
+                <button class="btn waves-effect waves-light blue lighten-1" type="submit" name="action">Update<i class="material-icons left">edit</i></button>
+            </div>
+        </div>
+    <?php endif; ?>
 </form>
 
 <script>
