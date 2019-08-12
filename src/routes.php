@@ -823,22 +823,30 @@ return function (App $app) {
         list('id' => $id) = $args;
         try {
             $product = $container->townManagementService->getProduct($id);
-            list('town' => $town) = $product;
+            if(is_null($product)) {
+                return $response->withRedirect($container->router->pathFor('product-list'));
+            }
+            
+            list('imageFile' => $primaryImage, 'images' => $imageList) = $product;
+            
+            $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
+            $imageSrc = $useLocalFileSystem ? "/uploads/{$primaryImage}" : $primaryImage;
+
+            $images = [];
+            foreach(explode(',', $imageList) as $imageEntry) {
+                $image = $useLocalFileSystem ?  "/uploads/{$imageEntry}" : $imageEntry;
+                $images = array_merge($images, [$image]);
+            }
 
             $args = array_merge($args, [
-                'tourismCircuits' => ApplicationUtils::TOURISM_CIRCUITS,
-                'products' => $container->townManagementService->listProducts($town),
-                'town' => $town,
-                'url' => "/cpanel/product/{$id}",
-                'type' => 'products',
                 'product' => $product,
-                'updateMode' => true,
-                'townLink' => strtolower(implode('_', explode(' ', $town))),
+                'imageSrc' => $imageSrc,
+                'images' => $images
             ]);
-            return $container->townRenderer->render($response, 'town/product.phtml', $args);
+            return $container->cpanelRenderer->render($response, 'product/info.phtml', $args);
         } catch (\Exception $ex) {
             $container->logger->error($ex);
-            return $response->withRedirect($container->router->pathFor('town-landing', ['type' => 'products']));
+            return $response->withRedirect($container->router->pathFor('product-list'));
         }
     });
 

@@ -1,0 +1,51 @@
+<h2>About Product</h2>
+<a class="waves-light btn-large" href="/cpanel/product/<?= $product['id'] ?>/edit"><i class="material-icons left">edit</i>Update</a>
+
+<table class="striped" style="margin-top: 20px; margin-bottom: 20px;">
+    <tbody>
+        <tr>
+            <th style="width: 25%">Images</th>
+            <td>
+                <?php if (is_null($product['imageFile']) || strlen($product['imageFile']) == 0) : ?>
+                    <strong>No Image Yet</strong>
+                <?php else : ?>
+                    <ul class="browser-default">
+                        <li>
+                            <a href="<?= $imageSrc; ?>" target="_blank" class="collection-item">Primary Image</a>
+                        </li>
+                        <?php $count = 1;
+                        foreach ($images as $image) : ?>
+                            <li>
+                                <a href="<?= $image ?>" target="_blank" class="collection-item"><?= "Image #{$count}" ?></a>
+                            </li>
+                            <?php $count++;
+                        endforeach; ?>
+                    </ul>
+                    <span style="display: block;">Photo Credit: <?= strlen(trim($product['photoCredit'])) == 0 ? "Not Available" : $result['photoCredit'] ?></span>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td><?= $product['name']; ?></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td><?= $product['description']; ?></td>
+        </tr>
+        <tr>
+            <th>Augmented Reality Link</th>
+            <td>
+                <?php if (strlen(trim($product['arLink'])) == 0) : ?>
+                    No Link
+                <?php else : ?>
+                    <a href="<?= $product['arLink'] ?>">Link Source</a>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <tr>
+            <th>Visible to Site</th>
+            <td><?= $product['enabled'] == 1 ? "Yes" : "No"; ?></td>
+        </tr>
+    </tbody>
+</table>
