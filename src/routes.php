@@ -979,6 +979,21 @@ return function (App $app) {
     });
 
     $app->get('/explore', function(Request $request, Response $response, array $args) use ($container) {
+        $topDestinations = [];
+        $products = [];
+
+        try {
+            $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
+            $products = array_merge([], $container->townManagementService->listProducts([]));
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+        }
+
+        $args = array_merge($args, [
+            'topDestinations' => $topDestinations,
+            'products' => $products
+        ]);
+
         return $container->exploreRenderer->render($response, 'explore.phtml', $args);
     })->setName('explore');
 
@@ -990,18 +1005,35 @@ return function (App $app) {
         $products = [];
         $placesBackend = [];
         $visitorCounts = [];
+        $topDestinations = [];
+        $allProducts = [];
         $maxCount = 0;
+        $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
         try {
-            $places = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
-            $products = array_merge([], $container->townManagementService->listProducts(['town' => $modifiedTown]));
+            $placesResult = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
+            $productsResult = array_merge([], $container->townManagementService->listProducts(['town' => $modifiedTown]));
             $countResult = $container->openDataDao->summarizeVisitorsByTown($modifiedTown);
 
-            foreach($places as $place) {
-                list('name' => $name) = $place;
+            $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
+            $allProducts = array_merge([], $container->townManagementService->listProducts([]));
+
+            foreach($placesResult as $place) {
+                list('name' => $name, 'imageName' => $primaryImage) = $place;
                 $count = ApplicationUtils::getVisitorCountByPoi($countResult, $name);
                 $maxCount += $count;
                 $visitorCounts = array_merge($visitorCounts, [$count]);
                 $placesBackend = array_merge($placesBackend, [$name]);
+                
+                $poiImage = $useLocalFileSystem ? "/uploads/{$primaryImage}" : $primaryImage;
+                $place = array_merge($place, ['imageName' => $poiImage]);
+                $places = array_merge($places, [$place]);
+            }
+
+            foreach($productsResult as $product) {
+                list('imageFile' => $primaryImage) = $product;
+                $productImage = $useLocalFileSystem ? "/uploads/{$primaryImage}" : $primaryImage;
+                $product = array_merge($product, ['imageFile' => $productImage]);
+                $products = array_merge($products, [$product]);
             }
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
@@ -1013,7 +1045,7 @@ return function (App $app) {
                 $container->logger->debug(json_encode($val));
                 return $val['displayable'] != 0;
             }, ARRAY_FILTER_USE_BOTH),
-            'products' => array_filter($products, function($val) use ($container) {
+            'townProducts' => array_filter($products, function($val) use ($container) {
                 $container->logger->debug(json_encode($val));
                 return $val['enabled'] != 0;
             }, ARRAY_FILTER_USE_BOTH),
@@ -1021,7 +1053,9 @@ return function (App $app) {
                 'places' => json_encode($placesBackend),
                 'values' => json_encode($visitorCounts),
                 'maxCount' => $maxCount
-            ]
+            ],
+            'topDestinations' => $topDestinations,
+            'products' => $allProducts
         ]);
         return $container->exploreRenderer->render($response, 'places.phtml', $args);
     });
