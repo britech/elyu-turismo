@@ -20,7 +20,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <?php foreach ($places as $place) : ?>
                 <div class="card small">
                     <div class="card-image">
-                        <img src="<?= $place['imageName'] ?>" class="responsive-img" alt="No Image"/>
+                        <img src="<?= $place['imageName'] ?>" class="responsive-img materialboxed" alt="No Image"/>
                     </div>
                     <div class="card-content">
                         <p class="flow-text"><?= $place['name']; ?></p>
@@ -50,7 +50,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <?php foreach ($townProducts as $product) : ?>
                 <div class="card small">
                     <div class="card-image">
-                        <img src="<?= $product['imageFile'] ?>" class="responsive-img" alt="No Image"/>
+                        <img src="<?= $product['imageFile'] ?>" class="responsive-img materialboxed" alt="No Image"/>
                     </div>
                     <div class="card-content">
                         <p class="flow-text"><?= $product['name']; ?></p>
@@ -98,5 +98,10 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 }]
             }
         }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.materialboxed');
+        var instances = M.Materialbox.init(elems);
     });
 </script>
