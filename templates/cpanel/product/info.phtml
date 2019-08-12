@@ -21,7 +21,7 @@
                             <?php $count++;
                         endforeach; ?>
                     </ul>
-                    <span style="display: block;">Photo Credit: <?= strlen(trim($product['photoCredit'])) == 0 ? "Not Available" : $result['photoCredit'] ?></span>
+                    <span style="display: block;">Photo Credit: <?= strlen(trim($product['photoCredit'])) == 0 ? "Not Available" : $product['photoCredit'] ?></span>
                 <?php endif; ?>
             </td>
         </tr>
