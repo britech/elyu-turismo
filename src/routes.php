@@ -781,7 +781,7 @@ return function (App $app) {
 
     $app->get('/cpanel/product/add', function(Request $request, Response $response, array $args) use ($container) {
         $args = array_merge($args, ['circuits' => ApplicationUtils::TOURISM_CIRCUITS]);
-        return $container->cpanelRenderer->render($response, 'product/create.phtml', $args);
+        return $container->cpanelRenderer->render($response, 'product/form.phtml', $args);
     });
 
     $app->post('/cpanel/product', function(Request $request, Response $response, array $args) use ($container) {
@@ -826,7 +826,7 @@ return function (App $app) {
             if(is_null($product)) {
                 return $response->withRedirect($container->router->pathFor('product-list'));
             }
-            
+
             list('imageFile' => $primaryImage, 'images' => $imageList) = $product;
             
             $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
