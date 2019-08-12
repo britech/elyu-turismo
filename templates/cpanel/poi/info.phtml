@@ -2,7 +2,11 @@
 <table class="striped" style="margin-top: 10px;">
     <tbody>
         <tr>
-            <th style="width: 25%">Images</th>
+            <th style="width: 25%">Name</th>
+            <td><?= $result['name']; ?></td>
+        </tr>
+        <tr>
+            <th>Images</th>
             <td>
                 <?php if (is_null($result['imageName']) || strlen($result['imageName']) == 0) : ?>
                     <strong>No Image Yet</strong>
@@ -22,8 +26,15 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 25%">Name</th>
-            <td><?= $result['name']; ?></td>
+            <th>Augmented Reality Link</th>
+            <td>
+                <span style="display: block;">Enabled: <?= $result['arEnabled'] == 0 ? "No" : "Yes" ?></span>
+                <?php if(strlen(trim($result['arLink'])) == 0): ?>
+                    <strong>No Link Yet</strong>
+                <?php else: ?>
+                    <a href="<?= $result['arLink'] ?>">Link Source</a>
+                <?php endif; ?>
+            </td>
         </tr>
         <tr>
             <th>Tourism Circuit</th>
