@@ -19,7 +19,7 @@ class TownManagementDaoImpl implements TownManagementDao {
         try {
             $this->pdo->beginTransaction();
             
-            $statement = $this->pdo->prepare("INSERT INTO townproduct(name, arLink, town, description, imageFile) VALUES(:name, :arLink, :town, :description, :imageFile)");
+            $statement = $this->pdo->prepare("INSERT INTO townproduct(name, arLink, town, description, imageFile, images) VALUES(:name, :arLink, :town, :description, :imageFile, :images)");
             $statement->execute($map);
 
             $this->pdo->commit();
@@ -45,7 +45,7 @@ class TownManagementDaoImpl implements TownManagementDao {
         try {
             $this->pdo->beginTransaction();
             
-            $statement = $this->pdo->prepare("UPDATE townproduct SET name=:name, arLink=:arLink, town=:town, enabled=:enabled, description=:description, imageFile=:imageFile WHERE id=:id");
+            $statement = $this->pdo->prepare("UPDATE townproduct SET name=:name, arLink=:arLink, town=:town, enabled=:enabled, description=:description, imageFile=:imageFile, images=:images WHERE id=:id");
             $statement->execute($map);
 
             $this->pdo->commit();
