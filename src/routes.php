@@ -159,8 +159,10 @@ return function (App $app) {
 
     $app->post('/cpanel/poi/add', function(Request $request, Response $response, array $args) use ($container) {
         $body = $request->getParsedBody();
+        $container->logger->debug(json_encode($body));
         list('name' => $name, 'classifications' => $rawClassifications, 'topicTags' => $rawTags, 
-            'schedules' => $rawSchedules, 'fees' => $rawFees, 'contacts' => $rawContacts) = $body;
+            'schedules' => $rawSchedules, 'fees' => $rawFees, 'contacts' => $rawContacts,
+            'arLink' => $arLink) = $body;
 
         list('primaryImage' => $image, 'images' => $images) = $request->getUploadedFiles();
         $primaryImage = $container->fileUploadService->uploadFile([
@@ -194,7 +196,8 @@ return function (App $app) {
                 'topicTags' => json_decode($rawTags, true),
                 'schedules' => json_decode($rawSchedules, true),
                 'fees' => json_decode($rawFees, true),
-                'contacts' => json_decode($rawContacts, true)
+                'contacts' => json_decode($rawContacts, true),
+                'arEnabled' => strlen(trim($arLink)) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_FALSE : ApplicationConstants::INDICATOR_NUMERIC_TRUE
             ]));
             return $response->withRedirect($container->router->pathFor('poi-info', ['id' => $poi]));
         } catch (\Exception $ex) {
