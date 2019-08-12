@@ -853,7 +853,7 @@ return function (App $app) {
             $container->logger->error($ex);
             return $response->withRedirect($container->router->pathFor('product-list'));
         }
-    });
+    })->setName('product');
 
     $app->get('/cpanel/product/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
