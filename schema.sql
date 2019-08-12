@@ -219,6 +219,7 @@ CREATE TABLE `townproduct` (
   `description` text,
   `imageFile` text,
   `images` text,
+  `photoCredit` text,
   PRIMARY KEY (`id`),
   KEY `townproduct_town_IDX` (`town`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
