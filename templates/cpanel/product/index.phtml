@@ -71,7 +71,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 align: 'center',
                 cellsAlign: 'center',
                 cellsRenderer: function(row, column, value, rowData) {
-                    return rowData.arLink.length > 0 ? `<a href="${rowData.arLink}">Link</a>` : "No Link"
+                    return rowData.arLink.length > 0 ? `<a href="${rowData.arLink}" target="_blank">Link</a>` : "No Link"
                 }
             }, {
                 text: 'Primary Image',
@@ -80,7 +80,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 align: 'center',
                 cellsAlign: 'center',
                 cellsRenderer: function(row, column, value, rowData) {
-                    return rowData.imageFile != null ? `<a href="${rowData.imageFile}">Image</a>` : "No Image"
+                    return rowData.imageFile != null ? `<a href="${rowData.imageFile}" target="_blank">Image</a>` : "No Image"
                 }
             }, {
                 text: 'Town',
