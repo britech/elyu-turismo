@@ -1,0 +1,211 @@
+<?php
+
+use gov\pglu\tourism\util\ApplicationConstants;
+?>
+<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+<style type="text/css">
+    .ql-editor strong {
+        font-weight: bold;
+    }
+
+    .ql-container {
+        height: 200px;
+        overflow-y: auto;
+    }
+</style>
+<div class="row" style="margin-top: 20px;">
+    <div class="col s12 m12 l12">
+        <div class="center">
+            <?php if (count($images) > 0) : ?>
+            <div class="carousel carousel-slider">
+                <?php foreach ($images as $image) : ?>
+                    <a href="#!" class="carousel-item"><img src="<?= $image ?>" class="responsive-img" alt="Image"></a>
+                <?php endforeach; ?>
+            </div>
+            <?php else : ?>
+                <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet" />
+            <?php endif; ?>
+            <?php if (strlen(trim($imageSrc)) > 0) : ?>
+                <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($poi['photoCredit'])) == 0 ? "Not Available" : $poi['photoCredit']; ?></span>
+            <?php endif; ?>
+            <h3><?= $poi['name'] ?></h3>
+            <?php if($poi['arEnabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE && strlen(trim($poi['arLink'])) > 0): ?>
+                <a href="<?= $poi['arLink']?>" class="waves-effect waves-light btn blue lighten-1"><i class="material-icons left">camera</i>View in Augmented Reality</a>
+            <?php endif;?>
+            <a href="#!" id="addDestination" class="waves-effect waves-light btn green lighten-1"><i class="material-icons left">bookmark</i>Bookmark this Destination</a>
+            <a href="#!" id="removeDestination" class="waves-effect waves-light btn red lighten-1 hide"><i class="material-icons left">bookmark_border</i>remove bookmark</a>
+        </div>
+        <table>
+            <tbody>
+                <tr>
+                    <th class="flow-text">Location</th>
+                    <td class="flow-text">
+                        <?= $poi['address']; ?>
+                        <br />
+                        <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<?= "{$poi['latitude']},{$poi['longitude']}" ?>">View on Google Maps</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="flow-text">Level of Development</th>
+                    <td class="flow-text"><?= $poi['developmentLevel']; ?></td>
+                </tr>
+                <tr>
+                    <th class="flow-text">Classifications</th>
+                    <td class="flow-text">
+                        <?php foreach ($poi['classifications'] as $classification) : ?>
+                            <div class="chip blue lighten-2 flow-text"><?= $classification['name'] ?></div>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="flow-text">Tags</th>
+                    <td>
+                        <?php foreach ($poi['topicTags'] as $tag) : ?>
+                            <div class="chip red lighten-2 flow-text"><?= $tag['name'] ?></div>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <?php if (strlen($poi['description']) == 0) : ?>
+            <p style="font-style: italic" class="flow-text">To be formulated</p>
+        <?php else : ?>
+            <div id="description" class="flow-text"><?= $poi['description'] ?></div>
+        <?php endif; ?>
+
+        <h6 class="flow-text">Commuter's Guide</h6>
+        <?php if (strlen($poi['commuterguide']) == 0) : ?>
+            <p style="font-style: italic" class="flow-text">To be formulated</p>
+        <?php else : ?>
+            <div id="commuterGuide" class="flow-text"></div>
+        <?php endif; ?>
+
+        <h6 style="margin-top: 20px;" class="flow-text">Schedules</h6>
+        <?php if (count($schedules) == 0) : ?>
+            <div class="card-panel red lighten-2">
+                <strong class="flow-text white-text">No Available Data</strong>
+            </div>
+        <?php else : ?>
+        <ul class="collection">
+            <?php foreach ($schedules as $schedule) : ?>
+                <li class="collection-item">
+                    <h6 class="flow-text"><?= $schedule['openEveryday'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Everyday" : (is_null($schedule['day']) ? $schedule['specificDate'] : $schedule['day']) ?>, <?= $schedule['openAllDay'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "24 hours" : $schedule['operatingHours'] ?></h6>
+                    <?php if(strlen(trim($schedule['notes'])) > 0) : ?>
+                        <p class="flow-text">Notes: <?= $schedule['notes']; ?></p>
+                    <?php endif;?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <?php endif; ?>
+
+        <h6 style="margin-top: 20px" class="flow-text">Fees</h6>
+        <?php if (count($fees) == 0) : ?>
+            <div class="card-panel red lighten-2">
+                <strong class="flow-text white-text">No Available Data</strong>
+            </div>
+        <?php else : ?>
+            <ul class="collection">
+                <?php foreach ($fees as $fee) : ?>
+                <li class="collection-item">
+                    <h6 class="flow-text"><?= $fee['description'] ?></h6>
+                    <p class="flow-text"><?= $fee['freePrice'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "Free Admission" : "PHP " . number_format($fee['amount'], 2) ?></p>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+
+        <h6 style="margin-top: 20px" class="flow-text">Contact Details</h6>
+        <?php if (count($contacts) == 0) : ?>
+            <div class="card-panel red lighten-2">
+                <strong class="flow-text white-text">No Available Data</strong>
+            </div>
+        <?php else : ?>
+            <ul class="collection">
+                <?php foreach ($contacts as $contact) : ?>
+                <li class="collection-item">
+                    <p class="flow-text"><?= $contact['value'] ?></p>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+
+        <h6 class="flow-text" style="margin-top: 50px;">Total Visits</h6>
+        <p class="flow-text"><?= number_format($visitorCount[0]['visitorcount']) ?> visitors</p>
+    </div>
+</div>
+<script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        let descriptionView = new Quill('#description', {
+            theme: 'bubble'
+        })
+        descriptionView.disable();
+        descriptionView.setContents(<?= $poi['descriptionwysiwyg']; ?>);
+
+        let commuterGuideView = new Quill('#commuterGuide', {
+            theme: 'bubble'
+        })
+        commuterGuideView.disable();
+        commuterGuideView.setContents(<?= $poi['commuterguidewysiwyg']; ?>);
+
+        $(".carousel").carousel({
+            fullWidth: true,
+            indicators: true
+        });
+
+        let poi = {
+            id: '<?= $id ?>', 
+            name: '<?= $poi['name']?>'
+        }
+
+        let bookmarks = localStorage.getItem('bookmarks');
+        if (bookmarks != null && bookmarks.length > 0) {
+            let bookmarkEntries = JSON.parse(bookmarks);
+            for (let bookmark of bookmarkEntries) {
+                if (poi.id == bookmark.id) {
+                    $("#addDestination").addClass('hide');
+                    $("#removeDestination").removeClass('hide');
+                    break;
+                }
+            }
+        }
+
+        $("#addDestination").click(function() {
+            $(this).addClass('hide');
+            M.toast({
+                html: '<?= $poi['name']?> is now bookmarked',
+                completeCallback: function() {
+                    window.location = `/place/${poi.id}`
+                }
+            })
+            $("#removeDestination").removeClass('hide');
+            
+            let bookmarks = localStorage.getItem('bookmarks');
+            if (bookmarks == null || bookmarks.length == 0) {
+                localStorage.setItem('bookmarks', JSON.stringify([poi]));
+            } else {
+                let bookmarkEntries = JSON.parse(bookmarks);
+                bookmarkEntries.push(poi);
+                localStorage.setItem('bookmarks', JSON.stringify(bookmarkEntries));
+            }
+        });
+
+        $("#removeDestination").click(function() {
+            $(this).addClass('hide');
+            M.toast({
+                html: '<?= $poi['name']?> removed from bookmark',
+                completeCallback: function() {
+                    window.location = `/place/${poi.id}`
+                }
+            })
+            $("#addDestination").removeClass('hide');
+
+            let bookmarks = localStorage.getItem('bookmarks');
+            if (bookmarks != null && bookmarks.length > 0) {
+                let bookmarkEntries = JSON.parse(bookmarks);
+                localStorage.setItem('bookmarks', JSON.stringify(bookmarkEntries.filter(bookmark => poi.id != bookmark.id)));
+            }
+        })
+    });
+</script>

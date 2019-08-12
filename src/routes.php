@@ -1067,6 +1067,7 @@ return function (App $app) {
             $poi = $container->poiManagementService->getPoi($id);
             $schedules = $container->poiManagementService->listSchedules($id);
             $fees = $container->poiManagementService->listFees($id);
+            $contacts = $container->poiManagementService->listContacts($id);
             $container->openDataDao->captureVisit($id);
 
             list('imageName' => $imageName, 'images' => $images) = $poi;
@@ -1086,13 +1087,16 @@ return function (App $app) {
                 'poi' => $poi,
                 'schedules' => $schedules,
                 'fees' => $fees,
+                'contacts' => $contacts,
                 'visitorCount' => $container->openDataDao->countVisitorsByDestination($id),
                 'imageSrc' => $imageSrc,
-                'images' => $imageList
+                'images' => $imageList,
+                'topDestinations' => $container->openDataDao->listDestinations(['limit' => 5]),
+                'products' => $container->townManagementService->listProducts([])
             ]);
 
             if ($poi['displayable'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
-                return $container->webRenderer->render($response, 'place.phtml', $args);
+                return $container->exploreRenderer->render($response, 'destination.phtml', $args);
             } else {
                 return $response->withRedirect($container->router->pathFor('explore'));
             }
