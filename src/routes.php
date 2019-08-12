@@ -42,7 +42,7 @@ return function (App $app) {
         ]);
         
         return $container->cpanelRenderer->render($response, 'index.phtml', $args);
-    });
+    })->setName('cpanel-home');
 
     $app->get('/cpanel/tags', function(Request $request, Response $response, array $args) use ($container) {
         $result = $container->tagService->getTags();
@@ -756,37 +756,31 @@ return function (App $app) {
         }
     });
 
-    $app->get('/cpanel/towns/{type}', function(Request $request, Response $response, array $args) use ($container) {
-        list('type' => $type) = $args;
-        $args = array_merge($args, [
-            'tourismCircuits' => ApplicationUtils::TOURISM_CIRCUITS,
-            'type' => $type
-        ]);
-        return $container->townRenderer->render($response, 'town/index.phtml', $args);
-    })->setName('town-landing');
-
-    $app->get('/cpanel/town/{town}/products', function(Request $request, Response $response, array $args) use ($container) {
-        list('town' => $rawTownInput) = $args;
-        $town = ucwords(implode(' ', explode('_', $rawTownInput)));
+    $app->get('/cpanel/products', function(Request $request, Response $response, array $args) use ($container) {
         $flash = $container->flash;
-
         try {
+            $products = $container->townManagementService->listProducts([]);
+            foreach($products as $product) {
+                list('imageFile' => $primaryImage) = $product;
+                $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$primaryImage}" : $primaryImage;
+                $product['imageFile'] = $imageSrc;
+            }
             $args = array_merge($args, [
-                'tourismCircuits' => ApplicationUtils::TOURISM_CIRCUITS,
-                'products' => $container->townManagementService->listProducts($town),
-                'town' => $town,
-                'url' => "/cpanel/product",
-                'type' => 'products',
-                'townLink' => $rawTownInput,
+                'products' => count($products) == 0 ? '[]' : json_encode($products),
                 ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY),
             ]);
-            return $container->townRenderer->render($response, 'town/product.phtml', $args);
+            return $container->cpanelRenderer->render($response, 'product/index.phtml', $args);
         } catch (\Exception $ex) {
             $container->logger->error($ex);
             $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
-            return $response->withRedirect($container->router->pathFor('town-landing', ['type' => $town]));
+            return $response->withRedirect($container->router->pathFor('cpanel-home'));
         }
-    })->setName('product-list');
+    });
+
+    $app->get('/cpanel/product/add', function(Request $request, Response $response, array $args) use ($container) {
+        $args = array_merge($args, ['tourismCircuits' => ApplicationUtils::TOURISM_CIRCUITS]);
+        return $container->cpanelRenderer->render($response, 'product/create.phtml', $args);
+    });
 
     $app->post('/cpanel/product', function(Request $request, Response $response, array $args) use ($container) {
         $body = $request->getParsedBody();
@@ -864,25 +858,17 @@ return function (App $app) {
         return $response->withRedirect($container->router->pathFor('product-list', ['town' => $town]));
     });
 
-    $app->get('/api/product/{id}', function(Request $request, Response $response, array $args) use ($container) {
-        list('id' => $id) = $args;
-        try {
-            $product = $container->townManagementService->getProduct($id);
-            return $response->withJson($product, 200);
-        } catch (\Exception $ex) {
-            $container->logger->error($ex);
-            return $response->withStatus(500);
-        }
-    });
-
     $app->delete('/api/product/{id}', function(Request $request, Response $response, array $args) use ($container) {
         list('id' => $id) = $args;
+        list('name' => $name) = $request->getParsedBody();
+        $flash = $container->flash;
         try {
             $container->townManagementService->removeProduct($id);
-            return $response->withJson(['message' => 'Town product removed'], 200);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, "Product {$name} has been removed.");
+            return $response->withStatus(200);
         } catch (\Exception $ex) {
             $container->logger->error($ex);
-            $container->flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
             return $response->withStatus(500);
         }
     });
