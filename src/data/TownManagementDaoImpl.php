@@ -74,7 +74,7 @@ class TownManagementDaoImpl implements TownManagementDao {
         $whereClause = strlen(trim($town)) == 0 ? "" : "WHERE town=:town";
         $params = strlen(trim($town)) == 0 ? [] : ['town' => $town];
         try {
-            $statement = $this->pdo->prepare("SELECT * FROM townproduct {$whereClause}");
+            $statement = $this->pdo->prepare("SELECT * FROM townproduct {$whereClause} ORDER by name ASC");
             $statement->execute($params);
             return $statement->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $ex) {
