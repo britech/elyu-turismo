@@ -1,6 +1,6 @@
-<h2>About Product</h2>
+<h2>About the Product</h2>
 <a class="waves-light btn-large" href="/cpanel/product/<?= $product['id'] ?>/edit"><i class="material-icons left">edit</i>Update</a>
-
+<a class="waves-light btn-large red lighten-2 modal-trigger" href="#!" data-target="removeProduct"><i class="material-icons left">warning</i>Remove</a>
 <table class="striped" style="margin-top: 20px; margin-bottom: 20px;">
     <tbody>
         <tr>
@@ -49,3 +49,50 @@
         </tr>
     </tbody>
 </table>
+<div id="removeProduct" class="modal">
+    <div class="modal-content">
+        <h4>Do you want to remove this Product ?</h4>
+        <table>
+            <tbody>
+                <tr>
+                    <th style="width: 25%">Name</th>
+                    <td id="productName"><?= $product['name'] ?></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="productId" value="<?= $product['id'] ?>" />
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn green lighten-1">No</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn red lighten-1" id="continueRemove">Yes</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#removeProduct").modal({
+            onOpenStart: function(e, t) {
+                let entries = t.id.split("-");
+                let id = entries[1];
+                $("#productId").val(id);
+                $("#productName").html($(`#entry-${id}`).html());
+            }
+        });
+
+        $('#continueRemove').click(function() {
+            let id = $("#productId").val();
+            $.ajax({
+                url: `/api/product/${id}`,
+                method: 'DELETE',
+                data: {
+                    name: $("#productName").html()
+                }
+            }).done(function(data, status, xhr) {
+                window.location = `/cpanel/products`
+            }).fail(function(xhr, status, err) {
+                console.error(err);
+                window.location = `/cpanel/products`
+            });
+        });
+    })
+</script>
