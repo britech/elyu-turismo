@@ -986,7 +986,7 @@ return function (App $app) {
         $maxCount = 0;
         try {
             $places = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
-            $products = array_merge([], $container->townManagementService->listProducts($modifiedTown));
+            $products = array_merge([], $container->townManagementService->listProducts(['town' => $modifiedTown]));
 
             foreach($places as $place) {
                 list('name' => $name) = $place;
