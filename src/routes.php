@@ -780,7 +780,7 @@ return function (App $app) {
     })->setName('product-list');
 
     $app->get('/cpanel/product/add', function(Request $request, Response $response, array $args) use ($container) {
-        $args = array_merge($args, ['tourismCircuits' => ApplicationUtils::TOURISM_CIRCUITS]);
+        $args = array_merge($args, ['circuits' => ApplicationUtils::TOURISM_CIRCUITS]);
         return $container->cpanelRenderer->render($response, 'product/create.phtml', $args);
     });
 
