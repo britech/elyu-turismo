@@ -1,0 +1,69 @@
+<h2>Add a Product</h2>
+<form method="post" action="/cpanel/product" enctype="multipart/form-data">
+    <div class="row">
+        <div class="input-field col l4">
+            <select name="town" class="validate" required>
+                <option value="" disabled selected>Select town</option>
+                <?php foreach ($circuits as $circuit => $towns) : ?>
+                    <optgroup label="<?= $circuit ?>">
+                        <?php foreach ($towns as $town) : ?>
+                            <option value="<?= $town ?>"><?= $town ?></option>
+                        <?php endforeach; ?>
+                    </optgroup>
+                <?php endforeach; ?>
+            </select>
+            <label>Tourism Ciruit and Town</label>
+        </div>
+        <div class="input-field col l8">
+            <input name="name" type="text" class="validate" required />
+            <label>Name</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col l12">
+            <textarea name="description" class="materialize-textarea"></textarea>
+            <label>Description</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col l12">
+            <input name="arLink" type="text" class="validate" />
+            <label>Augmented Reality Link</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l12">
+            <p>Primary Image</p>
+            <div class="file-field input-field">
+                <div class="btn indigo darken-4">
+                    <span>image</span>
+                    <input type="file" name="image" accept="image/*">
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l12">
+            <p>Image List</p>
+            <div class="file-field input-field">
+                <div class="btn indigo darken-4">
+                    <span>image</span>
+                    <input type="file" multiple name="images[]" accept="image/*">
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+            <button class="btn waves-effect waves-light" type="submit" name="action">Add<i class="material-icons left">add</i></button>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $('select').formSelect();
+    })
+</script>
