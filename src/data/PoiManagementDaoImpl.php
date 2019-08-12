@@ -179,6 +179,7 @@ QUERY;
             latitude,
             longitude,
             arEnabled,
+            arLink,
             displayable,
             imageName,
             images,
