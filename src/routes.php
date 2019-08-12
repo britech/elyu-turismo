@@ -759,11 +759,13 @@ return function (App $app) {
     $app->get('/cpanel/products', function(Request $request, Response $response, array $args) use ($container) {
         $flash = $container->flash;
         try {
-            $products = $container->townManagementService->listProducts([]);
-            foreach($products as $product) {
-                list('imageFile' => $primaryImage) = $product;
+            $result = $container->townManagementService->listProducts([]);
+            $products = [];
+            foreach($result as $entry) {
+                list('imageFile' => $primaryImage) = $entry;
                 $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$primaryImage}" : $primaryImage;
-                $product['imageFile'] = $imageSrc;
+                $product = array_merge($entry, ['imageFile' => $imageSrc]);
+                $products = array_merge($products, [$product]);
             }
             $args = array_merge($args, [
                 'products' => count($products) == 0 ? '[]' : json_encode($products),
@@ -775,7 +777,7 @@ return function (App $app) {
             $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
             return $response->withRedirect($container->router->pathFor('cpanel-home'));
         }
-    });
+    })->setName('product-list');
 
     $app->get('/cpanel/product/add', function(Request $request, Response $response, array $args) use ($container) {
         $args = array_merge($args, ['tourismCircuits' => ApplicationUtils::TOURISM_CIRCUITS]);
