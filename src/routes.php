@@ -786,21 +786,30 @@ return function (App $app) {
 
     $app->post('/cpanel/product', function(Request $request, Response $response, array $args) use ($container) {
         $body = $request->getParsedBody();
-        list('town' => $rawTown, 'name' => $name, 'arLink' => $arLink, 'description' => $description, 'imageBackend' => $imageBackend) = $body;
-        $town = strtolower(implode('_', explode(' ', $rawTown)));
+        list('town' => $town, 'name' => $name, 'arLink' => $arLink, 'description' => $description) = $body;
         try {
-            list('image' => $image) = $request->getUploadedFiles();
-            $filename = $container->fileUploadService->uploadFile([
+            list('image' => $image, 'images' => $images) = $request->getUploadedFiles();
+            $primaryImage = $container->fileUploadService->uploadFile([
                 'file' => $image,
                 'name' => $name
             ]);
 
+            $imageList = [];
+            foreach($images as $imageEntry) {
+                $filename = $container->fileUploadService->uploadFile([
+                    'file' => $imageEntry,
+                    'name' => $name,
+                ]);
+                $imageList = array_merge($imageList, [$filename]);
+            }
+
             $container->townManagementService->addProduct([
                 'name' => $name,
-                'town' => $rawTown,
+                'town' => $town,
                 'arLink' => $arLink,
                 'description' => $description,
-                'imageFile' => is_null($filename) ? $imageBackend : $filename
+                'imageFile' => $primaryImage,
+                'images' => implode(',', $imageList)
             ]);
         } catch (\Exception $ex) {
             $container->logger->error($ex);
