@@ -255,10 +255,3 @@ CREATE TABLE `user` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2019-08-11 20:47:28
-CREATE USER 'tourism_user'@'localhost' IDENTIFIED BY 'u&e6uaAz-b#^Lj7m';
-GRANT SELECT,INSERT,UPDATE,DELETE ON tourism.* TO 'tourism_user'@'localhost';
-
-CREATE USER 'tourism_user'@'%' IDENTIFIED BY 'u&e6uaAz-b#^Lj7m';
-GRANT SELECT ON tourism.* TO 'tourism_user'@'%';
-
-FLUSH PRIVILEGES;
