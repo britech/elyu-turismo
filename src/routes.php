@@ -1215,6 +1215,39 @@ return function (App $app) {
         ]);
 
         return $container->exploreRenderer->render($response, 'open-data.phtml', $args);
+    })->setName('open-data-landing');
+
+    $app->post('/open-data/poi', function(Request $request, Response $response, array $args) use ($container) {
+        $logger = $container->logger;
+        list('emailAddress' => $email, 'userConsent' => $userConsent, 
+            'reportType' => $reportType) = $request->getParsedBody();
+        
+        if (strcasecmp('on', $userConsent) != 0) {
+            $logger->warn('User consent not fulfilled!');
+            return $response->withRedirect($container->router->pathFor('open-data-landing'));
+        }
+
+        $csvGenerationSetting = $container->csvGenerationSetting;
+        $filename = "{$csvGenerationSetting->destination}/" . time() . "_tourist-destination-masterlist.csv";
+        try {
+            $rows = $container->csvOpenDataService->listPoi();
+            $file = fopen($filename, 'w');
+            foreach($rows as $row) {
+                fputcsv($file, $row);
+            }
+            fclose($file);
+            $baseName = basename($filename);
+
+            $container->openDataDao->trackDownload([
+                'email' => $email,
+                'reportType' => $reportType
+            ]);
+
+            return $response->withRedirect("{$csvGenerationSetting->httpPath}/{$baseName}");
+        } catch (\Exception $ex) {
+            $logger->error($ex);
+            return $response->withRedirect($container->router->pathFor('open-data-landing'));
+        }
     });
 
     $app->post('/open-data/csv', function(Request $request, Response $response, array $args) use ($container) {
