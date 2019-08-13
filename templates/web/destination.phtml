@@ -156,14 +156,15 @@ use gov\pglu\tourism\util\ApplicationConstants;
 
         let poi = {
             id: '<?= $id ?>', 
-            name: '<?= $poi['name']?>'
+            name: '<?= $poi['name']?>',
+            type: 'destination'
         }
 
         let bookmarks = localStorage.getItem('bookmarks');
         if (bookmarks != null && bookmarks.length > 0) {
             let bookmarkEntries = JSON.parse(bookmarks);
             for (let bookmark of bookmarkEntries) {
-                if (poi.id == bookmark.id) {
+                if (poi.id == bookmark.id && bookmark.type == 'destination') {
                     $("#addDestination").addClass('hide');
                     $("#removeDestination").removeClass('hide');
                     break;
@@ -204,7 +205,14 @@ use gov\pglu\tourism\util\ApplicationConstants;
             let bookmarks = localStorage.getItem('bookmarks');
             if (bookmarks != null && bookmarks.length > 0) {
                 let bookmarkEntries = JSON.parse(bookmarks);
-                localStorage.setItem('bookmarks', JSON.stringify(bookmarkEntries.filter(bookmark => poi.id != bookmark.id)));
+                let entries = [];
+                for (let bookmark of bookmarkEntries) {
+                    if (poi.id == bookmark.id && bookmark.type == 'destination') {
+                        continue;
+                    }
+                    entries.push(bookmark);
+                }
+                localStorage.setItem('bookmarks', JSON.stringify(entries));
             }
         })
     });
