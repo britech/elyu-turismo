@@ -1,0 +1,120 @@
+<div class="row" style="margin-top: 20px;">
+    <div class="col s12 m12 l12">
+        <div class="card-panel green darken-2">
+            <span class="white-text">Below are the available reports that are downloadable in CSV format. You will be asked for your email address before you can download any of the reports. For any concerns, you can consult our <span style="text-decoration: underline; cursor: pointer">Privacy and Usage Policy</span> for details.</span>
+        </div>
+
+        <div class="collection with-header">
+            <div class="collection-header">
+                <h5>Reports</h5>
+            </div>
+            <a href="#!" id="requestManifest" class="collection-item modal-trigger" data-target="confirm-download">Masterlist of Tourist Destinations</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col l12 m12 s12">
+        <h5 class="flow-text center">Visitor Count per Town</h5>
+        <canvas id="visitorCountChart" width="400" height="200"></canvas>
+    </div>
+</div>
+<div class="row">
+    <div class="col l12 m12 s12">
+        <h5 class="flow-text center">Top 5 Destinations</h5>
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    <th class="center flow-text" style="width: 20%">Rank</th>
+                    <th class="center flow-text" style="width: 60%">Tourist Destination</th>
+                    <th class="center flow-text" style="width: 20%">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $count = 1; ?>
+                <?php foreach ($topDestinations as $topDestination) : ?>
+                <tr>
+                    <th class="center flow-text"><?= $count; ?></th>
+                    <td class="flow-text"><?= $topDestination['name'] ?></td>
+                    <td class="center flow-text"><?= $topDestination['visitorCount']; ?></td>
+                </tr>
+                <?php $count++; ?>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal" id="confirm-download">
+    <div class="modal-content">
+        <h3>Download this report</h3>
+        <p>Before you can download the report, <span style="font-weight: bold;">Masterlist of Tourist Destinations</span>, please spare a minute to accomplish the details below.</p>
+        <form action="/open-data/poi" method="post">
+            <div class="input-field" style="margin-top: 30px;">
+                <input type="email" class="validate" name="emailAddress" required />
+                <label>Email Address</label>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label>
+                    <input type="checkbox" name="userConsent" class="validate" required/>
+                    <span>I agree with the <span style="text-decoration: underline; cursor: pointer">Privacy and Usage Policy</span>.</span>
+                </label>
+            </div>
+            <button type="submit" class="btn green lighten-1">Download</button>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect red lighten-1 btn">Close</a>
+    </div>
+</div>
+
+<?php $maxCount += 100; ?>
+<script>
+    var ctx = document.getElementById('visitorCountChart');
+    var myChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: <?= $towns ?>,
+            datasets: [{
+                label: 'Number of Visitors',
+                backgroundColor: [
+                    'rgba(54, 39, 8, 1)', //agoo
+                    'rgba(1, 113, 133, 1)', //aringay
+                    'rgba(251, 135, 0, 1)', //bacnotan
+                    'rgba(203, 15, 4, 1)', //bagulin
+                    'rgba(71, 34, 7, 1)', //balaoan
+                    'rgba(189, 72, 88, 1)', //bangar
+                    'rgba(55, 104, 39, 1)', //bauang
+                    'rgba(7, 135, 16, 1)', //burgos
+                    'rgba(241, 167, 18, 1)', //caba
+                    'rgba(77, 77, 77, 1)', //luna
+                    'rgba(94, 45, 49, 1)', //naguilian
+                    'rgba(0, 91, 152, 1)', //pugo
+                    'rgba(162, 80, 20, 1)', //rosario
+                    'rgba(255, 1, 0, 1)', //san fernando
+                    'rgba(69, 122, 236, 1)', //san gabriel
+                    'rgba(5, 98, 255, 1)', //san juan
+                    'rgba(141, 71, 37, 1)', //santo tomas
+                    'rgba(68, 127, 17, 1)', //santol
+                    'rgba(6, 70, 20, 1)', //sudipen
+                    'rgba(2, 187, 0, 1)' //tubao
+                ],
+                data: <?= $inputData ?>
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: <?= floor($maxCount * 0.25) ?>,
+                        suggestedMin: 0,
+                        suggestedMax: <?= $maxCount ?>
+                    }
+                }]
+            }
+        }
+    });
+
+    $(document).ready(function() {
+        $('.modal').modal();
+    });
+</script>

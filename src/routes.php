@@ -1177,12 +1177,44 @@ return function (App $app) {
     });
 
     $app->get('/open-data', function(Request $request, Response $response, array $args) use ($container) {
-        $poiList = $container->poiManagementService->listPoi();
+        $topDestinations = [];
+        $products = [];
+        $destinations = [];
+        $towns = [];
+        $inputData = [];
+        $max = 0;
 
-        $args = array_merge($args, ['reportTypes' => ApplicationConstants::REPORT_TYPES, 
-            'poiList' => ApplicationUtils::convertArrayToAutocompleteData($poiList, 'name'),
-            'poiListBackend' => json_encode($poiList) ]);
-        return $container->openDataRenderer->render($response, 'csv.phtml', $args);
+        foreach(ApplicationUtils::TOURISM_CIRCUITS as $tourismCircuit => $townList) {
+            $towns = array_merge($towns, $townList);
+        }
+        sort($towns, SORT_NATURAL);
+
+        try {
+            $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
+            $products = $container->townManagementService->listProducts([]);
+            $destinations = array_merge([], $container->poiManagementService->listPoi());
+            $summaryResult = $container->openDataDao->summarizeVisitors();
+            foreach($towns as $town) {
+                $count = ApplicationUtils::getVisitorCountByTown($summaryResult, $town);
+                $inputData = array_merge($inputData, [$count]);
+                $max += $count;
+            }
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+        }
+
+        $args = array_merge($args, [
+            'title' => 'Open Data',
+            'topDestinations' => $topDestinations,
+            'products' => $products,
+            'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($destinations, 'name'),
+            'destinationsBackend' => count($destinations) == 0 ? '[]' : json_encode($destinations),
+            'towns' => json_encode($towns),
+            'inputData' => json_encode($inputData),
+            'maxCount' => $max
+        ]);
+
+        return $container->exploreRenderer->render($response, 'open-data.phtml', $args);
     });
 
     $app->post('/open-data/csv', function(Request $request, Response $response, array $args) use ($container) {
