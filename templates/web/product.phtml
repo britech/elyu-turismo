@@ -1,0 +1,97 @@
+<div class="row" style="margin-top: 20px;">
+    <div class="col s12 m12 l12">
+        <div class="center">
+            <?php if (count($images) > 0) : ?>
+                <div class="carousel carousel-slider">
+                    <?php foreach ($images as $image) : ?>
+                        <a href="#!" class="carousel-item"><img src="<?= $image ?>" class="responsive-img" alt="Image"></a>
+                    <?php endforeach; ?>
+                </div>
+            <?php else : ?>
+                <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet" />
+            <?php endif; ?>
+            <?php if (strlen(trim($imageSrc)) > 0) : ?>
+                <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($product['photoCredit'])) == 0 ? "Not Available" : $poi['photoCredit']; ?></span>
+            <?php endif; ?>
+            <h3><?= $product['name'] ?></h3>
+            <?php if (strlen(trim($product['arLink'])) > 0) : ?>
+                <a href="<?= $product['arLink'] ?>" class="waves-effect waves-light btn blue lighten-1"><i class="material-icons left">camera</i>View in Augmented Reality</a>
+            <?php endif; ?>
+            <a href="#!" id="addProduct" class="waves-effect waves-light btn green lighten-1"><i class="material-icons left">bookmark</i>Bookmark this Destination</a>
+            <a href="#!" id="removeProduct" class="waves-effect waves-light btn red lighten-1 hide"><i class="material-icons left">bookmark_border</i>remove bookmark</a>
+        </div>
+
+        <p class="flow-text" style="font-style: italic"><?= strlen(trim($product['description'])) == 0 ? "To be formulated" : $product['description']?></p>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $(".carousel").carousel({
+            fullWidth: true,
+            indicators: true
+        });
+
+        let product = {
+            id: '<?= $product['id']?>',
+            name: '<?= $product['name']?>',
+            type: 'product'
+        }
+
+        let bookmarks = localStorage.getItem('bookmarks');
+        if (bookmarks != null && bookmarks.length > 0) {
+            let bookmarkEntries = JSON.parse(bookmarks);
+            for (let bookmark of bookmarkEntries) {
+                if (product.id == bookmark.id && bookmark.type == 'product') {
+                    $("#addProduct").addClass('hide');
+                    $("#removeProduct").removeClass('hide');
+                    break;
+                }
+            }
+        }
+
+        $("#addProduct").click(function() {
+            $(this).addClass('hide');
+            M.toast({
+                html: `${product.name} is now bookmarked`,
+                completeCallback: function() {
+                    window.location = `/product/${product.id}`
+                }
+            })
+            $("#removeProduct").removeClass('hide');
+            
+            let bookmarks = localStorage.getItem('bookmarks');
+            if (bookmarks == null || bookmarks.length == 0) {
+                localStorage.setItem('bookmarks', JSON.stringify([product]));
+            } else {
+                let bookmarkEntries = JSON.parse(bookmarks);
+                bookmarkEntries.push(product);
+                localStorage.setItem('bookmarks', JSON.stringify(bookmarkEntries));
+            }
+        });
+
+        $("#removeProduct").click(function() {
+            $(this).addClass('hide');
+            M.toast({
+                html: `${product.name} removed from bookmark`,
+                completeCallback: function() {
+                    window.location = `/product/${product.id}`
+                }
+            })
+            $("#addProduct").removeClass('hide');
+
+            let bookmarks = localStorage.getItem('bookmarks');
+            if (bookmarks != null && bookmarks.length > 0) {
+                let bookmarkEntries = JSON.parse(bookmarks);
+                let entries = [];
+                for (let bookmark of bookmarkEntries) {
+                    if (product.id == bookmark.id && bookmark.type == 'product') {
+                        continue;
+                    }
+                    entries.push(bookmark);
+                }
+                localStorage.setItem('bookmarks', JSON.stringify(entries));
+            }
+        })
+    })
+</script>

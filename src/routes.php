@@ -1106,6 +1106,39 @@ return function (App $app) {
         }
     });
 
+    $app->get('/product/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        try {
+            $product = $container->townManagementService->getProduct($id);
+            $container->logger->debug(json_encode($product));
+            list('imageFile' => $imageName, 'images' => $images) = $product;
+            $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
+            $imageSrc = $useLocalFileSystem ? "/uploads/{$imageName}" : $imageName;
+            
+            $imageList = [];
+            foreach(explode(',', $images) as $imageEntry) {
+                $file = $useLocalFileSystem ? "/uploads/{$imageEntry}" : $imageEntry;
+                if (strlen(trim($file)) == 0) {
+                    continue;
+                }
+                $imageList = array_merge($imageList, [$file]);
+            }
+
+            $args = array_merge($args, [
+                'product' => $product,
+                'imageSrc' => $imageSrc,
+                'images' => $imageList,
+                'topDestinations' => $container->openDataDao->listDestinations(['limit' => 5]),
+                'products' => $container->townManagementService->listProducts([])
+            ]);
+
+            return $container->exploreRenderer->render($response, 'product.phtml', $args);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            return $response->withRedirect($container->router->pathFor('explore'));
+        }
+    });
+
     $app->get('/discover', function(Request $request, Response $response, array $args) use ($container) {
         $places = [];
         try {
