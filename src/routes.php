@@ -981,17 +981,21 @@ return function (App $app) {
     $app->get('/explore', function(Request $request, Response $response, array $args) use ($container) {
         $topDestinations = [];
         $products = [];
+        $allDestinations = [];
 
         try {
             $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
             $products = array_merge([], $container->townManagementService->listProducts([]));
+            $allDestinations = array_merge([], $container->poiManagementService->listPoi());
         } catch (\Exception $ex) {
             $container->logger->error($ex);
         }
 
         $args = array_merge($args, [
             'topDestinations' => $topDestinations,
-            'products' => $products
+            'products' => $products,
+            'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
+            'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations)
         ]);
 
         return $container->exploreRenderer->render($response, 'explore.phtml', $args);
@@ -1007,6 +1011,7 @@ return function (App $app) {
         $visitorCounts = [];
         $topDestinations = [];
         $allProducts = [];
+        $allDestinations = [];
         $maxCount = 0;
         $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
         try {
@@ -1016,6 +1021,7 @@ return function (App $app) {
 
             $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
             $allProducts = array_merge([], $container->townManagementService->listProducts([]));
+            $allDestinations = array_merge([], $container->poiManagementService->listPoi());
 
             foreach($placesResult as $place) {
                 list('name' => $name, 'imageName' => $primaryImage) = $place;
@@ -1055,7 +1061,9 @@ return function (App $app) {
                 'maxCount' => $maxCount
             ],
             'topDestinations' => $topDestinations,
-            'products' => $allProducts
+            'products' => $allProducts,
+            'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
+            'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations)
         ]);
         return $container->exploreRenderer->render($response, 'places.phtml', $args);
     });
@@ -1082,6 +1090,7 @@ return function (App $app) {
                 }
                 $imageList = array_merge($imageList, [$file]);
             }
+            $allDestinations = array_merge([], $container->poiManagementService->listPoi());
 
             $args = array_merge($args, [
                 'poi' => $poi,
@@ -1092,7 +1101,9 @@ return function (App $app) {
                 'imageSrc' => $imageSrc,
                 'images' => $imageList,
                 'topDestinations' => $container->openDataDao->listDestinations(['limit' => 5]),
-                'products' => $container->townManagementService->listProducts([])
+                'products' => $container->townManagementService->listProducts([]),
+                'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
+                'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations)
             ]);
 
             if ($poi['displayable'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
@@ -1124,12 +1135,16 @@ return function (App $app) {
                 $imageList = array_merge($imageList, [$file]);
             }
 
+            $allDestinations = array_merge([], $container->poiManagementService->listPoi());
+
             $args = array_merge($args, [
                 'product' => $product,
                 'imageSrc' => $imageSrc,
                 'images' => $imageList,
                 'topDestinations' => $container->openDataDao->listDestinations(['limit' => 5]),
-                'products' => $container->townManagementService->listProducts([])
+                'products' => $container->townManagementService->listProducts([]),
+                'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
+                'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations)
             ]);
 
             return $container->exploreRenderer->render($response, 'product.phtml', $args);
