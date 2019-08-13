@@ -66,7 +66,7 @@ return function (App $app) {
         list('template_path' => $templatePath) = $rendererSettings;
         
         $renderer = new PhpRenderer("{$templatePath}/web/");
-        $renderer->setLayout('layout_explore.phtml');
+        $renderer->setLayout('layout.phtml');
 
         return $renderer;
     };
