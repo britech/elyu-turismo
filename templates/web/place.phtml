@@ -78,7 +78,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
                                 <th class="flow-text">Classifications</th>
                                 <td class="flow-text">
                                     <?php foreach ($poi['classifications'] as $classification) : ?>
-                                        <div class="chip blue lighten-2 flow-text"><?= $classification['name'] ?></div>
+                                        <div class="chip blue lighten-2"><?= $classification['name'] ?></div>
                                     <?php endforeach; ?>
                                 </td>
                             </tr>
@@ -86,7 +86,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
                                 <th class="flow-text">Tags</th>
                                 <td>
                                     <?php foreach ($poi['topicTags'] as $tag) : ?>
-                                        <div class="chip red lighten-2 flow-text"><?= $tag['name'] ?></div>
+                                        <div class="chip red lighten-2"><?= $tag['name'] ?></div>
                                     <?php endforeach; ?>
                                 </td>
                             </tr>
