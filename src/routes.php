@@ -995,7 +995,8 @@ return function (App $app) {
             'topDestinations' => $topDestinations,
             'products' => $products,
             'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
-            'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations)
+            'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations),
+            'title' => 'Explore La Union'
         ]);
 
         return $container->exploreRenderer->render($response, 'explore.phtml', $args);
@@ -1063,7 +1064,8 @@ return function (App $app) {
             'topDestinations' => $topDestinations,
             'products' => $allProducts,
             'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
-            'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations)
+            'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations),
+            'title' => "Explore {$modifiedTown}"
         ]);
         return $container->exploreRenderer->render($response, 'places.phtml', $args);
     });
@@ -1103,7 +1105,8 @@ return function (App $app) {
                 'topDestinations' => $container->openDataDao->listDestinations(['limit' => 5]),
                 'products' => $container->townManagementService->listProducts([]),
                 'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
-                'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations)
+                'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations),
+                'title' => "Explore {$poi['town']}"
             ]);
 
             if ($poi['displayable'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
@@ -1144,7 +1147,8 @@ return function (App $app) {
                 'topDestinations' => $container->openDataDao->listDestinations(['limit' => 5]),
                 'products' => $container->townManagementService->listProducts([]),
                 'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
-                'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations)
+                'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations),
+                'title' => "Explore {$product['town']}"
             ]);
 
             return $container->exploreRenderer->render($response, 'product.phtml', $args);
