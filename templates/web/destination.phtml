@@ -31,10 +31,11 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <?php endif; ?>
             <h3><?= $poi['name'] ?></h3>
             <?php if($poi['arEnabled'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE && strlen(trim($poi['arLink'])) > 0): ?>
-                <a href="<?= $poi['arLink']?>" class="waves-effect waves-light btn blue lighten-1"><i class="material-icons left">camera</i>View in Augmented Reality</a>
+                <a href="<?= $poi['arLink']?>" class="waves-effect waves-light btn blue lighten-1 tooltip" data-tooltip="View in Augmented Reality"><i class="material-icons">camera</i></a>
             <?php endif;?>
-            <a href="#!" id="addDestination" class="waves-effect waves-light btn green lighten-1"><i class="material-icons left">bookmark</i>Bookmark this Destination</a>
-            <a href="#!" id="removeDestination" class="waves-effect waves-light btn red lighten-1 hide"><i class="material-icons left">bookmark_border</i>remove bookmark</a>
+            &nbsp;
+            <a href="#!" id="addDestination" class="waves-effect waves-light btn green lighten-1 tooltip" data-tooltip="Bookmark this location"><i class="material-icons">bookmark</i></a>
+            <a href="#!" id="removeDestination" class="waves-effect waves-light btn red lighten-1 tooltip hide" data-tooltip="Remove from my bookmarked destinations"><i class="material-icons">bookmark_border</i></a>
         </div>
         <table>
             <tbody>
@@ -164,6 +165,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
             $(this).addClass('hide');
             M.toast({
                 html: '<?= $poi['name']?> is now bookmarked',
+                displayLength: 1000,
                 completeCallback: function() {
                     window.location = `/place/${poi.id}`
                 }
@@ -183,7 +185,8 @@ use gov\pglu\tourism\util\ApplicationConstants;
         $("#removeDestination").click(function() {
             $(this).addClass('hide');
             M.toast({
-                html: '<?= $poi['name']?> removed from bookmark',
+                html: '<?= $poi['name']?> removed from your bookmark',
+                displayLength: 1000,
                 completeCallback: function() {
                     window.location = `/place/${poi.id}`
                 }
@@ -202,7 +205,9 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 }
                 localStorage.setItem('bookmarks', JSON.stringify(entries));
             }
-        })
+        });
+
+        $(".tooltip").tooltip();
 
         let descriptionView = new Quill('#description', {
             theme: 'bubble'

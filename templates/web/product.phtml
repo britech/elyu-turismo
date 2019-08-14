@@ -15,10 +15,11 @@
             <?php endif; ?>
             <h3><?= $product['name'] ?></h3>
             <?php if (strlen(trim($product['arLink'])) > 0) : ?>
-                <a href="<?= $product['arLink'] ?>" class="waves-effect waves-light btn blue lighten-1"><i class="material-icons left">camera</i>View in Augmented Reality</a>
+                <a href="<?= $product['arLink'] ?>" class="waves-effect waves-light btn blue lighten-1 tooltip" data-tooltip="View in Augmented Reality"><i class="material-icons">camera</i></a>
             <?php endif; ?>
-            <a href="#!" id="addProduct" class="waves-effect waves-light btn green lighten-1"><i class="material-icons left">bookmark</i>Bookmark this Destination</a>
-            <a href="#!" id="removeProduct" class="waves-effect waves-light btn red lighten-1 hide"><i class="material-icons left">bookmark_border</i>remove bookmark</a>
+            &nbsp;
+            <a href="#!" id="addProduct" class="waves-effect waves-light btn green lighten-1 tooltip" data-tooltip="Bookmark this product"><i class="material-icons">bookmark</i></a>
+            <a href="#!" id="removeProduct" class="waves-effect waves-light btn red lighten-1 hide tooltip" data-tooltip="Remove from my bookmarked products"><i class="material-icons">bookmark_border</i></a>
         </div>
 
         <p class="flow-text" style="font-style: italic"><?= strlen(trim($product['description'])) == 0 ? "To be formulated" : $product['description']?></p>
@@ -54,6 +55,7 @@
             $(this).addClass('hide');
             M.toast({
                 html: `${product.name} is now bookmarked`,
+                displayLength: 1000,
                 completeCallback: function() {
                     window.location = `/product/${product.id}`
                 }
@@ -73,7 +75,8 @@
         $("#removeProduct").click(function() {
             $(this).addClass('hide');
             M.toast({
-                html: `${product.name} removed from bookmark`,
+                html: `${product.name} removed from your bookmark`,
+                displayLength: 1000,
                 completeCallback: function() {
                     window.location = `/product/${product.id}`
                 }
@@ -93,5 +96,7 @@
                 localStorage.setItem('bookmarks', JSON.stringify(entries));
             }
         })
+
+        $(".tooltip").tooltip();
     })
 </script>
