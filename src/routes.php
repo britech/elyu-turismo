@@ -1180,25 +1180,11 @@ return function (App $app) {
         $topDestinations = [];
         $products = [];
         $destinations = [];
-        $towns = [];
-        $inputData = [];
-        $max = 0;
-
-        foreach(ApplicationUtils::TOURISM_CIRCUITS as $tourismCircuit => $townList) {
-            $towns = array_merge($towns, $townList);
-        }
-        sort($towns, SORT_NATURAL);
-
+        
         try {
             $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
             $products = $container->townManagementService->listProducts([]);
             $destinations = array_merge([], $container->poiManagementService->listPoi());
-            $summaryResult = $container->openDataDao->summarizeVisitors();
-            foreach($towns as $town) {
-                $count = ApplicationUtils::getVisitorCountByTown($summaryResult, $town);
-                $inputData = array_merge($inputData, [$count]);
-                $max += $count;
-            }
         } catch (\Exception $ex) {
             $container->logger->error($ex);
         }
@@ -1208,10 +1194,7 @@ return function (App $app) {
             'topDestinations' => $topDestinations,
             'products' => $products,
             'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($destinations, 'name'),
-            'destinationsBackend' => count($destinations) == 0 ? '[]' : json_encode($destinations),
-            'towns' => json_encode($towns),
-            'inputData' => json_encode($inputData),
-            'maxCount' => $max
+            'destinationsBackend' => count($destinations) == 0 ? '[]' : json_encode($destinations)
         ]);
 
         return $container->exploreRenderer->render($response, 'open-data.phtml', $args);
