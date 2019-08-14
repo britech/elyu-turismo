@@ -1,0 +1,97 @@
+<div class="row" style="margin-top: 20px;">
+    <div class="col s12 m12 l12">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Report Type</th>
+                    <td style="width: 75%">Number of Visitors per Tourist Destination</td>
+                    <td style="text-align: right">
+                        <a href="/open-data" class="btn blue lighten-1 tooltip" data-tooltip="Back to Reports Home"><i class="material-icons">home</i></a>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+
+        <form action="/open-data/hits" method="post" style="margin-top: 20px;" id="hitsReportForm">
+            <input type="hidden" id="poiListBackend" value='<?= $destinationsBackend ?>' />
+            <div class="input-field">
+                <p class="tooltip" data-position="top" data-tooltip="Use this option to filter the places of interest you want in your report">Places of Interest</p>
+                <div class="poi"></div>
+                <input type="hidden" name="places" />
+            </div>
+            <div class="row">
+                <div class="input-field col l6 s12">
+                    <input type="text" class="datepicker" name="startDate">
+                    <label>Start Date</label>
+                </div>
+                <div class="input-field col l6 hide-on-med-and-down">
+                    <input type="text" class="datepicker" name="endDate">
+                    <label>End Date</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 hide-on-large-only">
+                    <input type="text" class="datepicker" name="endDate">
+                    <label>End Date</label>
+                </div>
+            </div>
+            <div class="input-field">
+                <input type="text" name="emailAddress" class="validate" required />
+                <label>Email Address</label>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label>
+                    <input type="checkbox" name="userConsent" class="validate" required/>
+                    <span>I agree with the <span style="text-decoration: underline; cursor: pointer">Privacy and Usage Policy</span>.</span>
+                </label>
+                <input type="hidden" name="reportType" value="Number of Page Hits per Destination"/>
+                <button class="btn waves-effect waves-light" type="submit" style="display: block; margin-top: 20px;" onclick="submitForm()">Generate Report<i class="material-icons right">cloud_download</i></button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
+
+        $('.tooltip').tooltip();
+
+        $('.datepicker').datepicker({
+            showClearBtn: true,
+            autoClose: true,
+            format: 'yyyy-mm-dd'
+        });
+
+        $(".poi").chips({
+            placeholder: 'Place of Interest',
+            secondaryPlaceholder: 'Place of Interest',
+            autocompleteOptions: {
+                data: <?= $destinationAutocomplete ?>
+            },
+            onChipAdd: function(e, chip) {
+                let rawData = $("#poiListBackend").val();
+                let data = JSON.parse(rawData);
+                let tags = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    tags.push(result[0]);
+                }
+                $("[name=places]").val(JSON.stringify(tags));
+            },
+            onChipDelete: function(e, chip) {
+                let rawData = $("#poiListBackend").val();
+                let data = JSON.parse(rawData);
+                let tags = [];
+                for (let chip of this.chipsData) {
+                    let result = data.filter(entry => chip.tag == entry.name).map(entry => entry.id);
+                    tags.push(result[0]);
+                }
+                $("[name=places]").val(JSON.stringify(tags));
+            }
+        });
+    });
+</script>

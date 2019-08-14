@@ -1233,6 +1233,88 @@ return function (App $app) {
         }
     });
 
+    $app->get('/open-data/hits', function(Request $request, Response $response, array $args) use ($container) {
+        $topDestinations = [];
+        $products = [];
+        $destinations = [];
+        try {
+            $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
+            $products = $container->townManagementService->listProducts([]);
+            $destinations = array_merge([], $container->poiManagementService->listPoi());
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+        }
+
+        $args = array_merge($args, [
+            'title' => 'Open Data',
+            'topDestinations' => $topDestinations,
+            'products' => $products,
+            'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($destinations, 'name'),
+            'destinationsBackend' => count($destinations) == 0 ? '[]' : json_encode($destinations),
+            ApplicationConstants::NOTIFICATION_KEY => $container->flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
+        ]);
+
+        return $container->exploreRenderer->render($response, 'open-data/hits.phtml', $args);
+    })->setName('hits');
+
+    $app->post('/open-data/hits', function(Request $request, Response $response, array $args) use ($container) {
+        $logger = $container->logger;
+        $flash = $container->flash;
+
+        list('places' => $places, 'startDate' => $startDate, 'endDate' => $endDate, 
+            'reportType' => $reportType, 'emailAddress' => $email, 
+            'userConsent' => $userConsent) = $request->getParsedBody();
+
+        if (strcasecmp('on', $userConsent) != 0) {
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, "User input is invalid. Please try again");
+            return $response->withRedirect($container->router->pathFor('hits'));
+        }
+
+        $criteriaMap = [];
+        if (strlen(trim($places)) != 0) {
+            $criteriaMap = array_merge($criteriaMap, [
+                'places' => json_decode($places)
+            ]);
+        }
+
+        if (strlen(trim($startDate)) != 0) {
+            $criteriaMap = array_merge($criteriaMap, [
+                'startDate' => $startDate
+            ]);
+        }
+
+        if (strlen(trim($endDate)) != 0) {
+            $criteriaMap = array_merge($criteriaMap, [
+                'endDate' => $endDate
+            ]);
+        }
+
+        $rows = [];
+        $csvGenerationSetting = $container->csvGenerationSetting;
+        $filename = "{$csvGenerationSetting->destination}/" . time() . "_pageHits.csv";
+        try {
+            $rows = array_merge($rows, $container->csvOpenDataService->countVisitors($criteriaMap));
+            $logger->debug("Result: ".json_encode($rows));
+
+            $file = fopen($filename, 'w');
+            foreach($rows as $row) {
+                fputcsv($file, $row);
+            }
+            fclose($file);
+            $baseName = basename($filename);
+
+            $container->openDataDao->trackDownload([
+                'email' => $email,
+                'reportType' => $reportType
+            ]);
+
+            return $response->withRedirect("{$csvGenerationSetting->httpPath}/{$baseName}");
+        } catch (\Exception $ex) {
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, "Something went wrong while processing your request. Please try again");
+            return $response->withRedirect($container->router->pathFor('hits'));
+        }
+    });
+
     $app->post('/open-data/csv', function(Request $request, Response $response, array $args) use ($container) {
         $logger = $container->logger;
 
