@@ -1180,7 +1180,7 @@ return function (App $app) {
         $topDestinations = [];
         $products = [];
         $destinations = [];
-        
+
         try {
             $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
             $products = $container->townManagementService->listProducts([]);
@@ -1197,7 +1197,7 @@ return function (App $app) {
             'destinationsBackend' => count($destinations) == 0 ? '[]' : json_encode($destinations)
         ]);
 
-        return $container->exploreRenderer->render($response, 'open-data.phtml', $args);
+        return $container->exploreRenderer->render($response, 'open-data/index.phtml', $args);
     })->setName('open-data-landing');
 
     $app->post('/open-data/poi', function(Request $request, Response $response, array $args) use ($container) {
