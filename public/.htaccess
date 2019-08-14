@@ -18,4 +18,17 @@
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^ index.php [QSA,L]
+
+  SetEnvIf Request_URI ^/cpanel require_auth=true
+
+  AuthUserFile /var/www/html/public/.htpasswd
+  AuthName "Restricted Access"
+  AuthType Basic
+
+  Order Deny,Allow
+  Deny from all
+
+  Satisfy any
+  Require valid-user
+  Allow from env=!require_auth
 </IfModule>
