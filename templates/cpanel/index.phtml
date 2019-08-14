@@ -1,28 +1,40 @@
 <div class="row">
-    <h5 class="flow-text center">Top 5 Destinations</h5>
-    <?php if (count($topDestinations) == 0) : ?>
+    <h5 class="flow-text center">Visitor Count per Town</h5>
+    <canvas id="visitorCountChart" width="400" height="200"></canvas>
+</div>
+
+<div class="row">
+    <h5 class="flow-text center">Destination Ranking</h5>
+    <?php if (count($destinations) == 0) : ?>
         <div class="card-panel red lighten-2">
             <strong class="flow-text white-text">No Available Data</strong>
         </div>
-    <?php else : $count = 1; ?>
-        <ul class="collection">
-            <?php foreach ($topDestinations as $topDestination) : ?>
-                <li class="collection-item" style="cursor: pointer;" onclick="window.location='/place/<?= $topDestination['id'] ?>'">
-                    <h5 class="flow-text">
-                        <?= "{$count}. {$topDestination['name']}" ?>
-                        <?php if ($topDestination['arEnabled'] == 1) : ?>
-                            <span class="new badge blue flow-text" data-badge-caption="AR Available">&nbsp;</span>
-                        <?php endif; ?>
-                    </h5>
-                </li>
-                <?php $count++;
-            endforeach; ?>
-        </ul>
+    <?php else: ?>
+        <table class="striped" id="ranks">
+            <thead>
+                <tr>
+                    <th class="center" style="width: 10%">Rank</th>
+                    <th class="center" style="width: 40%">Tourist Destination</th>
+                    <th class="center" style="width: 15%">Town</th>
+                    <th class="center" style="width: 15%">Tourism Circuit</th>
+                    <th class="center" style="width: 20%">Total Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $count = 1;?>
+                <?php foreach($destinations as $destination): ?>
+                    <tr>
+                        <td class="center"><?= $count;?></td>
+                        <td><?= $destination['name']; ?></td>
+                        <td><?= $destination['town']; ?></td>
+                        <td><?= $destination['tourismCircuit']; ?></td>
+                        <td class="center"><?= $destination['visitorCount'];?></td>
+                    </tr>
+                    <?php $count++; ?>
+                <?php endforeach;?>
+            </tbody>
+        </table>
     <?php endif; ?>
-</div>
-<div class="row">
-    <h5 class="flow-text center">Visitor Count per Town</h5>
-    <canvas id="visitorCountChart" width="400" height="200"></canvas>
 </div>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
@@ -74,5 +86,59 @@
                 }]
             }
         }
+    });
+
+    $(document).ready(function() {
+        $("#ranks").jqxDataTable({
+            width: '100%',
+            theme: 'material',
+            filterable: true,
+            selectionMode: 'singleRow',
+            pageable: true,
+            pagerMode: 'advanced',
+            pageSizeOptions: ['10', '50', '100'],
+            altRows: true,
+            sortable: true,
+            columns: [
+                { 
+                    text: 'Rank', 
+                    dataField: 'Rank', 
+                    width: '10%',
+                    align: 'center',
+                    cellsAlign: 'center',
+                    cellsRenderer: function(row, column, value, rowData) {
+                        return `<span style="display: block; font-weight: bold;">${value}</span>`
+                    }
+                },
+                { 
+                    text: 'Tourist Destination', 
+                    dataField: 'Tourist Destination',
+                    align: 'center',
+                    cellsAlign: 'left',
+                    width: '40%',
+                },
+                { 
+                    text: 'Tourism Circuit', 
+                    dataField: 'Tourism Circuit',
+                    align: 'center',
+                    cellsAlign: 'left',
+                    width: '15%',
+                },
+                { 
+                    text: 'Town', 
+                    dataField: 'Town',
+                    align: 'center',
+                    cellsAlign: 'left',
+                    width: '15%',
+                },
+                { 
+                    text: 'Total Count', 
+                    dataField: 'Total Count', 
+                    width: '20%',
+                    align: 'center',
+                    cellsAlign: 'center'
+                }
+            ]
+        });
     });
 </script>

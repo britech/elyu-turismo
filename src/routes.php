@@ -12,7 +12,7 @@ return function (App $app) {
     $logger = $container->logger;
 
     $app->get('/cpanel', function(Request $request, Response $response, array $args) use ($container) {
-        $topDestinations = [];
+        $destinations = [];
         $towns = [];
         foreach(ApplicationUtils::TOURISM_CIRCUITS as $tourismCircuit => $townList) {
             $towns = array_merge($towns, $townList);
@@ -22,7 +22,7 @@ return function (App $app) {
         $inputData = [];
         $max = 0;
         try {
-            $topDestinations = array_merge([], $container->openDataDao->listTop5Destinations());
+            $destinations = array_merge([], $container->openDataDao->listDestinations([]));
             
             $summaryResult = $container->openDataDao->summarizeVisitors();
             foreach($towns as $town) {
@@ -35,7 +35,7 @@ return function (App $app) {
         }
 
         $args = array_merge($args, [
-            'topDestinations' => $topDestinations,
+            'destinations' => $destinations,
             'towns' => json_encode($towns),
             'inputData' => json_encode($inputData),
             'maxCount' => $max
