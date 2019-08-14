@@ -21,7 +21,7 @@
 
   SetEnvIf Request_URI ^/cpanel require_auth=true
 
-  AuthUserFile /var/www/html/public/.htpasswd
+  AuthUserFile ${PASSWORD_LOCATION}/.htpasswd
   AuthName "Restricted Access"
   AuthType Basic
 
