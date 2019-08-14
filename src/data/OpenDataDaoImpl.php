@@ -3,6 +3,7 @@
 namespace gov\pglu\tourism\dao;
 
 use gov\pglu\tourism\dao\OpenDataDao;
+use gov\pglu\tourism\util\ApplicationUtils;
 
 /**
  * @property \PDO $pdo
@@ -178,7 +179,7 @@ QUERY;
         $whereClause = is_null($town) ? "" : "WHERE town=:town";
 
         $query = <<< QUERY
-            SELECT id, name, arEnabled, COUNT(id) as visitorCount
+            SELECT id, name, arEnabled, COUNT(id) as visitorCount, town
             FROM poivisit poiv
             JOIN placeofinterest poi ON poiv.placeofinterest = poi.id
             {$whereClause}
@@ -189,7 +190,14 @@ QUERY;
         try {
             $statement = $this->pdo->prepare($query);
             $statement->execute($map);
-            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            array_walk($rows, function(&$row) {
+                list('town' => $town) = $row;
+                $row = array_merge($row, [
+                    'tourismCircuit' => ApplicationUtils::getTourismCircuit($town)
+                ]);
+            });
+            return $rows;
         } catch (\PDOException $ex) {
             throw $ex;
         }
