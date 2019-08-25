@@ -209,27 +209,6 @@ use gov\pglu\tourism\util\ApplicationConstants;
 
         $(".tooltip").tooltip();
 
-        geolocator.locate({ }, function(err, location) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-
-            let origin = {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude
-            }
-            
-            let distance = geolocator.calcDistance({
-                from: origin,
-                to: {
-                    latitude: <?= $poi['latitude'] ?>,
-                    longitude: <?= $poi['longitude'] ?>
-                }
-            });
-            console.log(distance);
-        });
-
         let descriptionView = new Quill('#description', {
             theme: 'bubble'
         })
