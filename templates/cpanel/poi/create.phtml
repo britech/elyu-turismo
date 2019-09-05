@@ -86,7 +86,7 @@
                             <p>Primary Image</p>
                             <div class="btn indigo darken-4">
                                 <span>image</span>
-                                <input type="file" name="primaryImage" accept="image/*" required>
+                                <input type="file" name="primaryImage" accept="image/*">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text">
@@ -96,7 +96,7 @@
                             <p>Image List</p>
                             <div class="btn indigo darken-4">
                                 <span>image</span>
-                                <input type="file" multiple name="images[]" accept="image/*" required>
+                                <input type="file" multiple name="images[]" accept="image/*">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text">
@@ -104,7 +104,7 @@
                         </div>
                         <div class="input-field">
                             <p>Photo Credits</p>
-                            <textarea name="photoCredit" class="materialize-textarea validate" required></textarea>
+                            <textarea name="photoCredit" class="materialize-textarea validate"></textarea>
                         </div>
                         <div class="input-field">
                             <p>Augmented Reality Link</p>
@@ -617,15 +617,8 @@
                     if (!inputs[i].checkValidity()) return false;
 
                 if (currentStepId === 'basic-step') {
-                    return $("[name=classifications]").val().length > 0 && $("[name=topicTags]").val().length > 0 &&
-                        $("[name=description]").val().length > 0 && $("[name=commuterGuide]").val().length > 0
-                } else if (currentStepId === 'schedules-step') {
-                    return schedules.length > 0;
-                } else if (currentStepId === 'fees-step') {
-                    return fees.length > 0;
-                } else if (currentStepId === 'contacts-step') {
-                    return contacts.length > 0;
-                }
+                    return $("[name=classifications]").val().length > 0 && $("[name=topicTags]").val().length > 0
+                }   
                 return true;
             }
         })
