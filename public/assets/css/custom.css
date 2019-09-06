@@ -1,12 +1,7 @@
-@font-face {
-    font-family: 'Beelova';
-    src: url('/assets/fonts/beelova.otf') format('opentype')
-}
-
 body {
-    font-family: 'Beelova', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .ql-editor p {
-    font-family: 'Beelova', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
