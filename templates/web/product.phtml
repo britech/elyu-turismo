@@ -11,7 +11,7 @@
                 <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet" />
             <?php endif; ?>
             <?php if (strlen(trim($imageSrc)) > 0) : ?>
-                <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($product['photoCredit'])) == 0 ? "Not Available" : $poi['photoCredit']; ?></span>
+                <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($product['photoCredit'])) == 0 ? "Not Available" : $product['photoCredit']; ?></span>
             <?php endif; ?>
             <h3><?= $product['name'] ?></h3>
             <?php if (strlen(trim($product['arLink'])) > 0) : ?>
