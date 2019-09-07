@@ -5,7 +5,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
 <div class="row" style="margin-top: 10px;">
     <div class="col s12 l12">
         <div class="center">
-            <h1>Welcome to <?= $town ?></h1>
+            <img src="/images/<?= strtolower(implode('-', explode(' ', $town)))?>.jpg" class="responsive-img" alt="banner"/>
         </div>
     </div>
 </div>

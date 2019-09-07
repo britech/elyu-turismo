@@ -162,7 +162,7 @@ return function (App $app) {
         $container->logger->debug(json_encode($body));
         list('name' => $name, 'classifications' => $rawClassifications, 'topicTags' => $rawTags, 
             'schedules' => $rawSchedules, 'fees' => $rawFees, 'contacts' => $rawContacts,
-            'arLink' => $arLink) = $body;
+            'arLink' => $arLink, 'descriptionWysiwyg' => $rawDescription, 'commuterGuideWysiwyg' => $rawCommuterGuide) = $body;
 
         list('primaryImage' => $image, 'images' => $images) = $request->getUploadedFiles();
         $primaryImage = $container->fileUploadService->uploadFile([
@@ -184,7 +184,8 @@ return function (App $app) {
                 && strcasecmp('contacts', $key) != 0 && strcasecmp('openingTime', $key) != 0 
                 && strcasecmp('closingTime', $key) != 0 && strcasecmp('scheduleNotes', $key) != 0
                 && strcasecmp('feeDescription', $key) != 0 && strcasecmp('amount', $key) != 0
-                && strcasecmp('contactValue', $key) != 0 && strcasecmp('action', $key) != 0;
+                && strcasecmp('contactValue', $key) != 0 && strcasecmp('action', $key) != 0
+                && strcasecmp('descriptionWysiwyg', $key) != 0 && strcasecmp('commuterGuideWysiwyg', $key) != 0;
         }, ARRAY_FILTER_USE_KEY);
         
 
@@ -197,7 +198,9 @@ return function (App $app) {
                 'schedules' => json_decode($rawSchedules, true),
                 'fees' => json_decode($rawFees, true),
                 'contacts' => json_decode($rawContacts, true),
-                'arEnabled' => strlen(trim($arLink)) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_FALSE : ApplicationConstants::INDICATOR_NUMERIC_TRUE
+                'arEnabled' => strlen(trim($arLink)) == 0 ? ApplicationConstants::INDICATOR_NUMERIC_FALSE : ApplicationConstants::INDICATOR_NUMERIC_TRUE,
+                'descriptionWysiwyg' => strlen(trim($rawDescription)) == 0 ? null : $rawDescription,
+                'commuterGuideWysiwyg' => strlen(trim($rawCommuterGuide)) == 0 ? null : $rawCommuterGuide
             ]));
             return $response->withRedirect($container->router->pathFor('poi-info', ['id' => $poi]));
         } catch (\Exception $ex) {
