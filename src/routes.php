@@ -1105,6 +1105,7 @@ return function (App $app) {
                 'visitorCount' => $container->openDataDao->countVisitorsByDestination($id),
                 'imageSrc' => $imageSrc,
                 'images' => $imageList,
+                'comments' => $container->visitorService->listComments($id),
                 'topDestinations' => $container->openDataDao->listDestinations(['limit' => 5]),
                 'products' => $container->townManagementService->listProducts([]),
                 'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
@@ -1120,6 +1121,21 @@ return function (App $app) {
         } catch (\PDOException $ex) {
             $container->logger->error($ex);
             return $response->withRedirect($container->router->pathFor('explore'));
+        }
+    })->setName('destination');
+
+    $app->post('/place/{id}/comment', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        $body = $request->getParsedBody();
+        $flash = $container->flash;
+        try {
+            $container->visitorService->addComment($body);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, "Your comment has been added.");
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, "Something went wrong while processing your request. Please try again");
+        } finally {
+            return $response->withRedirect($container->router->pathFor('destination', ['id' => $id]));
         }
     });
 
