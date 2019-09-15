@@ -49,7 +49,9 @@ class PoiManagementDaoImpl implements PoiManagementDao {
                     images,
                     photoCredit,
                     arLink,
-                    arenabled)
+                    arenabled,
+                    videoLink,
+                    videoCredit)
                     VALUES (
                         :name,
                         :address,
@@ -65,7 +67,9 @@ class PoiManagementDaoImpl implements PoiManagementDao {
                         :images,
                         :photoCredit,
                         :arLink,
-                        :arEnabled
+                        :arEnabled,
+                        :videoLink,
+                        :videoCredit
                     )
 QUERY;
             $this->pdo->prepare($poiInsertQuery)->execute($poiSetupInput);
@@ -185,6 +189,8 @@ QUERY;
             images,
             photoCredit,
             developmentLevel,
+            videoLink,
+            videoCredit,
             GROUP_CONCAT(DISTINCT(CONCAT(classification.id, '=', classification.name)) SEPARATOR '|') as classifications,
             GROUP_CONCAT(DISTINCT(CONCAT(tag.id, '=', tag.name)) SEPARATOR '|') as topicTags
         FROM placeofinterest poi
@@ -241,7 +247,9 @@ QUERY;
                 developmentLevel=:developmentlevel,
                 images=:images,
                 arenabled=:arEnabled,
-                arLink=:arLink
+                arLink=:arLink,
+                videoLink=:videoLink,
+                videoCredit=:videoCredit
             WHERE id=:id
 QUERY;
 
