@@ -15,6 +15,7 @@ use gov\pglu\tourism\dao\TownManagementDaoImpl;
 use gov\pglu\tourism\util\ApplicationConstants;
 use gov\pglu\tourism\service\FileUploadServiceDefaultImpl;
 use gov\pglu\tourism\service\FileUploadServiceImgurImpl;
+use gov\pglu\tourism\dao\VisitorDaoImpl;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -154,5 +155,9 @@ return function (App $app) {
             $service->logger = $c->logger;
             return $service;
         }
+    };
+
+    $container['visitorService'] = function($c) {
+        return new VisitorDaoImpl($c->database);
     };
 };
