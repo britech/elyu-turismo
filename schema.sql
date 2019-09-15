@@ -69,6 +69,8 @@ CREATE TABLE `placeofinterest` (
   `images` text,
   `developmentLevel` varchar(100) DEFAULT NULL,
   `arLink` varchar(1000) DEFAULT NULL,
+  `videoLink` varchar(1000) DEFAULT NULL,
+  `videoCredit` text,
   PRIMARY KEY (`id`),
   KEY `placeofinterest_town_IDX` (`town`) USING BTREE,
   FULLTEXT KEY `placeofinterest_name_IDX` (`name`)
