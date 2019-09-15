@@ -108,6 +108,14 @@
         <p>Augmented Reality Link</p>
         <input type="text" name="arLink" value="<?= $result['arLink'] ?>"/>
     </div>
+    <div class="input-field">
+        <p>Video Link</p>
+        <input type="text" name="videoLink" value="<?= $result['videoLink']?>"/>
+    </div>
+    <div class="input-field">
+        <p>Video Credits</p>
+        <textarea name="videoCredit" class="materialize-textarea validate"><?= $result['videoCredit'] ?></textarea>
+    </div>
     <button class="btn waves-effect waves-light" type="submit">update<i class="material-icons left">edit</i></button>
 </form>
 <script type="text/javascript">

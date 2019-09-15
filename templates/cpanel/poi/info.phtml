@@ -37,6 +37,17 @@
             </td>
         </tr>
         <tr>
+            <th>Video</th>
+            <td>
+                <?php if(strlen(trim($result['videoLink'])) == 0): ?>
+                    <strong>No Video Yet</strong>
+                <?php else: ?>
+                    <a href="<?= $result['videoLink']?>" target="_blank">Video Source</a>
+                    <span style="display: block;">Video Credit: <?= strlen(trim($result['videoCredit'])) == 0 ? "Not Available" : $result['videoCredit'] ?></span>
+                <?php endif;?>
+            </td>
+        </tr>
+        <tr>
             <th>Tourism Circuit</th>
             <td><?= $result['tourismCircuit']; ?></td>
         </tr>
