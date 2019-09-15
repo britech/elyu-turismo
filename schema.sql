@@ -95,6 +95,27 @@ CREATE TABLE `poiclassification` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `poicomment`
+--
+
+DROP TABLE IF EXISTS `poicomment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `poicomment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text CHARACTER SET latin1 NOT NULL,
+  `contentWysiwyg` json DEFAULT NULL,
+  `name` varchar(1000) CHARACTER SET latin1 DEFAULT NULL,
+  `email` tinytext CHARACTER SET latin1,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `placeofinterest` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `poicomment_FK` (`placeofinterest`),
+  CONSTRAINT `poicomment_FK` FOREIGN KEY (`placeofinterest`) REFERENCES `poicomment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `poicontact`
 --
 
@@ -244,6 +265,21 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `visitorgeocode`
+--
+
+DROP TABLE IF EXISTS `visitorgeocode`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `visitorgeocode` (
+  `placeofinterest` int(11) NOT NULL,
+  `userAgent` text CHARACTER SET latin1 NOT NULL,
+  `dateAdded` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `ipAddress` tinytext CHARACTER SET latin1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping routines for database 'tourism'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -256,4 +292,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-11 20:47:28
+-- Dump completed on 2019-09-15 17:22:30
