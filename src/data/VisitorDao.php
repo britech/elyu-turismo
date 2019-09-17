@@ -6,7 +6,7 @@ interface VisitorDao {
 
     public function addComment(array $map);
 
-    public function listComment($placeOfInterest);
+    public function listComments($placeOfInterest);
 
     public function removeComment($id);
 }

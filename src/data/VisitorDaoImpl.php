@@ -40,7 +40,7 @@ INSERT_QUERY;
         }
     }
 
-    public function listComment($placeOfInterest) {
+    public function listComments($placeOfInterest) {
         $query = <<<QUERY
             SELECT id,
                 content,
