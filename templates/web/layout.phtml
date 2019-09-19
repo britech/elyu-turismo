@@ -13,7 +13,7 @@
 
             body {
                 display: flex;
-                min-height: 100vh;  
+                min-height: 100vh;
                 flex-direction: column;
             }
 
@@ -32,20 +32,51 @@
     <body>
         <div class="navbar-fixed">
             <nav class="teal darken-4">
-                <div class="nav-wrapper teal darken-4 container">
-                    <a href="#!" class="brand-logo show-on-large hide-on-med-and-down"><?= $title ?></a>
+                <div class="nav-wrapper teal darken-4">
+                    <a href="#!" class="brand-logo show-on-large hide-on-med-and-down">
+                        <img src="/images/elyuturismo-logo.png" style="width: 65px; height: 65px;" />
+                    </a>
                     <a href="#!" class="flow-text show-on-med-and-down hide-on-large-only"><?= $title ?></a>
-                    <ul class="right">
+                    <ul class="left show-on-med-and-down hide-on-large-only">
                         <li>
                             <a href="#" data-target="mobile-menu" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
                         </li>
                     </ul>
+                    <form class="right">
+                        <div class="input-field">
+                            <input id="search" type="search" required class="autocomplete" placeholder="Search">
+                            <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                    <ul class="right show-on-large hide-on-med-and-down">
+                        <li>
+                            <a href="/destinations" style="display: block; font-weight: bold; padding: 0 17px">
+                                Destinations
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/products" style="display: block; font-weight: bold; padding: 0 17px">
+                                Products
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/bookmarks" style="display: block; font-weight: bold; padding: 0 17px">
+                                My Bookmarks
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/open-data" style="display: block; font-weight: bold; padding: 0 17px">
+                                Open Data
+                            </a>
+                        </li>
+                    </ul>
+                    
                 </div>
             </nav>
         </div>
         <ul class="sidenav" id="mobile-menu">
             <li class="center">
-                <img src="/images/elyuturismo-logo.png" class="responsive-img"/>
+                <img src="/images/elyuturismo-logo.png" class="responsive-img" />
             </li>
             <li class="divider">&nbsp;</li>
             <li>
@@ -83,10 +114,10 @@
                 <?= $content ?>
             </div>
         </main>
-        <?php 
-            if(!isset($showFooter) || $showFooter) {
-                include_once __DIR__."../../cpanel/footer.phtml";
-            }
+        <?php
+        if (!isset($showFooter) || $showFooter) {
+            include_once __DIR__ . "../../cpanel/footer.phtml";
+        }
         ?>
         <input type="hidden" id="destinationsBackend" value='<?= $destinationsBackend ?>'>
     </body>
