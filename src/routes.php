@@ -949,21 +949,6 @@ return function (App $app) {
     });
 
     $app->get('/home', function(Request $request, Response $response, array $args) use ($container) {
-        $allDestinations = [];
-
-        try {
-            $allDestinations = array_merge([], $container->poiManagementService->listPoi());
-        } catch (\Exception $ex) {
-            $container->logger->error($ex);
-        }
-
-        $args = array_merge($args, [
-            'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
-            'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations),
-            'title' => 'Explore La Union',
-            'showFooter' => false
-        ]);
-
         return $container->exploreRenderer->render($response, 'home.phtml', $args);
     });
 
