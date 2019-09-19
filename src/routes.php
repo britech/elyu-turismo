@@ -949,36 +949,22 @@ return function (App $app) {
     });
 
     $app->get('/home', function(Request $request, Response $response, array $args) use ($container) {
-        $topDestinations = [];
-        $towns = [];
-        foreach(ApplicationUtils::TOURISM_CIRCUITS as $tourismCircuit => $townList) {
-            $towns = array_merge($towns, $townList);
-        }
-        sort($towns, SORT_NATURAL);
+        $allDestinations = [];
 
-        $inputData = [];
-        $max = 0;
         try {
-            $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
-            
-            $summaryResult = $container->openDataDao->summarizeVisitors();
-            foreach($towns as $town) {
-                $count = ApplicationUtils::getVisitorCountByTown($summaryResult, $town);
-                $inputData = array_merge($inputData, [$count]);
-                $max += $count;
-            }
-        } catch (\PDOException $ex) {
+            $allDestinations = array_merge([], $container->poiManagementService->listPoi());
+        } catch (\Exception $ex) {
             $container->logger->error($ex);
         }
 
         $args = array_merge($args, [
-            'topDestinations' => $topDestinations,
-            'towns' => json_encode($towns),
-            'inputData' => json_encode($inputData),
-            'maxCount' => $max
+            'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
+            'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations),
+            'title' => 'Explore La Union',
+            'showFooter' => false
         ]);
 
-        return $container->webRenderer->render($response, 'home.phtml', $args);
+        return $container->exploreRenderer->render($response, 'home.phtml', $args);
     });
 
     $app->get('/explore', function(Request $request, Response $response, array $args) use ($container) {
