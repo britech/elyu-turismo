@@ -949,6 +949,10 @@ return function (App $app) {
     });
 
     $app->get('/home', function(Request $request, Response $response, array $args) use ($container) {
+        $args = array_merge($args, [
+            'title' => 'Explore La Union',
+            'link' => '/home'
+        ]);
         return $container->exploreRenderer->render($response, 'home.phtml', $args);
     });
 
