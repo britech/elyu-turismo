@@ -71,7 +71,11 @@
         <div class="container">
             <?= $content ?>
         </div>
-        <?php include_once __DIR__."../../cpanel/footer.phtml";?>
+        <?php 
+            if(!isset($showFooter) || $showFooter) {
+                include_once __DIR__."../../cpanel/footer.phtml";
+            }
+        ?>
         <input type="hidden" id="destinationsBackend" value='<?= $destinationsBackend ?>'>
     </body>
 
