@@ -136,19 +136,6 @@
                     $("#bookmarks").append('<li><a style="display: block; padding-left: 30px;" class="flow-text" id="noBookmarks">No bookmarks yet.</a></li>');
                 }
             }
-
-            $(".autocomplete").autocomplete({
-                data: <?= $destinationAutocomplete; ?>,
-                onAutocomplete: function(val) {
-                    let destinations = JSON.parse($("#destinationsBackend").val());
-                    for (let destination of destinations) {
-                        if (val === destination.name) {
-                            window.location = `/place/${destination.id}`
-                            return;
-                        }
-                    }
-                }
-            })
         });
     </script>
 
