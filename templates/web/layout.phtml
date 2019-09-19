@@ -47,44 +47,26 @@
                 </div>
             </li>
             <li class="divider">&nbsp;</li>
-            <li><a href="/explore" style="display: block; font-weight: bold; padding: 0 17px"><i class="material-icons">explore</i>Explore</a></li>
             <li>
-                <ul class="collapsible collapsible-accordion">
-                    <li>
-                        <a href="#!" class="flow-text collapsible-header waves-effect" style="display: block; font-weight: bold;"><i class="material-icons">format_list_numbered</i>Top Destinations</a>
-                        <div class="collapsible-body">
-                            <ul>
-                                <?php foreach($topDestinations as $topDestination): ?>
-                                    <li>
-                                        <a href="<?= "/place/{$topDestination['id']}"?>" style="display: block; padding-left: 30px; word-wrap: break-word;" class="flow-text waves-effect"><?= $topDestination['name']; ?></a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#!" class="flow-text collapsible-header waves-effect" style="display: block; font-weight: bold;"><i class="material-icons">local_offer</i>Products</a>
-                        <div class="collapsible-body">
-                            <ul>
-                                <?php foreach($products as $product): ?>
-                                    <li>
-                                        <a href="<?= "/product/{$product['id']}"?>" style="display: block; padding-left: 30px; word-wrap: break-word;" class="flow-text waves-effect"><?= $product['name']; ?></a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#!" class="flow-text collapsible-header waves-effect" style="display: block; font-weight: bold;"><i class="material-icons">bookmarks</i>My Bookmarks</a>
-                        <div class="collapsible-body">
-                            <ul id="bookmarks">
-                            
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
+                <a href="/destinations" style="display: block; font-weight: bold; padding: 0 17px">
+                    <i class="material-icons">explore</i>Destinations
+                </a>
             </li>
-            <li><a href="/open-data" style="display: block; font-weight: bold; padding: 0 17px"><i class="material-icons">cloud_download</i>Open Data</a></li>
+            <li>
+                <a href="/products" style="display: block; font-weight: bold; padding: 0 17px">
+                    <i class="material-icons">local_offer</i>Products
+                </a>
+            </li>
+            <li>
+                <a href="/bookmarks" style="display: block; font-weight: bold; padding: 0 17px">
+                    <i class="material-icons">bookmarks</i>My Bookmarks
+                </a>
+            </li>
+            <li>
+                <a href="/open-data" style="display: block; font-weight: bold; padding: 0 17px">
+                    <i class="material-icons">cloud_download</i>Open Data
+                </a>
+            </li>
         </ul>
         <div class="container">
             <?= $content ?>
