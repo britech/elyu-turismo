@@ -10,6 +10,16 @@
             h6:hover {
                 cursor: pointer
             }
+
+            body {
+                display: flex;
+                min-height: 100vh;  
+                flex-direction: column;
+            }
+
+            main {
+                flex: 1 0 auto;
+            }
         </style>
         <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="/assets/css/custom.css" />
@@ -68,9 +78,11 @@
                 </a>
             </li>
         </ul>
-        <div class="container">
-            <?= $content ?>
-        </div>
+        <main>
+            <div class="container">
+                <?= $content ?>
+            </div>
+        </main>
         <?php 
             if(!isset($showFooter) || $showFooter) {
                 include_once __DIR__."../../cpanel/footer.phtml";
