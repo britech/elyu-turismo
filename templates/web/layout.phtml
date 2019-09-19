@@ -32,8 +32,8 @@
     <body>
         <div class="navbar-fixed">
             <nav class="teal darken-4">
-                <div class="nav-wrapper teal darken-4">
-                    <a href="#!" class="brand-logo show-on-large hide-on-med-and-down">
+                <div class="nav-wrapper teal darken-4 container">
+                    <a href="/home" class="brand-logo show-on-large hide-on-med-and-down">
                         <img src="/images/elyuturismo-logo.png" style="width: 65px; height: 65px;" />
                     </a>
                     <a href="#!" class="flow-text show-on-med-and-down hide-on-large-only"><?= $title ?></a>
@@ -42,35 +42,39 @@
                             <a href="#" data-target="mobile-menu" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
                         </li>
                     </ul>
-                    <form class="right">
+                    <!-- <form class="right">
                         <div class="input-field">
                             <input id="search" type="search" required class="autocomplete" placeholder="Search">
                             <i class="material-icons">close</i>
                         </div>
-                    </form>
+                    </form> -->
                     <ul class="right show-on-large hide-on-med-and-down">
                         <li>
-                            <a href="/destinations" style="display: block; font-weight: bold; padding: 0 17px">
-                                Destinations
+                            <a href="/destinations">
+                                <i class="material-icons left">explore</i>Destinations
                             </a>
                         </li>
                         <li>
-                            <a href="/products" style="display: block; font-weight: bold; padding: 0 17px">
-                                Products
+                            <a href="/products">
+                                <i class="material-icons left">local_offer</i>Products
                             </a>
                         </li>
                         <li>
-                            <a href="/bookmarks" style="display: block; font-weight: bold; padding: 0 17px">
-                                My Bookmarks
+                            <a href="/open-data">
+                                <i class="material-icons left">cloud_download</i>Open Data
                             </a>
                         </li>
                         <li>
-                            <a href="/open-data" style="display: block; font-weight: bold; padding: 0 17px">
-                                Open Data
+                            <a href="/bookmarks">
+                                <i class="material-icons left">bookmarks</i>My Bookmarks
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search">
+                                <i class="material-icons left">search</i>Search
                             </a>
                         </li>
                     </ul>
-                    
                 </div>
             </nav>
         </div>
@@ -114,11 +118,7 @@
                 <?= $content ?>
             </div>
         </main>
-        <?php
-        if (!isset($showFooter) || $showFooter) {
-            include_once __DIR__ . "../../cpanel/footer.phtml";
-        }
-        ?>
+        <?php include_once __DIR__ . "../../cpanel/footer.phtml"; ?>
         <input type="hidden" id="destinationsBackend" value='<?= $destinationsBackend ?>'>
     </body>
 
