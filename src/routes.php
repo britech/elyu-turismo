@@ -956,28 +956,16 @@ return function (App $app) {
         return $container->exploreRenderer->render($response, 'home.phtml', $args);
     });
 
-    $app->get('/explore', function(Request $request, Response $response, array $args) use ($container) {
-        $topDestinations = [];
-        $products = [];
-        $allDestinations = [];
-
-        try {
-            $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
-            $products = array_merge([], $container->townManagementService->listProducts([]));
-            $allDestinations = array_merge([], $container->poiManagementService->listPoi());
-        } catch (\Exception $ex) {
-            $container->logger->error($ex);
-        }
-
+    $app->get('/destinations', function(Request $request, Response $response, array $args) use ($container) {
         $args = array_merge($args, [
-            'topDestinations' => $topDestinations,
-            'products' => $products,
-            'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
-            'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations),
-            'title' => 'Explore La Union'
+            'title' => 'Explore La Union',
+            'link' => '/home'
         ]);
-
         return $container->exploreRenderer->render($response, 'explore.phtml', $args);
+    })->setName('destinations');
+
+    $app->get('/explore', function(Request $request, Response $response, array $args) use ($container) {
+        return $response->withRedirect($container->router->pathFor('destinations'));
     })->setName('explore');
 
     $app->get('/places/{town}', function(Request $request, Response $response, array $args) use ($container) {
