@@ -118,7 +118,7 @@ class TownManagementDaoImpl implements TownManagementDao {
     public function loadTownByName($name) {
         try {
             $this->pdo->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
-            $statement = $this->pdo->prepare("SELECT * FROM town WHERE name=:name");
+            $statement = $this->pdo->prepare("SELECT * FROM town WHERE LOWER(name)=LOWER(:name)");
             $statement->execute([ 'name' => $name ]);
 
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
