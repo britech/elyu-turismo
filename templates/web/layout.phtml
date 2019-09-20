@@ -115,8 +115,7 @@
     <script>
         $(document).ready(function() {
             $('.sidenav').sidenav();
-            $('.collapsible').collapsible();
-
+            
             let bookmarks = localStorage.getItem('bookmarks');
             $("#bookmarks").html(null);
             if (bookmarks == null || bookmarks.length == 0) {
