@@ -1,0 +1,57 @@
+<div class="section">
+    <h3>Update Town Information</h3>
+</div>
+<div class="row">
+    <div class="col l12">
+        <form enctype="multipart/form-data" action="<?= "/cpanel/town/{$id}/edit" ?>" method="post">
+            <div class="row">
+                <div class="input-field col l6">
+                    <input name="name" type="text" disabled value="<?= $town['name'] ?>" />
+                    <label>Name</label>
+                </div>
+                <div class="input-field col l6">
+                    <input name="tourismCircuit" type="text" disabled value="<?= $town['tourismCircuit'] ?>" />
+                    <label>Tourism Circuit</label>
+                </div>
+            </div>
+            <div class="input-field">
+                <label>Description</label>
+                <textarea name="description" class="materialize-textarea validate"><?= $result['description'] ?></textarea>
+            </div>
+            <div class="input-field">
+                <label>Commuter's Guide</label>
+                <textarea name="commuterGuide" class="materialize-textarea validate"><?= $result['commuterGuide'] ?></textarea>
+            </div>
+            <div class="input-field">
+                <label>Other Details</label>
+                <textarea name="otherDetails" class="materialize-textarea validate"><?= $result['otherDetails'] ?></textarea>
+            </div>
+            <div class="file-field input-field">
+                <div class="btn indigo darken-4">
+                    <span>banner image</span>
+                    <input type="file" name="bannerImage" accept="image/*">
+                    <input type="hidden" name="bannerImageBackend" value="<?= $result['bannerImage'] ?>" />
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+            <div class="file-field input-field">
+                <div class="btn indigo darken-4">
+                    <span>link image</span>
+                    <input type="file" name="bannerImage" accept="image/*">
+                    <input type="hidden" name="bannerImageBackend" value="<?= $result['bannerImage'] ?>" />
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+            <div class="input-field">
+                <label>Photo Credits</label>
+                <textarea name="photoCredits" class="materialize-textarea validate"><?= $result['photoCredits'] ?></textarea>
+            </div>
+            <input type="hidden" name="id" value="<?= $id?>">
+            <button class="btn waves-effect waves-light" type="submit">update<i class="material-icons left">edit</i></button>
+        </form>
+    </div>
+</div>

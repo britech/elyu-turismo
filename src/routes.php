@@ -985,6 +985,63 @@ return function (App $app) {
             $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
             return $response->withRedirect($container->router->pathFor('towns'));
         }
+    })->setName('town-admin');
+
+    $app->get('/cpanel/town/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        $flash = $container->flash;
+        try {
+            $town = $container->townManagementService->loadTown($id);
+            
+            if (is_null($town)) {
+                $container->logger->warning('Town not found');
+                $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+                return $response->withRedirect($container->router->pathFor('towns'));
+            }
+
+            $args = array_merge($args, [ 'town' => $town ]);
+            return $container->cpanelRenderer->render($response, 'town/edit.phtml', $args);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('towns'));
+        }
+    });
+
+    $app->post('/cpanel/town/{id}/edit', function(Request $request, Response $response, array $args) use ($container) {
+        $flash = $container->flash;
+        list('name' => $name, 'description' => $description, 
+            'commuterGuide' => $commuterGuide, 'otherDetails' => $otherDetails,
+            'bannerImageBackend' => $bannerImageBackend, 'linkImageBackend' => $linkImageBackend,
+            'photoCredits' => $photoCredits, 'id' => $id) = $request->getParsedBody();
+        list('bannerImage' => $bannerImage, 'linkImage' => $linkImage) = $request->getUploadedFiles();
+
+        try {
+            $bannerImageToSave = $container->fileUploadService->uploadFile([
+                'file' => $bannerImage,
+                'name' => $name
+            ]);
+
+            $linkImageToSave = $container->fileUploadService->uploadFile([
+                'file' => $linkImage,
+                'name' => $name
+            ]);
+
+            $container->townManagementService->updateTown([
+                'id' => $id,
+                'description' => $description,
+                'commuterGuide' => $commuterGuide,
+                'otherDetails' => $otherDetails,
+                'bannerImage' => is_null($bannerImageToSave) ? $bannerImageBackend : $bannerImageToSave,
+                'linkImage' => is_null($linkImageToSave) ? $linkImageBackend : $linkImageToSave,
+                'photoCredits' => $photoCredits
+            ]);
+            return $response->withRedirect($container->router->pathFor('town-admin', [ 'id' => $id ]));
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('towns'));
+        }
     });
 
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
