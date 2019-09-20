@@ -88,7 +88,7 @@ class TownManagementDaoImpl implements TownManagementDao {
     public function listTowns() {
         try {
             $this->pdo->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
-            $statement = $this->pdo->prepare("SELECT id, name, tourismCircuit FROM town");
+            $statement = $this->pdo->prepare("SELECT id, name, tourismCircuit FROM town ORDER BY name");
             $statement->execute();
             return $statement->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $ex) {
