@@ -280,6 +280,51 @@ CREATE TABLE `visitorgeocode` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `town`
+--
+DROP TABLE IF EXISTS `town`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `town` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `tourismCircuit` varchar(100) NOT NULL,
+  `description` text,
+  `descriptionWysiwyg` json DEFAULT NULL,
+  `commuterGuide` text,
+  `commuterGuideWysiwyg` json DEFAULT NULL,
+  `otherDetails` text,
+  `otherDetailsWysiwyg` text,
+  `bannerImage` text,
+  `linkImage` text,
+  `photoCredits` text,
+  PRIMARY KEY (`id`),
+  KEY `town_name_IDX` (`name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+INSERT INTO town (name,tourismCircuit,description,descriptionWysiwyg,commuterGuide,commuterGuideWysiwyg,otherDetails,otherDetailsWysiwyg,bannerImage,linkImage,photoCredits) VALUES 
+('Balaoan','North',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Bangar','North',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Luna','North',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Santol','North',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Sudipen','North',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Bacnotan','Central',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('San Fernando','Central',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('San Juan','Central',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('San Gabriel','Central',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Bauang','Central East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Bagulin','Central East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Burgos','Central East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Naguilian','Central East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Agoo','South',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Aringay','South',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Caba','South',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Santo Tomas','South',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Pugo','South East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Rosario','South East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+,('Tubao','South East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+
+--
 -- Dumping routines for database 'tourism'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
