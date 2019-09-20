@@ -14,6 +14,10 @@ class FileUploadServiceDefaultImpl implements FileUploadService {
 
     public function uploadFile(array $fileDescriptor) {
         list('file' => $file) = $fileDescriptor;
+        if (is_null($file)) {
+            return null;
+        }
+
         $this->logger->debug('File => '. json_encode($file));
 
         if ($file->getError() !== UPLOAD_ERR_OK) {
