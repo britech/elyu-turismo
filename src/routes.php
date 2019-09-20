@@ -945,15 +945,19 @@ return function (App $app) {
     });
 
     $app->get('/cpanel/towns', function(Request $request, Response $response, array $args) use ($container) {
+        $flash = $container->flash;
         try {
             $towns = $container->townManagementService->listTowns();
-            
-            $args = array_merge($args, ['towns' => count($towns) == 0 ? '[]' : json_encode($towns)]);
+            $args = array_merge($args, [
+                'towns' => count($towns) == 0 ? '[]' : json_encode($towns),
+                ApplicationConstants::NOTIFICATION_KEY => $flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
+            ]);
             return $container->cpanelRenderer->render($response, 'town/index.phtml', $args);
         } catch (\Exception $ex) {
             $container->logger->error($ex);
             return $response->withRedirect($container->router->pathFor('cpanel-home'));
         }
+    })->setName('towns');
     });
 
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
