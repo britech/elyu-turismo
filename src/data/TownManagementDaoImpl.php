@@ -136,11 +136,8 @@ class TownManagementDaoImpl implements TownManagementDao {
         $query = <<<UPDATE_QUERY
             UPDATE town
             SET description=:description,
-                descriptionWysiwyg=:descriptionWysiwyg,
                 commuterGuide=:commuterGuide,
-                commuterGuideWysiwyg=:commuterGuideWysiwyg
                 otherDetails=:otherDetails,
-                otherDetailsWysiwyg=:otherDetailsWysiwyg,
                 bannerImage=:bannerImage,
                 linkImage=:linkImage,
                 photoCredits=:photoCredits
