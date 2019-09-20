@@ -1,0 +1,50 @@
+<div style="margin-top: 20px;"></div>
+<a class="waves-effect waves-light btn" href="<?= "/cpanel/town/{$id}/edit" ?>"><i class="material-icons left">edit</i>edit</a>
+<table class="striped" style="margin-top: 10px;">
+    <tbody>
+        <tr>
+            <th style="width: 25%">Name</th>
+            <td><?= $town['name'] ?></td>
+        </tr>
+        <tr>
+            <th>Tourism Circuit</th>
+            <td><?= $town['tourismCircuit'] ?></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td><?= strlen($town['description']) == 0 ? "Not Available" : $town['description']; ?></td>
+        </tr>
+        <tr>
+            <th>Commuter's Guide</th>
+            <td><?= strlen($town['commuterGuide']) == 0 ? "Not Available" : $town['commuterGuide']; ?></td>
+        </tr>
+        <tr>
+            <th>Other Details</th>
+            <td><?= strlen($town['otherDetails']) == 0 ? "Not Available" : $town['otherDetails']; ?></td>
+        </tr>
+        <tr>
+            <th>Banner Image</th>
+            <td>
+                <?php if (strlen(trim($town['bannerImage'])) == 0): ?>
+                    <strong>No Image Yet</strong>
+                <?php else:?>
+                    <a href="<?= $bannerImage ?>" target="_blank">Show Image</a>
+                <?php endif;?>
+            </td>
+        </tr>
+        <tr>
+            <th>Link Image</th>
+            <td>
+                <?php if (strlen(trim($town['linkImage'])) == 0): ?>
+                    <strong>No Image Yet</strong>
+                <?php else:?>
+                    <a href="<?= $linkImage ?>" target="_blank">Show Image</a>
+                <?php endif;?>
+            </td>
+        </tr>
+        <tr>
+            <th>Photo Credits</th>
+            <td><?= strlen($town['photoCredits']) == 0 ? "Not Available" : $town['photoCredits']; ?></td>
+        </tr>
+    </tbody>
+</table>

@@ -958,6 +958,33 @@ return function (App $app) {
             return $response->withRedirect($container->router->pathFor('cpanel-home'));
         }
     })->setName('towns');
+
+    $app->get('/cpanel/town/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        $flash = $container->flash;
+        $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
+        try {
+            $town = $container->townManagementService->loadTown($id);
+            
+            if (is_null($town)) {
+                $container->logger->warning('Town not found');
+                $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+                return $response->withRedirect($container->router->pathFor('towns'));
+            }
+
+            list('bannerImage' => $bannerImage, 'linkImage' => $linkImage) = $town;
+
+            $args = array_merge($args, [
+                'town' => $town,
+                'bannerImage' => $useLocalFileSystem ? "/uploads/{$bannerImage}" : $bannerImage,
+                'linkImage' => $useLocalFileSystem ? "/uploads/{$linkImage}" : $linkImage
+            ]);
+            return $container->cpanelRenderer->render($response, 'town/info.phtml', $args);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            $flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Something went wrong while processing your request. Try again later');
+            return $response->withRedirect($container->router->pathFor('towns'));
+        }
     });
 
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
