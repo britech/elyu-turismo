@@ -13,15 +13,28 @@
         <script src="/assets/js/jqx-all.js"></script>
         <script src="https://unpkg.com/materialize-stepper@3.1.0/dist/js/mstepper.min.js"></script>
         <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+        <style>
+            body {
+                display: flex;
+                min-height: 100vh;
+                flex-direction: column;
+            }
+
+            main {
+                flex: 1 0 auto;
+            }
+        </style>
         <title>ELYU Turismo System Management</title>
     </head>
 
     <body>
         <?php include_once 'navigation.phtml'; ?>
 
-        <div class="container hide-on-med-and-down">
-            <?= $content ?>
-        </div>
+        <main>
+            <div class="container hide-on-med-and-down">
+                <?= $content ?>
+            </div>
+        </main>
 
         <div class="hide-on-med-and-down">
             <?php include_once 'footer.phtml'; ?>
