@@ -1,1 +1,47 @@
-<h6>Select a town to continue.</h6>
+<h2 style="margin-bottom: 30px;">Towns</h2>
+<div id="townList" style="margin-top: 50px; margin-bottom: 20px;"></div>
+<script>
+    $(document).ready(function() {
+        $("#townList").jqxDataTable({
+            width: '100%',
+            theme: 'material',
+            filterable: true,
+            selectionMode: 'singleRow',
+            altRows: true,
+            sortable: true,
+            source: new $.jqx.dataAdapter({
+                localData: <?= $towns ?>,
+                dataType: 'array',
+                dataFields: [
+                    { name: 'id', type: 'number' },
+                    { name: 'name', type: 'string' },
+                    { name: 'tourismCircuit', type: 'string' },
+                ]
+            }),
+            groups: ['tourismCircuit'],
+            groupsRenderer: function(value, rowData, level) {
+                return `<span style="font-weight: bold; display: block; text-align: center;">${value}</span>`;
+            },
+            columns: [{
+                text: 'Town',
+                dataField: 'name',
+                width: '80%',
+                align: 'center'
+            }, {
+                text: 'Tourism Circuit',
+                dataField: 'tourismCircuit',
+                hidden: true,
+                filterable: true,
+            }, {
+                text: 'Actions',
+                filterable: false,
+                sortable: false,
+                cellsAlign: 'center',
+                align: 'center',
+                cellsRenderer: function(row, column, value, rowData) {
+                    return `<a href="/cpanel/town/${rowData.id}">View</a>&nbsp;|&nbsp;<a href="/cpanel/town/${rowData.id}/edit">Edit</a>`
+                }
+            }]
+        });
+    })
+</script>

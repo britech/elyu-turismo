@@ -944,6 +944,18 @@ return function (App $app) {
         }
     });
 
+    $app->get('/cpanel/towns', function(Request $request, Response $response, array $args) use ($container) {
+        try {
+            $towns = $container->townManagementService->listTowns();
+            
+            $args = array_merge($args, ['towns' => count($towns) == 0 ? '[]' : json_encode($towns)]);
+            return $container->cpanelRenderer->render($response, 'town/index.phtml', $args);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            return $response->withRedirect($container->router->pathFor('cpanel-home'));
+        }
+    });
+
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
         return $container->webRenderer->render($response, 'index.phtml', $args);
     });
