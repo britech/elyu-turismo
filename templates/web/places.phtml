@@ -1,11 +1,11 @@
-<?php
+<!-- <?php
 
-use gov\pglu\tourism\util\ApplicationConstants;
-?>
+        use gov\pglu\tourism\util\ApplicationConstants;
+        ?>
 <div class="row" style="margin-top: 10px;">
     <div class="col s12 l12">
         <div class="center">
-            <img src="/images/<?= strtolower(implode('-', explode(' ', $town)))?>.jpg" class="responsive-img" alt="banner"/>
+            <img src="/images/<?= strtolower(implode('-', explode(' ', $town))) ?>.jpg" class="responsive-img" alt="banner"/>
         </div>
     </div>
 </div>
@@ -103,5 +103,28 @@ use gov\pglu\tourism\util\ApplicationConstants;
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.materialboxed');
         var instances = M.Materialbox.init(elems);
+    });
+</script> -->
+
+<div class="parallax-container">
+    <div class="parallax"><img src="<?= $bannerImage ?>" alt="Banner Image"></div>
+</div>
+
+<div class="section white">
+    <div class="row container">
+        <div class="col l12 m12 s12">
+            <h2 class="header">About <?= $modifiedTown ?></h2>
+            <p class="flow-text" style="white-space: pre-line"><?= $town['description']; ?>/p>
+        </div>
+    </div>
+</div>
+
+<div class="parallax-container">
+    <div class="parallax"><img src="<?= $bannerImage ?>" alt="Banner Image"></div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.parallax').parallax();
     });
 </script>
