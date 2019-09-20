@@ -141,7 +141,9 @@ return function (App $app) {
     };
 
     $container['townManagementService'] = function($c) {
-        return new TownManagementDaoImpl($c->database);
+        $townManagementService = new TownManagementDaoImpl($c->database);
+        $townManagementService->logger = $c->logger;
+        return $townManagementService;
     };
 
     $container['fileUploadService'] = function($c) {
