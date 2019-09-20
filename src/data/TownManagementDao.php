@@ -13,4 +13,12 @@ interface TownManagementDao {
     public function removeProduct($id);
 
     public function listProducts(array $criteria);
+
+    public function listTowns();
+
+    public function loadTown($id);
+
+    public function loadTownByName($name);
+
+    public function updateTown(array $input);
 }
