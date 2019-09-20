@@ -2,6 +2,12 @@
 <div id="townList" style="margin-top: 50px; margin-bottom: 20px;"></div>
 <script>
     $(document).ready(function() {
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
+        
         $("#townList").jqxDataTable({
             width: '100%',
             theme: 'material',
