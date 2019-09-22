@@ -128,6 +128,14 @@
                     </div>
                 </li>
                 <li>
+                    <div class="collapsible-header"><i class="material-icons">info</i>Other Details</div>
+                    <div class="collapsible-body">
+                        <span style="white-space: pre-line">
+                            <?= strlen(trim($town['otherDetails'])) ? $town['otherDetails'] : "<i>To be defined.</i>" ?>
+                        </span>
+                    </div>
+                </li>
+                <li>
                     <div class="collapsible-header"><i class="material-icons">local_see</i>Tourist Destinations</div>
                     <div class="collapsible-body">
                         <?php if(count($places) == 0): ?>
@@ -142,7 +150,7 @@
                                             <img src="<?= $place['imageName']?>" alt="Image" class="responsive-img">
                                         </div>
                                         <div class="col s10">
-                                            <?= $place['name'] ?>
+                                            <span style="font-weight: bold"><?= $place['name'] ?></span>
                                             <br/>
                                             <a href="/place/<?= $place['id'] ?>">More on this place.</a>
                                         </div>
@@ -167,7 +175,7 @@
                                             <img src="<?= $product['imageFile']?>" alt="Image" class="responsive-img">
                                         </div>
                                         <div class="col s10">
-                                            <?= $product['name'] ?>
+                                            <span style="font-weight: bold;"><?= $product['name'] ?></span>
                                             <br/>
                                             <a href="/product/<?= $place['id'] ?>">More on this product.</a>
                                         </div>
