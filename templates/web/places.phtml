@@ -113,14 +113,12 @@
 <div class="section white">
     <div class="row container">
         <div class="col l12 m12 s12">
-            <h2 class="header">About <?= $modifiedTown ?></h2>
-            <p class="flow-text" style="white-space: pre-line"><?= $town['description']; ?>/p>
+            <h2 class="header">About <?= $town['name'] ?></h2>
+            <p class="flow-text" style="white-space: pre-line">
+                <?= strlen(trim($town['description'])) ? $town['description'] : "<i>To be defined.</i>" ?>
+            </p>
         </div>
     </div>
-</div>
-
-<div class="parallax-container">
-    <div class="parallax"><img src="<?= $bannerImage ?>" alt="Banner Image"></div>
 </div>
 
 <script>
