@@ -1073,8 +1073,8 @@ return function (App $app) {
 
         $modifiedTown = ucwords(implode(' ', explode('_', $town)));
         $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
-        // $places = [];
-        // $products = [];
+        $places = [];
+        $products = [];
         // $placesBackend = [];
         // $visitorCounts = [];
         // $topDestinations = [];
@@ -1083,25 +1083,14 @@ return function (App $app) {
         // $maxCount = 0;
         // 
         // try {
-        //     $placesResult = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
-        //     $productsResult = array_merge([], $container->townManagementService->listProducts(['town' => $modifiedTown]));
+            
         //     $countResult = $container->openDataDao->summarizeVisitorsByTown($modifiedTown);
 
         //     $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
         //     $allProducts = array_merge([], $container->townManagementService->listProducts([]));
         //     $allDestinations = array_merge([], $container->poiManagementService->listPoi());
 
-        //     foreach($placesResult as $place) {
-        //         list('name' => $name, 'imageName' => $primaryImage) = $place;
-        //         $count = ApplicationUtils::getVisitorCountByPoi($countResult, $name);
-        //         $maxCount += $count;
-        //         $visitorCounts = array_merge($visitorCounts, [$count]);
-        //         $placesBackend = array_merge($placesBackend, [$name]);
-                
-        //         $poiImage = $useLocalFileSystem ? "/uploads/{$primaryImage}" : $primaryImage;
-        //         $place = array_merge($place, ['imageName' => $poiImage]);
-        //         $places = array_merge($places, [$place]);
-        //     }
+            
 
         //     foreach($productsResult as $product) {
         //         list('imageFile' => $primaryImage) = $product;
@@ -1135,13 +1124,37 @@ return function (App $app) {
         //     'title' => "Explore {$modifiedTown}"
         // ]);
         try {
+            $placesResult = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
+            $productsResult = array_merge([], $container->townManagementService->listProducts(['town' => $modifiedTown]));
             $townInfo = $container->townManagementService->loadTownByName($modifiedTown);
             list('bannerImage' => $bannerImage) = $townInfo;
 
+            $places = array_filter($placesResult, function($v) {
+                return $v['displayable'] != 0;;
+            }, ARRAY_FILTER_USE_BOTH);
+            array_walk($places, function(&$place) use ($useLocalFileSystem) {
+                list('imageName' => $primaryImage) = $place;
+                $poiImage = $useLocalFileSystem ? "/uploads/{$primaryImage}" : $primaryImage;
+                $place['imageName'] = $poiImage;
+            });
+
+            $products = array_filter($productsResult, function($v) {
+                return $v['enabled'] != 0;
+            }, ARRAY_FILTER_USE_BOTH);
+            array_walk($products, function(&$product) use ($useLocalFileSystem) {
+                list('imageFile' => $primaryImage) = $product;
+                $productImage = $useLocalFileSystem ? "/uploads/{$primaryImage}" : $primaryImage;
+                $product['imageFile'] = $productImage;
+            });
+
+
             $args = array_merge($args, [
                 'title' => "Explore {$modifiedTown}",
+                'townParam' => $town,
                 'town' => $townInfo,
-                'bannerImage' => $useLocalFileSystem ? "/uploads/{$bannerImage}" : $bannerImage
+                'bannerImage' => $useLocalFileSystem ? "/uploads/{$bannerImage}" : $bannerImage,
+                'places' => $places,
+                'products' => $products
             ]);
             
             return $container->exploreRenderer->render($response, 'places.phtml', $args);
