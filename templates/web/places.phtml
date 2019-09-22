@@ -113,10 +113,71 @@
 <div class="section white">
     <div class="row container">
         <div class="col l12 m12 s12">
-            <h2 class="header">About <?= $town['name'] ?></h2>
+            <img src="/images/<?= strtolower(implode('-', explode(' ', $townParam))) ?>.jpg" class="responsive-img" alt="banner"/>
             <p class="flow-text" style="white-space: pre-line">
                 <?= strlen(trim($town['description'])) ? $town['description'] : "<i>To be defined.</i>" ?>
             </p>
+
+            <ul class="collapsible expandable">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">commute</i>Commuter's Guide</div>
+                    <div class="collapsible-body">
+                        <span style="white-space: pre-line">
+                            <?= strlen(trim($town['commuterGuide'])) ? $town['commuterGuide'] : "<i>To be defined.</i>" ?>
+                        </span>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">local_see</i>Tourist Destinations</div>
+                    <div class="collapsible-body">
+                        <?php if(count($places) == 0): ?>
+                            <span>
+                                <i class="material-icons">mood_bad</i>No destinations yet
+                            </span>
+                        <?php else:?>
+                            <?php foreach($places as $place): ?>
+                                <div class="card-panel grey lighten-5 z-depth-1">
+                                    <div class="row valign-wrapper">
+                                        <div class="col l2 m2 s2">
+                                            <img src="<?= $place['imageName']?>" alt="Image" class="responsive-img">
+                                        </div>
+                                        <div class="col s10">
+                                            <?= $place['name'] ?>
+                                            <br/>
+                                            <a href="/place/<?= $place['id'] ?>">More on this place.</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach;?>
+                        <?php endif;?>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">local_offer</i>Products</div>
+                    <div class="collapsible-body">
+                        <?php if(count($products) == 0): ?>
+                            <span>
+                                <i class="material-icons">mood_bad</i>No products yet
+                            </span>
+                        <?php else:?>
+                            <?php foreach($products as $product): ?>
+                                <div class="card-panel grey lighten-5 z-depth-1">
+                                    <div class="row valign-wrapper">
+                                        <div class="col l2 m2 s2">
+                                            <img src="<?= $product['imageFile']?>" alt="Image" class="responsive-img">
+                                        </div>
+                                        <div class="col s10">
+                                            <?= $product['name'] ?>
+                                            <br/>
+                                            <a href="/product/<?= $place['id'] ?>">More on this product.</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach;?>
+                        <?php endif;?>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
@@ -124,5 +185,8 @@
 <script>
     $(document).ready(function() {
         $('.parallax').parallax();
+        $('.collapsible').collapsible({
+            accordion: false
+        });
     });
 </script>
