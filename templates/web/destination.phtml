@@ -16,6 +16,9 @@ use gov\pglu\tourism\util\ApplicationConstants;
 </style>
 <link href="/assets/css/owl.carousel.min.css" rel="stylesheet"/>
 <link href="/assets/css/owl.theme.default.min.css" rel="stylesheet"/>
+<div class="parallax-container">
+    <div class="parallax"><img src="<?= $imageSrc ?>" alt="Primary Image"></div>
+</div>
 <div class="container">
     <div class="row" style="margin-top: 20px;">
         <div class="col s12 m12 l12">
@@ -150,6 +153,8 @@ use gov\pglu\tourism\util\ApplicationConstants;
             loop:true,
             margin:10
         });
+
+        $('.parallax').parallax();
 
         let poi = {
             id: '<?= $id ?>', 
