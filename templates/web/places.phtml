@@ -1,128 +1,23 @@
-<!-- <?php
-
-        use gov\pglu\tourism\util\ApplicationConstants;
-        ?>
-<div class="row" style="margin-top: 10px;">
-    <div class="col s12 l12">
-        <div class="center">
-            <img src="/images/<?= strtolower(implode('-', explode(' ', $town))) ?>.jpg" class="responsive-img" alt="banner"/>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12 m12 l12">
-        <h3 class="flow-text">Tourist Destinations</h3>
-        <?php if (count($places) == 0) : ?>
-            <div class="card-panel red lighten-2">
-                <strong class="flow-text white-text">No Available Data</strong>
-            </div>
-        <?php else : ?>
-            <?php foreach ($places as $place) : ?>
-                <div class="card small">
-                    <div class="card-image">
-                        <img src="<?= $place['imageName'] ?>" class="responsive-img materialboxed" alt="No Image"/>
-                    </div>
-                    <div class="card-content">
-                        <p class="flow-text"><?= $place['name']; ?></p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/place/<?= $place['id'] ?>">View</a>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12 m12 l12">
-        <h3 class="flow-text">Points of Interest</h3>
-        <a href="https://www.google.com/maps/search/?api=1&query=<?= implode('+', explode(' ', $town)) . ",+La+Union" ?>" class="flow-text" style="display: block" target="_blank">View in Google Maps</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12 m12 l12">
-        <h3 class="flow-text">Products</h3>
-        <?php if (count($townProducts) == 0) : ?>
-            <div class="card-panel red lighten-2">
-                <strong class="flow-text white-text">No Available Data</strong>
-            </div>
-        <?php else : ?>
-            <?php foreach ($townProducts as $product) : ?>
-                <div class="card small">
-                    <div class="card-image">
-                        <img src="<?= $product['imageFile'] ?>" class="responsive-img materialboxed" alt="No Image"/>
-                    </div>
-                    <div class="card-content">
-                        <p class="flow-text"><?= $product['name']; ?></p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/product/<?= $product['id'] ?>">View</a>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12 m12 l12">
-        <h3 class="flow-text">Open Data</h3>
-        <?php if (count($places) == 0) : ?>
-            <div class="card-panel red lighten-2">
-                <strong class="flow-text white-text">No Available Data</strong>
-            </div>
-        <?php else : ?>
-            <canvas id="visitorCountChart" width="400" height="200"></canvas>
-        <?php endif; ?>
-    </div>
-</div>
-<script>
-    var ctx = document.getElementById('visitorCountChart');
-    var myChart = new Chart(ctx, {
-        type: 'horizontalBar',
-        data: {
-            labels: <?= $openData['places'] ?>,
-            datasets: [{
-                label: 'Number of Visitors',
-                data: <?= $openData['values'] ?>
-            }]
-        },
-        options: {
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: <?= floor($openData['maxCount'] * 0.25) ?>,
-                        suggestedMin: 0,
-                        suggestedMax: <?= $openData['maxCount'] + 100 ?>
-                    }
-                }]
-            }
-        }
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var elems = document.querySelectorAll('.materialboxed');
-        var instances = M.Materialbox.init(elems);
-    });
-</script> -->
-
 <div class="parallax-container">
-    <div class="parallax"><img src="<?= $bannerImage ?>" alt="Banner Image"></div>
+    <div class="parallax"><img src="<?= $bannerImage ?>" alt="Banner Image" class="responsive-img"></div>
 </div>
 
 <div class="section white">
     <div class="row container">
         <div class="col l12 m12 s12">
             <img src="/images/<?= strtolower(implode('-', explode(' ', $townParam))) ?>.jpg" class="responsive-img" alt="banner"/>
-            <p class="flow-text" style="white-space: pre-line">
-                <?= strlen(trim($town['description'])) ? $town['description'] : "<i>To be defined.</i>" ?>
+        </div>
+    </div>
+    <div class="row container">
+        <div class="col l8 m8 show-on-med-and-down hide-on-small-only">
+            <p style="white-space: pre-line; text-align: justify; margin-top: 0px;">
+                <?= strlen(trim($town['description'])) ? trim($town['description']) : "To be defined." ?>
             </p>
-
             <ul class="collapsible expandable">
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">commute</i>Commuter's Guide</div>
+                    <div class="collapsible-header"><i class="material-icons">commute</i>How to get there?</div>
                     <div class="collapsible-body">
-                        <span style="white-space: pre-line">
+                        <span style="white-space: pre-line; text-align: justify; padding-top: 0px;">
                             <?= strlen(trim($town['commuterGuide'])) ? $town['commuterGuide'] : "<i>To be defined.</i>" ?>
                         </span>
                     </div>
@@ -130,62 +25,40 @@
                 <li>
                     <div class="collapsible-header"><i class="material-icons">info</i>Other Details</div>
                     <div class="collapsible-body">
-                        <span style="white-space: pre-line">
+                        <span style="white-space: pre-line; text-align: justify; margin-top: 0px;">
                             <?= strlen(trim($town['otherDetails'])) ? $town['otherDetails'] : "<i>To be defined.</i>" ?>
                         </span>
                     </div>
                 </li>
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">local_see</i>Tourist Destinations</div>
-                    <div class="collapsible-body">
-                        <?php if(count($places) == 0): ?>
-                            <span>
-                                <i class="material-icons">mood_bad</i>No destinations yet
-                            </span>
-                        <?php else:?>
-                            <?php foreach($places as $place): ?>
-                                <div class="card-panel grey lighten-5 z-depth-1">
-                                    <div class="row valign-wrapper">
-                                        <div class="col l2 m2 s2">
-                                            <img src="<?= $place['imageName']?>" alt="Image" class="responsive-img">
-                                        </div>
-                                        <div class="col s10">
-                                            <span style="font-weight: bold"><?= $place['name'] ?></span>
-                                            <br/>
-                                            <a href="/place/<?= $place['id'] ?>">More on this place.</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach;?>
-                        <?php endif;?>
-                    </div>
-                </li>
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">local_offer</i>Products</div>
-                    <div class="collapsible-body">
-                        <?php if(count($products) == 0): ?>
-                            <span>
-                                <i class="material-icons">mood_bad</i>No products yet
-                            </span>
-                        <?php else:?>
-                            <?php foreach($products as $product): ?>
-                                <div class="card-panel grey lighten-5 z-depth-1">
-                                    <div class="row valign-wrapper">
-                                        <div class="col l2 m2 s2">
-                                            <img src="<?= $product['imageFile']?>" alt="Image" class="responsive-img">
-                                        </div>
-                                        <div class="col s10">
-                                            <span style="font-weight: bold;"><?= $product['name'] ?></span>
-                                            <br/>
-                                            <a href="/product/<?= $place['id'] ?>">More on this product.</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach;?>
-                        <?php endif;?>
-                    </div>
-                </li>
             </ul>
+        </div>
+        <div class="col l4 m4 show-on-med-and-down hide-on-small-only">
+            <div class="slider">
+                <ul class="slides">
+                    <?php foreach($places as $place): ?>
+                        <li>
+                            <img src="<?= $place['imageName']?>" alt="<?= $place['name']?>"/>
+                            <div class="caption center-align">
+                                <h3 style="cursor: pointer" onclick="window.location='/place/<?= $place['id']?>'"><?= $place['name'] ?></h3>
+                            </div>
+                        </li>
+                    <?php endforeach;?>
+
+                    <?php foreach($products as $product): ?>
+                        <li>
+                            <img src="<?= $product['imageFile']?>" alt="<?= $product['name']?>"/>
+                            <div class="caption center-align">
+                                <h3 style="cursor: pointer" onclick="window.location='/product/<?= $product['id']?>'"><?= $product['name'] ?></h3>
+                            </div>
+                        </li>
+                    <?php endforeach;?>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row container">
+        <div class="col s12 show-on-small-only hide-on-med-and-up">
+
         </div>
     </div>
 </div>
@@ -196,5 +69,8 @@
         $('.collapsible').collapsible({
             accordion: false
         });
+        $('.slider').slider({
+            indicators: false
+        })
     });
 </script>
