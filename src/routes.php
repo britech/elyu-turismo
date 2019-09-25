@@ -1075,54 +1075,7 @@ return function (App $app) {
         $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
         $places = [];
         $products = [];
-        // $placesBackend = [];
-        // $visitorCounts = [];
-        // $topDestinations = [];
-        // $allProducts = [];
-        // $allDestinations = [];
-        // $maxCount = 0;
-        // 
-        // try {
-            
-        //     $countResult = $container->openDataDao->summarizeVisitorsByTown($modifiedTown);
-
-        //     $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
-        //     $allProducts = array_merge([], $container->townManagementService->listProducts([]));
-        //     $allDestinations = array_merge([], $container->poiManagementService->listPoi());
-
-            
-
-        //     foreach($productsResult as $product) {
-        //         list('imageFile' => $primaryImage) = $product;
-        //         $productImage = $useLocalFileSystem ? "/uploads/{$primaryImage}" : $primaryImage;
-        //         $product = array_merge($product, ['imageFile' => $productImage]);
-        //         $products = array_merge($products, [$product]);
-        //     }
-        // } catch (\PDOException $ex) {
-        //     $container->logger->error($ex);
-        // }
-
-        // $args = array_merge($args, [
-        //     'town' => $modifiedTown,
-        //     'places' => array_filter($places, function($val) use ($container) {
-        //         $container->logger->debug(json_encode($val));
-        //         return $val['displayable'] != 0;
-        //     }, ARRAY_FILTER_USE_BOTH),
-        //     'townProducts' => array_filter($products, function($val) use ($container) {
-        //         $container->logger->debug(json_encode($val));
-        //         return $val['enabled'] != 0;
-        //     }, ARRAY_FILTER_USE_BOTH),
-        //     'openData' => [
-        //         'places' => json_encode($placesBackend),
-        //         'values' => json_encode($visitorCounts),
-        //         'maxCount' => $maxCount
-        //     ],
-        //     'topDestinations' => $topDestinations,
-        //     'products' => $allProducts,
-        //     'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
-        //     'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations),
-        //     'title' => "Explore {$modifiedTown}"
-        // ]);
+        
         try {
             $placesResult = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
             $productsResult = array_merge([], $container->townManagementService->listProducts(['town' => $modifiedTown]));
