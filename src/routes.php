@@ -1127,7 +1127,10 @@ return function (App $app) {
             $placesResult = array_merge([], $container->poiManagementService->listPoiByTown($modifiedTown));
             $productsResult = array_merge([], $container->townManagementService->listProducts(['town' => $modifiedTown]));
             $townInfo = $container->townManagementService->loadTownByName($modifiedTown);
-            list('bannerImage' => $bannerImage) = $townInfo;
+            list('name' => $name, 'bannerImage' => $bannerImage) = $townInfo;
+            if (strlen(trim($name)) == 0) {
+                return $response->withRedirect($container->router->pathFor('destinations'));
+            }
 
             $places = array_filter($placesResult, function($v) {
                 return $v['displayable'] != 0;;
