@@ -1,18 +1,23 @@
-<div class="parallax-container">
-    <div class="parallax"><img src="<?= $bannerImage ?>" alt="Banner Image" class="responsive-img"></div>
-</div>
+<?php if(!is_null($bannerImage)): ?>
+    <div class="parallax-container">
+        <div class="parallax"><img src="<?= $bannerImage ?>" alt="Banner Image" class="responsive-img"></div>
+    </div>
+<?php endif;?>
 
 <div class="section white">
     <div class="row container">
         <div class="col l12 m12 s12">
             <img src="/images/<?= strtolower(implode('-', explode(' ', $townParam))) ?>.jpg" class="responsive-img" alt="banner"/>
-        </div>
-    </div>
-    <div class="row container">
-        <div class="col l8 m8 show-on-med-and-down hide-on-small-only">
-            <p style="white-space: pre-line; text-align: justify; margin-top: 0px;">
+            <div class="center">
+                <a class="waves-effect indigo btn-small" href="https://www.google.com/maps/search/?api=1&query=<?= $poiQuery?>" target="_blank">
+                    <i class="material-icons right">near_me</i>Places of Interest
+                </a>
+            </div>
+
+            <p style="white-space: pre-line; text-align: justify; margin-top: 0px; padding-top: 0px;">
                 <?= strlen(trim($town['description'])) ? trim($town['description']) : "To be defined." ?>
             </p>
+            
             <ul class="collapsible expandable">
                 <li>
                     <div class="collapsible-header"><i class="material-icons">commute</i>How to get there?</div>
@@ -30,35 +35,67 @@
                         </span>
                     </div>
                 </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">photo_camera</i>Tourist Destinations</div>
+                    <div class="collapsible-body">
+                        <?php if (count($places) > 0): ?>
+                            <?php foreach($places as $place): ?>
+                                <div class="card-panel grey lighten-2">
+                                    <div class="row valign-wrapper">
+                                        <div class="col l2 m3 s3">
+                                            <img src="<?= $place['imageName']?>" alt="<?= $place['name']?>" data-caption="<?= $place['name']?>" class="responsive-img materialboxed">
+                                        </div>
+                                        <div class="col l10 m10 s10">
+                                            <p style="font-weight: bold"><?= $place['name']; ?></p>
+                                            <?php if($place['arEnabled'] == 1): ?>
+                                                <div class="chip blue" style="font-weight: bold;">AR Enabled</div>
+                                                <br/>
+                                            <?php endif;?>
+                                            <?php if(strlen(trim($place['description'])) > 0):?>
+                                                <p class="truncate"><?= $place['description']?>&nbsp;<a href="/place/<?= $place['id']?>">Read more.</a></p>
+                                            <?php else: ?>
+                                                <a href="/place/<?= $place['id']?>">View Destination</a>
+                                            <?php endif;?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach;?>
+                        <?php else:?>
+                            <p style="font-weight: bold">No Tourist Destinations available.</p>
+                        <?php endif;?>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">local_offer</i>Products</div>
+                    <div class="collapsible-body">
+                        <?php if (count($products) > 0): ?>
+                            <?php foreach($products as $product): ?>
+                                <div class="card-panel grey lighten-2">
+                                    <div class="row valign-wrapper">
+                                        <div class="col l2 m3 s3">
+                                            <img src="<?= $product['imageFile']?>" alt="<?= $product['name']?>" data-caption="<?= $product['name']?>" class="responsive-img materialboxed">
+                                        </div>
+                                        <div class="col l10 m10 s10">
+                                            <p style="font-weight: bold"><?= $place['name']; ?></p>
+                                            <?php if(strlen(trim($product['arLink'])) > 0): ?>
+                                                <div class="chip blue" style="font-weight: bold;">AR Enabled</div>
+                                                <br/>
+                                            <?php endif;?>
+                                            <?php if(strlen(trim($product['description'])) > 0):?>
+                                                <p class="truncate"><?= $product['description']?>&nbsp;<a href="/product/<?= $product['id']?>">Read more.</a></p>
+                                            <?php else: ?>
+                                                <a href="/product/<?= $product['id']?>">View Destination</a>
+                                            <?php endif;?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach;?>
+                        <?php else:?>
+                            <p style="font-weight: bold">No Products available.</p>
+                        <?php endif;?>
+                    </div>
+                </li>
             </ul>
-        </div>
-        <div class="col l4 m4 show-on-med-and-down hide-on-small-only">
-            <div class="slider">
-                <ul class="slides">
-                    <?php foreach($places as $place): ?>
-                        <li>
-                            <img src="<?= $place['imageName']?>" alt="<?= $place['name']?>"/>
-                            <div class="caption center-align">
-                                <h3 style="cursor: pointer" onclick="window.location='/place/<?= $place['id']?>'"><?= $place['name'] ?></h3>
-                            </div>
-                        </li>
-                    <?php endforeach;?>
-
-                    <?php foreach($products as $product): ?>
-                        <li>
-                            <img src="<?= $product['imageFile']?>" alt="<?= $product['name']?>"/>
-                            <div class="caption center-align">
-                                <h3 style="cursor: pointer" onclick="window.location='/product/<?= $product['id']?>'"><?= $product['name'] ?></h3>
-                            </div>
-                        </li>
-                    <?php endforeach;?>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="row container">
-        <div class="col s12 show-on-small-only hide-on-med-and-up">
-
         </div>
     </div>
 </div>
@@ -69,8 +106,6 @@
         $('.collapsible').collapsible({
             accordion: false
         });
-        $('.slider').slider({
-            indicators: false
-        })
+        $(".materialboxed").materialbox();
     });
 </script>
