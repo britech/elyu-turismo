@@ -8,12 +8,7 @@
     <div class="row container">
         <div class="col l12 m12 s12">
             <img src="/images/<?= strtolower(implode('-', explode(' ', $townParam))) ?>.jpg" class="responsive-img" alt="banner"/>
-            <div class="center">
-                <a class="waves-effect indigo btn-small" href="https://www.google.com/maps/search/?api=1&query=<?= $poiQuery?>" target="_blank">
-                    <i class="material-icons right">near_me</i>Places of Interest
-                </a>
-            </div>
-
+            
             <p style="white-space: pre-line; text-align: justify; margin-top: 0px; padding-top: 0px;">
                 <?= strlen(trim($town['description'])) ? trim($town['description']) : "To be defined." ?>
             </p>
@@ -33,6 +28,12 @@
                         <span style="white-space: pre-line; text-align: justify; margin-top: 0px;">
                             <?= strlen(trim($town['otherDetails'])) ? $town['otherDetails'] : "<i>To be defined.</i>" ?>
                         </span>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">near_me</i>Places of Interest</div>
+                    <div class="collapsible-body">
+                        <p>You can view the places of interest in this destination <a href="https://www.google.com/maps/search/?api=1&query=<?= $poiQuery?>" target="_blank">here.</a></p>
                     </div>
                 </li>
                 <li>
@@ -76,7 +77,7 @@
                                             <img src="<?= $product['imageFile']?>" alt="<?= $product['name']?>" data-caption="<?= $product['name']?>" class="responsive-img materialboxed">
                                         </div>
                                         <div class="col l10 m10 s10">
-                                            <p style="font-weight: bold"><?= $place['name']; ?></p>
+                                            <p style="font-weight: bold"><?= $product['name']; ?></p>
                                             <?php if(strlen(trim($product['arLink'])) > 0): ?>
                                                 <div class="chip blue" style="font-weight: bold;">AR Enabled</div>
                                                 <br/>
