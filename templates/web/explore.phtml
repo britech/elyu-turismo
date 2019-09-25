@@ -1,305 +1,126 @@
 <div class="container">
     <div class="row">
         <div class="col s12 m12 l12" style="margin-top: 10px;">
-            <ul class="collapsible expandable">
-                <li>
-                    <div class="collapsible-header">Northern Circuit</div>
-                    <div class="collapsible-body">
-                        <img src="images/balaoan.jpg" alt="balaoan-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/balaoan'">
-                        <br />
-
-                        <img src="images/bangar.jpg" alt="bangar-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/bangar'">
-                        <br />
-
-                        <img src="images/luna.jpg" alt="luna-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/luna'">
-                        <br />
-
-                        <img src="images/santol.jpg" alt="santol-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/santol'">
-                        <br />
-
-                        <img src="images/sudipen.jpg" alt="santol-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/sudipen'">
-                    </div>
-                </li>
-                <li>
-                    <div class="collapsible-header">Central Circuit</div>
-                    <div class="collapsible-body">
-                        <img src="images/bacnotan.jpg" alt="bacnotan-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/bacnotan'">
-                        <br />
-
-                        <img src="images/san-fernando.jpg" alt="san-fernando-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/san_fernando'">
-                        <br />
-
-                        <img src="images/san-juan.jpg" alt="san-juan-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/san_juan'">
-                        <br />
-
-                        <img src="images/san-gabriel.jpg" alt="san-gabriel-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/san_gabriel'">
-                    </div>
-                </li>
-                <li>
-                    <div class="collapsible-header">Central Eastern Circuit</div>
-                    <div class="collapsible-body">
-                        <img src="images/bauang.jpg" alt="bauang-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/bauang'">
-                        <br />
-
-                        <img src="images/bagulin.jpg" alt="bagulin-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/bagulin'">
-                        <br />
-
-                        <img src="images/burgos.jpg" alt="burgos-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/burgos'">
-                        <br />
-
-                        <img src="images/naguilian.jpg" alt="naguilian-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/naguilian'">
-                    </div>
-                </li>
-                <li>
-                    <div class="collapsible-header">Southern Circuit</div>
-                    <div class="collapsible-body">
-                        <img src="images/agoo.jpg" alt="agoo-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/agoo'">
-                        <br />
-
-                        <img src="images/aringay.jpg" alt="aringay-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/aringay'">
-                        <br />
-
-                        <img src="images/caba.jpg" alt="caba-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/caba'">
-                        <br />
-
-                        <img src="images/santo-tomas.jpg" alt="santo-tomas-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/santo_tomas'">
-                    </div>
-                </li>
-                <li>
-                    <div class="collapsible-header">South Eastern Circuit</div>
-                    <div class="collapsible-body">
-                        <img src="images/pugo.jpg" alt="pugo-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/pugo'">
-                        <br />
-
-                        <img src="images/rosario.jpg" alt="rosario-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/rosario'">
-                        <br />
-
-                        <img src="images/tubao.jpg" alt="tubao-banner" class="responsive-img" style="cursor: pointer;" onclick="window.location='/places/tubao'">
-                    </div>
-                </li>
+            <h3 class="center">Select a Tourism Circuit</h3>
+            <ul class="tabs">
+                <li class="tab col s2 m2 l2"><a href="#north">North</a></li>
+                <li class="tab col s2 m2 l2"><a href="#central">Central</a></li>
+                <li class="tab col s3 m3 l3"><a href="#central-east">Central Eastern</a></li>
+                <li class="tab col s2 m2 l2"><a href="#south">South</a></li>
+                <li class="tab col s3 m3 l3"><a href="#south-east">South Eastern</a></li>
             </ul>
+            <div id="north" class="col s12 m12 l12">
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/balaoan'">Balaoan</div>
+                    </div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/bangar'">Bangar</div>
+                    </div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/luna'">Luna</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/santol'">Santol</div>
+                    </div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/sudipen'">Sudipen</div>
+                    </div>
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                </div>
+            </div>
+            <div id="central" class="col s12 m12 l12">
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/bacnotan'">Bacnotan</div>
+                    </div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/san_fernando'">City of San Fernando</div>
+                    </div>
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/san_gabriel'">San Gabriel</div>
+                    </div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/san_juan'">San Juan</div>
+                    </div>
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                </div>
+            </div>
+            <div id="central-east" class="col s12 m12 l12">
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/bauang'">Bauang</div>
+                    </div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/bagulin'">Bagulin</div>
+                    </div>
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/burgos'">Burgos</div>
+                    </div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/naguilian'">Naguilian</div>
+                    </div>
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                </div>
+            </div>
+            <div id="south" class="col s12 m12 l12">
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/agoo'">Agoo</div>
+                    </div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/aringay'">Aringay</div>
+                    </div>
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/caba'">Caba</div>
+                    </div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/santo_tomas'">Santo Tomas</div>
+                    </div>
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                </div>
+            </div>
+            <div id="south-east" class="col s12 m12 l12">
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/pugo'">Pugo</div>
+                    </div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/rosario'">Rosario</div>
+                    </div>
+                    <div class="col l2 m2 s2">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col l4 m4 s4">&nbsp;</div>
+                    <div class="col l4 m4 s4">
+                        <div class="card-panel" style="cursor: pointer" onclick="window.location='/places/tubao'">Tubao</div>
+                    </div>
+                    <div class="col l4 m4 s4">&nbsp;</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Northern Circuit Start -->
-<!-- <div class="row">
-    <h3 class="flow-text right-align" style="border-bottom: 1px solid black;">Northern Circuit</h3>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/balaoan.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/balaoan">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-balaoan" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" value="Balaoan is approximately 300 kilometers north of Metro Manila. The town can be reached from Manila using the MacArthur Highway.<br/><br/>Having its former name as “Puraw”, Balaoan was founded in 1704 and originally a part of Ilocos Sur. The town's present name “Bala-aoan” originated during the Spanish colonial era through the answer of a Spanish Soldier when asked if their guns are loaded or not. Balaoan is one of the oldest municipalities in La Union. Balaoan holds its Parochial Fiesta every September 9 & 10 and Panagyaman Festival on December 18-22 of the year.<br/><br/>Balaoan is known for its Sea Urchins which are commonly cultivated in Barangays Paraoir and Almeida. Tourists and vacationers can also rent boats for them to actually take a closer look on the harvesting process of the famous “Maratangtang”, a favorite delicacy among the Ilocanos. Tourists may visit the Lourdes Grotto before proceeding to a picnic at Apaleng Park or Coconut Garden." id="balaoan-text"/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/bangar.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/bangar">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-bangar" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="bangar-text" value="Originally part of Ilocos, this coastal town of La Union is located north of Balaoan Town and south of the Municipality of Sudipen in the province’s 1st Congressional District. As a major transit area for the Manila-Ilocos Bus Route, Bangar can be reached anytime of the day. Tricycles are available at the Town Plaza for trips to the barrios.<br/><br/>Visitors and buyers wishing to buy Inabel products are able to see the actual process of weaving of the Ilocano product. Passed on from generation to generation, most loom weavers still use the manual traditional weaving technique using antique wooden weaving equipment. Buyers may even request for personalized weaving design which include their names. A couple of metal craft shops specializing in bolos and agricultural implement are also located along the national highway for the convenience of customers.<br/><br/>Due to the fame brought by the two local products, an Abel-Panday Festival is held every December 26 and 27 which is highlighted by a street-dancing competition. Every July 25, locals celebrate the Feast Day of their Patron, Saint Christopher. The Parish Church is a must to see attraction, other than its intricate ceiling murals, it also takes pride for being one of the few churches in the country with three belfries.<br/><br/>North of the Town is the mystic Amburayan River, scene of the Ilocano legend Biag ni Lam-Ang."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/luna.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/luna">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-luna" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="luna-text" value="Approximately 297 kilometers away from Manila which corresponds to a six and a half hour driving, this coastal town can be reached via the Bacnotan-Luna-Balaoan Provincial Road. Jeepneys located near the San Fernando City Public Market serve commuters as early as six in the morning until seven in the evening. Travelers who are riding buses plying the Manila-Ilocos Route can get off at Balaoan Town Crossing and take tricycles which ply 24 hours a day bound for Luna. <br/><br/>For souvenir items, visitors can pick colorful pebbles of different sizes and shapes of their choice along the beach where the Baluarte Tower stands after more than three centuries. Serving as observation post during the Spanish Era against marauding Moro, Chinese and Japanese Pirates, the splitting tower has become a favorite subject of photographers. Visitors can also buy religious items beside the Saint Catherine of Alexandria Church where Our Lady of Namacpacan is enshrined. Visitors can also draw water coming from a well at the side of the church which is believed to be miraculous. A visit to this charming town can never be complete without a taste of its local Bibingka, generously served with egg and cheese. <br/><br/>Built in 1915, its Municipal Hall was recently improved and restored to maintain its antique stature. Its grounds also underwent landscaping and massive lighting to jive with the Spanish-inspired Architecture of Luna. <br/><br/>The town’s original name is Namacpacan, an Iloco word which means “one who had given food” due to the generosity of the locals of sharing their food to travelers going north during the Spanish times. On October 18, 1906, during the incumbency of Gov. Joaquin Luna and Namacpacan Mayor Primitivo Resurreccion Novicio, the name of the town was changed to Luna by virtue of Philippine Commission Act No. 1543. The change was based on the request of the Municipal Council which was subsequently approved and endorsed by the Provincial Board of La Union, in honor of Doña Laureana Novicio Luna, a native of the locality and mother of the famous Luna brothers, Antonio the General and Juan the Painter."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/santol.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/santol">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-santol" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="santol-text" value="Located in the eastern mountainous area of La Union is the Municipality of Santol. It can be accessed from Balaoan through a smoothly ascending and meandering road that is ideal for biking and motorcycling enthusiasts, while its verdant and unspoiled surroundings will be a treat for nature-lovers.<br/><br/>While in Santol, visitors can stop by the Prayer Mountain for spiritual nourishment.<br/><br/>Santol is known for its Balay-Anito Waterfalls which is said to be a dwelling place of spirits with is otherworldly beauty. In addition, located in the town are the Siminublan Waterfalls, Amburayan River, and Maggew Burial Cave. Tourists may also visit the Municipal Tree Park or Santol Pavillion and indulge on local fruits like rambutan, lanzones, mango, watermelon and santol, the fruit from where the municipality was named after.<br/><br/>Santol is also known for its local dish, binagkal, a rice cake which is customarily served during occasions, specially on the Binagkal Festival celebrated every February. The town celebrates its Patronal Fiesta every December 19. March 22 – 25 also marks the date of the celebration Santol’s Ragragsakan and Panagbunga Festival, the annual town fiesta."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/sudipen.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/sudipen">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-sudipen" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="sudipen-text" value="Sudipen is originally a barrio of Bangar, La Union and became a township of the sub-province of Lepanto, Amburayan in 1906. As embodied in Executive Order No. 72 issued by then President Manuel A. Roxas, Sudipen became a municipal district of the Province of La Union on July 30, 1947.<br/><br/>Separated from the Province of Ilocos Sur by the Amburayan River, it is the northernmost town of La Union, which translates to a six-hour drive from Manila. Tricycles are also posted at the main entrance of the public market, providing comfort and ease to commuters going to the barrios.<br/><br/>A visit to the Sudipen Display Center which is adjacent to the Municipal Hall, provides a comprehensive view of what Sudipen can offer such as baskets of various sizes and designs, tasty Rice Wine (Tapuey) crispy Cassava Chips, furniture of distinct designs, and Bamboocraft products can be bought at reasonable prices."/>
-    </div>
-</div> -->
-<!-- Northern Circuit End -->
-
-<!-- Central Circuit Start -->
-<!-- <div class="row">
-    <h3 class="flow-text right-align" style="border-bottom: 1px solid black;">Central Circuit</h3>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/bacnotan.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/bacnotan">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-bacnotan" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="bacnotan-text" value="Bacnotan is located 284 kilometers away from Manila.it is a major transit area for the Manila-Ilocos Bus Route 24/7. There are also jeeps and tricycles for short trips within the municipality.<br/><br/>Home to the National Apiculture Research, Training and Development Institute (NARTDI), it has made Bacnotan a pilot area for support, instruction, research and production on beekeeping. Based at the Don Mariano Marcos Memorial State University (DMMMSU) Main Campus, it came into existence by virtue of RA 9151 which then La Union 1st District Congressman and former Governor Manuel C. Ortega authored. Also located at DMMMSU is the Sericulture Research Development Institute which produces quality silk.<br/><br/>In Barangay Carcarmay stands the towering La Union Centennial Tree which was planted way back in 1896 as certified by the Department of Environment and Natural Resources.<br/><br/>From December 27 to 30, the town celebrates its annual town fiesta which is highlighted by the Honey Festival. Parochial Fiestas include September 29, feast of St. Michael the Archangel and May 1, feast of St. Joseph the Worker."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/san-fernando.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/san_fernando">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-san_fernando" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="san_fernando-text" value="24-hour major transit point as well as origin-destination of buses plying the Manila-Laoag City route, San Fernando City is very accessible due to its strategic location. Commuters and motorists will find their visit relaxing, thanks to its excellent roads and bridges. Only 270 kilometers north of Metro Manila which translate to a five to six-hour drive by land, it hosts to majority of national government agencies as the Administrative Capital of Region I.<br/><br/>Visitors can comfortably explore the city, especially its tourist attractions like the Botanical Garden, La Union Science Centrum, Bacsil Ridge, Pindangan Ruins, Ma-Cho Temple, Heroes’ Hill, Tomb of the Unknown Soldier, Christ the Redeemer, Capitol Complex and Thunderbird Entertainment Complex, with its wide array of transportation facilities. Jeepneys ply the major commercial and industrial centers of the city as well as the far-flung barangays. Tricycles are also available 24 hours a day, ready to take you to your desired destination. The city plaza, other than the private bus terminals, serves as the main loading and unloading zone of most public utility vehicles.<br/><br/>From March 7 to March 20, the star-studded City Fiesta is celebrated. It is highlighted by the Feast of Saint William the Hermit which is celebrated every 10th of February and the Pageant Night of Ms. City of San Fernando which is held on the last day of the fiesta.<br/><br/>A visit to the city won’t be complete without a taste of the sumptuous local Halo-Halo, genuine Chinese Cuisine and Seafood Restaurants. Experience also the city’s nightlife with its wide choice of bars, folk houses and videoke houses.<br/><br/>Guests who are always on the go can grab a souvenir at the La Union Trade Center which is aptly located along the National Highway beside the City Hall. SEAIR also flies from Manila to San Fernando City and vise-versa every Monday, Wednesday and Friday. For those who wish to extend their stay, the city offers a wide array of hotels and motels suited for their budget."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/san-gabriel.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/san_gabriel">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-san_gabriel" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="san_gabriel-text" value="With the highest percentage of agricultural land in La Union’s District I, San Gabriel is the prime producer of highland vegetables in the province. From this municipality, one can have a taste of fresh upland vegetables such as cucumber, cabbage and carrots as well as fruits such as lanzones and rambutan. The Municipality also has its native delicacy called Imbagkal and Tapey (Rice Wine).<br/><br/>San Gabriel can be reached via provincial roads from Bacnotan and San Juan or connecting roads from Santol and Bagulin.<br/><br/>The town is famous for its Tangadan Falls which attracts thousands of tourists each year. Visitors may also come to Liang Digo and Liang Labaan Natural Caves with its wooden coffins of unknown origin.<br/><br/>Aside from the Tandagan Falls, tourists may also visit Lon-oy Spring, Lineng Pool, Ba’kes Falls, and Kattebegan Falls.<br/><br/>The Kankanaeys formerly called the town Baka-Burnotan. This is after the game likened to tug-of-war that local folks and people from nearby sitios often played. With the introduction of Christianity, the native populace embraced St. Gabriel the Archangel as their patron saint, thereby christening the municipality after his name. San Gabriel holds its patronal fiesta every March 25 and town fiesta every April 19-21."/>
-    </div>
-    <div class="card">
-        <div class="card-image waves-effect waves-block waves-light">
-            <img src="images/san-juan.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/san_juan">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-san_juan" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="san_juan-text" value="San Juan, with its rolling waves and delightful beach scenes, has become a household name in the surfing and tourism industry. A haven for local and foreign surfers alike, surf lessons are readily available wherein first-timers can be taught the basics in just an hour. The coastline of Urbiztondo Beach is often to be found alive with activities such as skimboarding, Frisbee, and beach volleyball. The La Union Surfing Break, scheduled every end of October, has continually attracted tourists, surfers, college students, beach-lovers, and party-goers, contributing to the rising popularity of this holiday destination.<br/><br/>On the other hand, San Juan is also a laid-back town known for its pottery industry. Earthenware of various sizes and designs, all of superb quality, are sold at Brangay Taboc. At the town center are San Juan’s Municipal Hall, town plaza, and St. John the Baptist Church. Nearby on the seaside is the municipality’s historic Baluarte (watchtower ruins) and farther inland is the untouched Candaroma Hidden Spring.<br/><br/>In honor of its St. John the Baptist, San Juan holds its patronal fiesta every 24th of June, and celebrates its annual town fiesta every third week of December."/>
-    </div>
-</div> -->
-<!-- Central Circuit End -->
-
-<!-- Central Eastern Circuit Start -->
-<!-- <div class="row">
-    <h3 class="flow-text right-align" style="border-bottom: 1px solid black;">Central Eastern Circuit</h3>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/bagulin.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/bagulin">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-bagulin" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="bagulin-text" value="Bagulin, noted for its quality soft brooms, is a quiet town nestled among meandering mountains and the pristine Bagulin River. It can primarily be reached by taking the Naguilian-Bagulin Provincial Road or, alternatively, by minor roads from San Fernando City, San Juan or Burgos. Befitting this off-the-beaten-path destination, the 4x4 off-the-road challenge is being offered to adventurous visitors wherein they can venture into Bagulin’s untamed interior landscapes.<br/><br/>Backpackers will find Bagulin an ideal spot for trekking and camping with such sites as Tagudtud People’s Park, Loslosi Falls and Kedlap Burial Cave in Allabok which, with its cultural significance, was declared a National Cultural Treasure in 1977. Another site of note is Barangay Cardiz, La Union’s highest point where one can find Tili Ti Nuang Falls.<br/><br/>Aside from its natural wonders, the municipality is resplendent with indigenous folklore. Bagulin was said to have been named after Bago, a daring highlander, Ulin, a beautiful lass from the lowlands, and their son Bagulin who grew up to become the best chieftain that ever ruled the community. The town used to be a part of Mountain Province, with Kankanaeys still comprising majority of the population today. It celebrates its Patronal Town Fiesta every March 16-19."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/bauang.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/bauang">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-bauang" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="bauang-text" value="Established as a settlement in 1590, Bauang was recognized as a town in 1765 as part of Pangasinan. When La Union was created in 1850, Bauang was one of the original 12 towns that formed the province. This coastal municipality is about 10 kilometers south of San Fernando City, 50 kilometers west of Baguio City, and 250 kilometers north of Metro Manila. It is bounded on the north by the City of San Fernando, on the East by Naguilian, on the south by Caba, and on the west by South China Sea. Bauang also earned the appellation as “Beach Capital of the Philippines” during the 70’s for its pristine beaches and is still a most sought-after swimming area as shown by the continuous influx of tourists and establishments of new resorts.<br/><br/>Bauang beach is accessible to any form of land transportation. Its calm waters, fine sand, and languidly swaying coconut trees along the shoreline from Baccuit Sur to Pagdalagan Sur make it perfect for jet skiing, scuba diving and swimming. Various shell crafts peddled by locals at the beach area and at various shops along the highway are also available for souvenirs.<br/><br/>After a splash adventure on the beach, tourists can have a guapple and grapes picking adventure at Barangay Urayong. Famous for its large, thick and crispy with a tangy taste, other Guapple products include pies, jams, candies and grapes. To complete the Bauang experience, the last stop would be a solemn visit at the Grotto of Our Lady of Lourdes in Brgy. Disso-or.<br/><br/>Bauang celebrates its Parochial Fiesta on April 26 in honor of St. Peter and St. Paul and the Panagkakararua Festival every October 31 of the year."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/burgos.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/burgos">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-burgos" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="burgos-text" value="Located midway between San Fernando City and Baguio City, Burgos is an hour away from both the brilliant beaches of La Union and the pine forests of the Cordilleras. While it is mainly a transit destination, Burgos has wonders of its own such as the Bolikewkew Rice Terraces, Imelda Lake, and Dalacdac Dam. Travelers will find hiking among Burgos’ lush foliage a refreshing one, as the town has the coolest climate in the province.<br/><br/>Tapey (rice wine), binudbudan (a native delicacy), pineapples, bananas, and other fruits are the main offerings in the town’s market. Also on display are bamboo and basket handicrafts. Undoubtedly, the best souvenir to take home is Burgos’ famed colored soft brooms. Colorful arrays of these can easily be spotted on stalls along the Baguio-Bauang Highway where one can witness soft broom making demonstrations. The town’s plain and colored brooms are widely sold in Baguio and even Metro Manila. To rectify the misconception among buyers that the brooms are exclusively made in Baguio, all makers have been required to mark their products with the name of Burgos. The brooms’ prominence in the town’s livelihood is further illustrated during the annual Boyboy Festival held every February 21-23.<br/><br/>Burgos was named in honor of the martyr Father Jose Burgos who, while fleeing from the Spaniards, stopped by to officiate a mass in Sitio Domingo, Barangay Agpay."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/naguilian.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/naguilian">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-naguilian" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="naguilian-text" value="Endowed with rich natural resources, Naguilian is largely an agricultural town. Its fertile land yields rice, tobacco, root crops, vegetables and sugarcane which produces two of the municipality’s famous products, vinegar and basi. The original Iloco basi, Naguilian’s sugarcane wine is incomparable in its sweet and robust taste. Aside from sampling the wine, visitors may also get a glimpse on how it’s made by visiting the Naguilian Agricultural Complex.<br/><br/>Hike and rejuvenate the senses at Tuddingan Falls, Sangbay Falls, and San Antonio Mini Rice Terraces or meditate in the serenity of St. Augustine Church and Mary Consolatrix Monastery. Head over to Barangay Lioac where some of the best silver products are made or head over to the town center at Barangay Ortiz, where woodcrafts, leather products and knitted garments are also sold.<br/><br/>Naguilian is easily accessible with buses regularly plying the Naguilian Highway to and from Baguio City and La Union. The town holds its Basi Festival from May 1 to 8, simultaneous with St. Augustine’s Pastoral Fiesta every 5th of May."/>
-    </div>
-</div> -->
-<!-- Central Eastern Circuit End -->
-
-<!-- Southern Circuit Start -->
-<!-- <div class="row">
-    <h3 class="flow-text right-align" style="border-bottom: 1px solid black;">Southern Circuit</h3>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/agoo.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/agoo">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-agoo" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="agoo-text" value="Like most of the LGUs in the Province located along the National Highway, Agoo, being a picture of sustainable progress and development, has become a town that never sleeps. Buses bound for Baguio City coming from Metro Manila, Western Pangasinan and Olongapo City and vice versa via Aspiras Highway have kept the Agoo Town Center busy 24 hours a day. Adding more economic activities are buses going to Ilocos Sur and Norte from Manila and back along the National Highway. Agoo is around 236 kilometers away from Manila, requiring about four and a half drive by land. Jeepney terminals located at the town proper offer transportation for those going to the interior areas of Tubao, Pugo and Santo Tomas Towns. Its tricycles lined at the main town crossing also offer 24-hour transportation service.<br/><br/>While in Agoo, visitors can get a taste of the luscious Dinegdeng which is commonly sold in local eateries. To promote the Iloco delicacy, every 6th of May is designated as Dinengdeng Festival, where more than 100 recipes of the popular Iloco meal are showcased. A fast food chain, Filipino and Chinese restaurants, hotels and a shopping center are conveniently located in the Poblacion area to cater the needs of travelers and guests. For those who want to see more of Agoo, a number of resorts, mostly along the coastal barangays, Museo de Iloco, Eagle of the North, Plaza de la Virgen, Agoo People’s Center and Square, and Plaza Tree House are highly suggested.<br/><br/>On top of being the Cleanest and Greenest Municipality of La Union in 2010, Agoo was also a recipient of the 2009 UNESCO Confucius Prize for Literacy Award for its Continuing Education and Lifelong Learning Programme.<br/><br/>Agoo’s overall development may not be completed without mentioning the continuing devotion of the people to their faith. The countless miracle stories attributed to Apo Caridad which includes the dramatic rise of Agoo from the rubble of the July 1990 Killer Quake and religious structures such as Our Lady of Lourdes Grotto, Basilica of Our Lady of Charity and Plaza de la Virgen have made the town a major religious center of the north. Our Lady of Charity’s feast day is celebrated every 4th of May."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/aringay.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/aringay">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-aringay" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="aringay-text" value="The Municipality of Aringay is located along the national highway, north of Agoo and south of Caba. Approximately 244 kilometers from Manila, it requires about five hours of driving to reach this thriving municipality. It also has tricycles stationed in front of the Public Market which are ready any time of the day to serve visitors especially for those going to the coastal barangays where most of the resorts are located.<br/><br/>The 500 meter La Union Centennial Tunnel also known as Sallapak Tunnel is located within the municipality. Intended for trains of the Philippine National Railways (PNR) bound for Baguio City, it was later abandoned by the Commonwealth Government because of the then impending Second World War. According to locals, the tunnel already exists during the Spanish era, it was only in the American occupation that it was developed and fortified, thus making it officially more than a century year old. During the Japanese occupation, the tunnel was used as headquarters of the Japanese Imperial Army because of its durability against US bombings, rising speculations that hidden treasures were buried in the area.<br/><br/>Popular for its Bangus Industry, the municipality also serves as home for the Philippine National Police Regional Training Center. Aringay is also the hometown of the country’s first Ms. Universe, Ms. Gloria Diaz.<br/><br/>Aringay celebrates its Town Fiesta from December 1 to 13 as well as its Parochial Fiesta, the Feast of Saint Lucy, every 4th of May."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/caba.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/caba">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-caba" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="caba-text" value="The proud birthplace of one of the National Heroes, Diego Silang. A monument of the Silang stands at the Town Plaza, reminding Caba’s contribution to the cause of freedom and liberty during the Spanish Era.<br/><br/>A monument of President Elpidio Quirino, along past local leaders stands at the crossing of the national highway in Barangay Gana. The first Ilocano President, served as public elementary school teacher in Caba before his entry to politics.<br/><br/>A stretch of stalls selling fresh mangoes, Bagoong, Padas, and Alamang, adorn the same area. Its hues of green and yellow never fail to catch the attention of passing motorists. Its local bamboo furniture industry has also become an identity of the Municipality. The products are made by farmers who utilize their time after the rice-planting season.<br/><br/>Located in between Aringay from the South and Bauang in the North, Caba is also passed by buses plying the Manila-Laoag City route which makes it accessible 24 hours a day. It is around 247 kilometers away from Mega Manila which translates to about four hours and 45 minutes of drive by land. A tricycle terminal is located at the plaza for travelers any time of the day.<br/><br/>The local Filipino sidecar public transport serves as the main form of transportation in the internal barangays and resorts which are located in the coastal area of the town. Mt. Kimmallugong also serves as a recreational area for hikers and campers.<br/><br/>Caba is a grand slam champion for the Search for Cleanest and Greenest Municipality in La Union under the 4th-5th Class Municipality Category for 2006, 2007 and 2008; Regional Level winner and National Finalist, Seal of Good Housekeeping in 2010; and 2010 Provincial Champion for the Search for Best Performing LGU based on Local Governance Performance Measurement System.<br/><br/>The town celebrates its fiesta from April 15 to 18 as well as the Feast of Saint John the Baptist every 24th of June. In celebration of the Christmas Season, the town also holds the annual Paskua Ti Umili every December."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/santo-tomas.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/santo_tomas">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-santo_tomas" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="santo_tomas-text" value="Unlike other coastal towns in the province which are lined with beach resorts, Sto. Tomas utilizes its coastal area primarily for fishing. Known for their fishing skills, the men would give their catch to their wives who are expert in dried fish processing which explains the long line of daing stalls along the national highway. It also affirms their deep faith to Senora Virgen del Mar Cautiva also known as Virgen of the Sea, the patron saint of fishermen. Her Feast Day is celebrated every 26th of April. Other notable events include the feast of the Holy Guardian Angel which falls on the 2nd of October; Daing Festival held every April 20; and annual town fiesta every April 24 and 25.<br/><br/>Located south of Agoo and North of Rosario, it is approximately 230 kilometers or around four-hour drive away from Manila. Tricycles are located at the welcome arch near the national highway which serve as the main form of public transportation within the municipality and are available anytime of the day.<br/><br/>When in Sto. Tomas, a visit to the Municipal Hall located on top of a hill never fails to amaze guests with its breath-taking view of the town’s coastal area. Visitors are also welcome to get a taste of local rice cakes which includes Bibingka, Nilatekan, and Patopat."/>
-    </div>
-</div> -->
-<!-- Southern Circuit End -->
-
-<!-- Southern Eastern Circuit Start -->
-<!-- <div class="row">
-    <h3 class="flow-text right-align" style="border-bottom: 1px solid black;">South Eastern Circuit</h3>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/pugo.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/pugo">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-pugo" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="pugo-text" value="With such attractions as Pugo Adventure (Pugad) and Kultura Splashwave, the Municipality of Pugo labels itself as the “Eco-adventure Destination of La Union”. Conveniently located along Marcos Highway, transportation is easily available in the locality with numerous buses coming from Baguio en route to Manila, Pangasinan and La Union, and vice-versa.<br/><br/>Pugo Adventure, opened In September 2010, has brought herds of thrill seekers to try out its three ziplines, the longest and highest in Northern Philippines. The highest zipline measures 250 ft. and gives a breathtaking panoramic view of Pugo’s picturesque surroundings. Other facilities include two pools, picnic grounds, an ATV track and a tower for rappelling and wall climbing.<br/><br/>Kultura Splashwave, recently completed In November 2010, has similarly drawn tourists by the thousands because of its wavepool. This tastefully designed wonderland features several pools, waterslides, cabanas, snack houses, function halls and a hotel.<br/><br/>Quieter and yet just as appealing with its pristine waters is the exquisite Tapuakan River. Another place to go to for a retreat to nature is Dacanay Reforestation Park with its gigantic trees and stunning views. The budding municipality of Pugo has recently become one of La Union’s more prominent towns. It celebrates its Centennial Foundation Anniversary every January 17-23 and Parochial Fiesta every last Sunday of December."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/rosario.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/rosario">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-rosario" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="rosario-text" value="Around 216 kilometers away from Manila, Rosario requires a four-hour drive and serves as a link to the Ilocos and Cordillera Provinces. Kennon Road starts from this town and ends at Baguio City. It is also passed by motorists coming from Baguio City going to Western Pangasinan and Zambales Province. The town shall serve as the terminus of the Tarlac-Pangasinan-La Union Expressway.<br/><br/>Its beach resorts, zoo and other attractions such as the Queen of Peace Priory, Tree House, and World War II Vintage Canons located at the Town Plaza are the most visited by tourists. The Rosario Nature Park, a multi-hectare haven of lush green is La Union’s biggest camping site. Because of its wide area and excellent vegetation, it is used by the Boys Scouts and Girls Scouts of the Philippines as a venue for Jamborees. Air Soft Enthusiasts also utilize the area for their War Games.<br/><br/>From April 17 to 19, an Agri Trade Fair is held to showcase harvests of the Municipality. It is within these dates that the Linubian Festival is held which is named after a local cassava and banana cake. A street-dancing competition highlights the event. Predominantly Roman Catholic, Rosario’s Parochial Fiesta, the Feast of Immaculate Concepcion, falls every December 8."/>
-    </div>
-    <div class="card">
-        <div class="card-image">
-            <img src="images/tubao.jpg">
-        </div>
-        <div class="card-content">
-            <p class="flow-text"><a href="/places/tubao">Explore</a>&nbsp;|&nbsp;<a href="#" id="town-tubao" class="modal-trigger" data-target="about">About</a></p>
-        </div>
-        <input type="hidden" id="tubao-text" value="Formerly a barrio of the municipalities of Agoo and Aringay, Tubao was a “visita” of the Parish of Agoo. The early settlers in this barrio called it San Isidro de Tubao in honor of its Patron Saint Isidore, the farmer whose feast is celebrated every May 14 & 15 of the year. The Parish Church is also a must see attraction for its American-inspired Architecture which resembles the Baguio Cathedral. Tubao became a town on July 20, 1885 by virtue of a Spanish Superior Decreto.<br/><br/>Discovering Tubao is approximately five hour drive from Manila. Vacationers may stop over at Rosario, La Union. From Rosario, another 30 minute ride via tricycle or jeepney to Tubao town proper. The Tubao Adventure starts with a sneak peek of Masalip Dam at Brgy. Magsaysay, the Sangbay Falls at Rizal and the Mini Hydro Electric Power Plant at Brgy. Halog East.<br/><br/>Known as the “Home of Native Tobacco”, Tubao is famous for its tobacco cigars which local and foreign fellows truly patronize. Aside from tobacco, Green Corn also marks Tubao. Tourists love the taste of the processed green corn, which is Chichacorn and Banana Chips, which are perfect “pasalubong” to relatives and friends."/>
-    </div>
-</div> -->
-<!-- Southern Eastern Circuit End -->
-<!-- <div id="about" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <h4>About the Town</h4>
-      <p id="content" class="flow-text"></p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-    </div>
-  </div> -->
 <script>
     var elem = document.querySelector('.collapsible.expandable');
     var instance = M.Collapsible.init(elem, {
@@ -307,19 +128,8 @@
     });
 
     $(document).ready(function() {
-        $('.modal').modal({
-            onOpenStart: function(e, t) {
-                console.log(t);
-                let entries = t.id.split("-");
-                let town = entries[1];
-                console.log(town);
-                let content = $(`#${town}-text`).val();
-                $("#content").html(content);
-            }
-        });
-
-        $('.collapsible.expandable').collapsible({
-            accordion: false
-        });
+        $('.tabs').tabs({
+            swipeable: true
+        })
     });
 </script>
