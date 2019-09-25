@@ -7,7 +7,7 @@
 <div class="section white">
     <div class="row container">
         <div class="col l12 m12 s12">
-            <img src="/images/<?= strtolower(implode('-', explode(' ', $townParam))) ?>.jpg" class="responsive-img" alt="banner"/>
+            <img src="/images/<?= strtolower(implode('-', explode('_', $townParam))) ?>.jpg" class="responsive-img" alt="banner"/>
             
             <p style="white-space: pre-line; text-align: justify; margin-top: 0px; padding-top: 0px;">
                 <?= strlen(trim($town['description'])) ? trim($town['description']) : "To be defined." ?>
