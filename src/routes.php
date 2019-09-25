@@ -1152,9 +1152,10 @@ return function (App $app) {
                 'title' => "Explore {$modifiedTown}",
                 'townParam' => $town,
                 'town' => $townInfo,
-                'bannerImage' => $useLocalFileSystem ? "/uploads/{$bannerImage}" : $bannerImage,
+                'bannerImage' => strlen(trim($bannerImage)) > 0 ? ($useLocalFileSystem ? "/uploads/{$bannerImage}" : $bannerImage) : null,
                 'places' => $places,
-                'products' => $products
+                'products' => $products,
+                'poiQuery' => "{$modifiedTown},La+Union"
             ]);
             
             return $container->exploreRenderer->render($response, 'places.phtml', $args);
