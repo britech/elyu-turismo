@@ -53,7 +53,8 @@
                                                 <br/>
                                             <?php endif;?>
                                             <?php if(strlen(trim($place['description'])) > 0):?>
-                                                <p class="truncate"><?= $place['description']?>&nbsp;<a href="/place/<?= $place['id']?>">Read more.</a></p>
+                                                <p class="truncate"><?= $place['description']?></p>
+                                                <a href="/place/<?= $place['id']?>">Read more.</a>
                                             <?php else: ?>
                                                 <a href="/place/<?= $place['id']?>">View Destination</a>
                                             <?php endif;?>
