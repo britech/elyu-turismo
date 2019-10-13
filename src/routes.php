@@ -1144,13 +1144,24 @@ return function (App $app) {
                 $imageList = array_merge($imageList, [$file]);
             }
             $allDestinations = array_merge([], $container->poiManagementService->listPoi());
+            $imageCount = count($imageList) + (strlen(trim($imageSrc)) > 0 ? 1 : 0);
 
             $args = array_merge($args, [
                 'poi' => $poi,
-                'schedules' => $schedules,
-                'fees' => $fees,
-                'contacts' => $contacts,
+                'schedules' => array_filter($schedules, function($schedule) {
+                    list('enabled' => $enabled) = $schedule;
+                    return strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $enabled) == 0;
+                }, ARRAY_FILTER_USE_BOTH),
+                'fees' => array_filter($fees, function($fee) {
+                    list('enabled' => $enabled) = $fee;
+                    return strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $enabled) == 0;
+                }, ARRAY_FILTER_USE_BOTH),
+                'contacts' => array_filter($contacts, function($contact) {
+                    list('enabled' => $enabled) = $contact;
+                    return strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $enabled) == 0;
+                }, ARRAY_FILTER_USE_BOTH),
                 'visitorCount' => $container->openDataDao->countVisitorsByDestination($id),
+                'imageCount' => $imageCount,
                 'imageSrc' => $imageSrc,
                 'images' => $imageList,
                 'comments' => $container->visitorService->listComments($id),
