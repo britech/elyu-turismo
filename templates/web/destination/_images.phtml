@@ -1,0 +1,14 @@
+<?php if($imageCount == 0): ?>
+    <div class="card-panel amber darken-4">
+        <span style="font-weight: bold">No images available.</span>
+    </div>
+<?php else: ?>
+    <div class="owl-carousel owl-theme">
+        <?php if(strlen($imageSrc) > 0): ?>
+            <img data-src="<?= $imageSrc ?>" alt="" class="owl-lazy">
+        <?php endif; ?>
+        <?php foreach($images as $image): ?>
+            <img data-src="<?= $image ?>" alt="" class="owl-lazy">
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

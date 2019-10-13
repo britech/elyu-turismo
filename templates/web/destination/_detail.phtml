@@ -1,0 +1,73 @@
+<?php
+
+use gov\pglu\tourism\util\ApplicationConstants;
+?>
+<ul class="collapsible expandable">
+    <li>
+        <div class="collapsible-header"><i class="material-icons">info</i>Basic Information</div>
+        <div class="collapsible-body">
+            <p style="font-weight: bold">Address<span style="display: block; font-weight: normal;"><?= $poi['address']; ?></span></p>
+            
+            <p style="font-weight: bold">Level of Development<span style="display: block; font-weight: normal;"><?= $poi['developmentLevel']; ?></span></p>
+            
+            <span style="font-weight: bold;">Classifications:&nbsp;</span>
+            <?php foreach($poi['classifications'] as $classification): ?>
+                <div class="chip"><?= $classification['name']; ?></div>
+            <?php endforeach; ?>
+        </div>
+    </li>
+    <li>
+        <div class="collapsible-header"><i class="material-icons">commute</i>How to get there?</div>
+        <div class="collapsible-body">
+            <?= strlen($poi['commuterGuide']) > 0 ? $poi['commuterGuide'] : "To be formulated"; ?>
+        </div>
+    </li>
+    <li>
+        <div class="collapsible-header"><i class="material-icons">access_time</i>Operating Hours</div>
+        <div class="collapsible-body">
+            <?php if(count($schedules) == 0): ?>
+                <p>No schedules available.</p>
+            <?php else: ?>
+                <?php foreach($schedules as $schedule): ?>
+                    <div class="card-panel">
+                        <?= $schedule['scheduleFormatted']; ?>
+                        <?php if(strlen(trim($schedule['notes'])) > 0): ?>
+                            <i class="material-icons right tooltipped" data-position="bottom" data-tooltip="<?= $schedule['notes'];?>">info</i>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach;?>
+            <?php endif; ?>
+        </div>
+    </li>
+    <li>
+        <div class="collapsible-header"><i class="material-icons">money</i>Fees</div>
+        <div class="collapsible-body">
+            <?php if(count($fees) == 0): ?>
+                <p>No fees available.</p>
+            <?php else: ?>
+                <?php foreach($fees as $fee): ?>
+                    <div class="card-panel">
+                        <?php if(strlen(trim($fee['description'])) > 0): ?>
+                            <span style="font-weight: bold; display: block;"><?= trim($fee['description']);?></span>
+                        <?php endif; ?>
+                        <?= $fee['amountFormatted'] ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </li>
+    <li>
+        <div class="collapsible-header"><i class="material-icons">message</i>Contact Details</div>
+        <div class="collapsible-body">
+            <?php if(count($contacts) == 0): ?>
+                <p>No contacts available.</p>
+            <?php else: ?>
+                <?php foreach($contacts as $contact): ?>
+                    <div class="chip">
+                        <img src="<?= ApplicationConstants::CONTACT_TYPES[$contact['type']]?>"/><?= $contact['value']; ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </li>
+</ul>
