@@ -24,14 +24,16 @@ use gov\pglu\tourism\util\ApplicationConstants;
     </div>
     <div class="row container">
         <div class="col l6 m6 s12">
-            <blockquote>
+            <blockquote style="white-space: pre-line; text-align: justify;">
                 <?= strlen($poi['description']) > 0 ? $poi['description'] : "To be formulated" ?>
             </blockquote>
             
-            <span style="font-weight: bold;">Tags:&nbsp;</span>
-            <?php foreach($poi['topicTags'] as $tag): ?>
-                <div class="chip"><?= $tag['name']; ?></div>
-            <?php endforeach; ?>
+            <?php if(count($poi['topicTags']) > 0): ?>
+                <span style="font-weight: bold;">Tags:&nbsp;</span>
+                <?php foreach($poi['topicTags'] as $tag): ?>
+                    <div class="chip"><?= $tag['name']; ?></div>
+                <?php endforeach; ?>
+            <?php endif; ?>
 
             <div class="show-on-small-only hide-on-med-and-up">
                 <h6 style="margin-top: 10px;">Images</h6>

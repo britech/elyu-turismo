@@ -6,14 +6,24 @@ use gov\pglu\tourism\util\ApplicationConstants;
     <li>
         <div class="collapsible-header"><i class="material-icons">info</i>Basic Information</div>
         <div class="collapsible-body">
-            <p style="font-weight: bold">Address<span style="display: block; font-weight: normal;"><?= $poi['address']; ?></span></p>
+            <?php if(strlen(trim($poi['address'])) > 0): ?>
+                <p style="font-weight: bold">Address<span style="display: block; font-weight: normal;"><?= $poi['address']; ?></span></p>
+            <?php endif; ?>
             
-            <p style="font-weight: bold">Level of Development<span style="display: block; font-weight: normal;"><?= $poi['developmentLevel']; ?></span></p>
-            
-            <span style="font-weight: bold;">Classifications:&nbsp;</span>
-            <?php foreach($poi['classifications'] as $classification): ?>
-                <div class="chip"><?= $classification['name']; ?></div>
-            <?php endforeach; ?>
+            <?php if(strlen(trim($poi['developmentLevel'])) > 0): ?>
+                <p style="font-weight: bold">Level of Development<span style="display: block; font-weight: normal;"><?= $poi['developmentLevel']; ?></span></p>
+            <?php endif; ?>
+
+            <?php if(count($poi['classifications']) > 0): ?>
+                <span style="font-weight: bold;">Classifications:&nbsp;</span>
+                <?php foreach($poi['classifications'] as $classification): ?>
+                    <div class="chip"><?= $classification['name']; ?></div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+            <?php if(strlen(trim($poi['address'])) == 0 && strlen(trim($poi['developmentLevel'])) == 0 && count($poi['classifications']) == 0): ?>
+                <span style="font-weight: bold">No details yet.</span>
+            <?php endif; ?>
         </div>
     </li>
     <li>
