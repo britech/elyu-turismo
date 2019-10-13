@@ -1497,4 +1497,28 @@ return function (App $app) {
 
         return $container->exploreRenderer->render($response, 'privacy.phtml', $args);
     });
+
+    $app->get('/products', function(Request $request, Response $response, array $args) use ($container) {
+        $products = [];
+        try {
+            $products = $container->townManagementService->listProducts([]);
+        } catch(\Exception $ex) {
+            $container->logger->error($ex);
+        }
+        $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
+        array_walk($products, function(&$product) use ($useLocalFileSystem) {
+            list('imageFile' => $primaryImage) = $product;
+            $productImage = $useLocalFileSystem ? "/uploads/{$primaryImage}" : $primaryImage;
+            $product['imageFile'] = $productImage;
+        });
+        
+        $args = array_merge($args, [
+            'title' => 'Explore La Union',
+            'products' => array_filter($products, function($v) {
+                list('enabled' => $enabled) = $v;
+                return strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $enabled) == 0;
+            }, ARRAY_FILTER_USE_BOTH)
+        ]);
+        return $container->exploreRenderer->render($response, 'products.phtml', $args);
+    });
 };
