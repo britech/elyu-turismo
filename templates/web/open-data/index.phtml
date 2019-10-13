@@ -1,39 +1,41 @@
-<div class="row" style="margin-top: 20px;">
-    <div class="col s12 m12 l12">
-        <div class="card-panel green darken-2">
-            <span class="white-text">Below are the available reports that are downloadable in CSV format. You will be asked for your email address before you can download any of the reports. For any concerns, you can consult our <span style="text-decoration: underline; cursor: pointer">Privacy and Usage Policy</span> for details.</span>
-        </div>
+<div class="container">
+    <div class="row" style="margin-top: 20px;">
+        <div class="col s12 m12 l12">
+            <div class="card-panel green darken-2">
+                <span class="white-text">Below are the available reports that are downloadable in CSV format. You will be asked for your email address before you can download any of the reports. For any concerns, you can consult our <span style="text-decoration: underline; cursor: pointer">Privacy and Usage Policy</span> for details.</span>
+            </div>
 
-        <div class="collection with-header">
-            <div class="collection-header">
-                <h5>Reports</h5>
+            <div class="collection with-header">
+                <div class="collection-header">
+                    <h5>Reports</h5>
+                </div>
+                <a href="#!" id="requestManifest" class="collection-item modal-trigger" data-target="confirm-download">Masterlist of Tourist Destinations</a>
+                <a href="/open-data/hits" class="collection-item">Number of Visitors per Tourist Destination</a>
             </div>
-            <a href="#!" id="requestManifest" class="collection-item modal-trigger" data-target="confirm-download">Masterlist of Tourist Destinations</a>
-            <a href="/open-data/hits" class="collection-item">Number of Visitors per Tourist Destination</a>
         </div>
     </div>
-</div>
-<div class="modal" id="confirm-download">
-    <div class="modal-content">
-        <h3>Download this report</h3>
-        <p>Before you can download the report, <span style="font-weight: bold;">Masterlist of Tourist Destinations</span>, please spare a minute to accomplish the details below.</p>
-        <form action="/open-data/poi" method="post">
-            <div class="input-field" style="margin-top: 30px;">
-                <input type="email" class="validate" name="emailAddress" required />
-                <label>Email Address</label>
-            </div>
-            <div style="margin-bottom: 20px;">
-                <label>
-                    <input type="checkbox" name="userConsent" class="validate" required/>
-                    <span>I agree with the <span style="text-decoration: underline; cursor: pointer">Privacy and Usage Policy</span>.</span>
-                </label>
-            </div>
-            <input type="hidden" name="reportType" value="Masterlist of Tourist Destinations"/>
-            <button type="submit" class="btn green lighten-1">Download</button>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect red lighten-1 btn">Close</a>
+    <div class="modal" id="confirm-download">
+        <div class="modal-content">
+            <h3>Download this report</h3>
+            <p>Before you can download the report, <span style="font-weight: bold;">Masterlist of Tourist Destinations</span>, please spare a minute to accomplish the details below.</p>
+            <form action="/open-data/poi" method="post">
+                <div class="input-field" style="margin-top: 30px;">
+                    <input type="email" class="validate" name="emailAddress" required />
+                    <label>Email Address</label>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label>
+                        <input type="checkbox" name="userConsent" class="validate" required/>
+                        <span>I agree with the <span style="text-decoration: underline; cursor: pointer">Privacy and Usage Policy</span>.</span>
+                    </label>
+                </div>
+                <input type="hidden" name="reportType" value="Masterlist of Tourist Destinations"/>
+                <button type="submit" class="btn green lighten-1">Download</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect red lighten-1 btn">Close</a>
+        </div>
     </div>
 </div>
 <script>
