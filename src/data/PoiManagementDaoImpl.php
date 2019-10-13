@@ -440,6 +440,20 @@ QUERY;
             $statement->execute(['poi' => $id]);
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
             $this->logger->debug(json_encode($result));
+
+            array_walk($result, function(&$row) {
+                list('openEveryday' => $openEverydayIndicator, 
+                    'day' => $day, 
+                    'specificDate' => $specificDate,
+                    'openAllDay' => $openAllDayIndicator,
+                    'operatingHours' => $operatingHours) = $row;
+                $dateElement = strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $openEverydayIndicator) == 0 ? "Everyday" : (isset($day) ? $day : $specificDate);
+                $timeElement = strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $openAllDayIndicator) == 0 ? "24 hours" : $operatingHours;
+                $row = array_merge($row, [
+                    'scheduleFormatted' => "{$dateElement}, {$timeElement}"
+                ]);
+            });
+
             return $result;
         } catch (\PDOException $ex) {
             throw $ex;
@@ -520,7 +534,15 @@ QUERY;
         try {
             $statement = $this->pdo->prepare('SELECT * FROM poifee WHERE placeofinterest=:poi');
             $statement->execute(['poi' => $poi]);
-            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            array_walk($result, function(&$row) {
+                list('freePrice' => $freePrice, 'amount' => $amount) = $row;
+                $row = array_merge($row, [
+                    'amountFormatted' => strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $freePrice) == 0 ? 'Free Admission' : number_format($amount)
+                ]);
+            });
+            
+            return $result;
         } catch (\PDOException $ex) {
             throw $ex;
         }
