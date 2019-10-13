@@ -289,7 +289,7 @@
                             <div class="input-field col l4">
                                 <select name="contactType" class="validate">
                                     <option value="" disabled selected>Select Contact Detail Type</option>
-                                    <?php foreach ($contactTypes as $contactType) : ?>
+                                    <?php foreach ($contactTypes as $contactType => $v) : ?>
                                         <option value="<?= $contactType ?>"><?= $contactType ?></option>
                                     <?php endforeach; ?>
                                 </select>

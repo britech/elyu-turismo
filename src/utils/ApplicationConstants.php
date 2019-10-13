@@ -16,9 +16,11 @@ final class ApplicationConstants {
         'On-going Development'
     ];
     const CONTACT_TYPES = [
-        'Phone',
-        'Email',
-        'Web',
-        'Online Messaging'
+        'Phone' => '/images/contact-types/phone.png',
+        'Email' => '/images/contact-types/email.png',
+        'Web' => '/images/contact-types/web.png',
+        'FB Messenger' => '/images/contact-types/messenger.png',
+        'Other Chat Services' => '/images/contact-types/other-chat-service.png',
+        'Others' => '/images/contact-types/others.png'
     ];
 }

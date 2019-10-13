@@ -10,7 +10,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
         <div class="input-field col l4">
             <select name="type" class="validate" required>
                 <option value="" disabled selected>Select Contact Detail Type</option>
-                <?php foreach ($contactTypes as $contactType) : ?>
+                <?php foreach ($contactTypes as $contactType => $v) : ?>
                     <?php if (strcasecmp($contact['type'], $contactType) == 0) : ?>
                         <option value="<?= $contactType ?>" selected><?= $contactType ?></option>
                     <?php else : ?>
