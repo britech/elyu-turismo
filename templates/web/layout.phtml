@@ -112,32 +112,11 @@
             <?= $content ?>
         </main>
         <?php include_once __DIR__ . "../../cpanel/footer.phtml"; ?>
-        <input type="hidden" id="destinationsBackend" value='<?= $destinationsBackend ?>'>
     </body>
 
     <script>
         $(document).ready(function() {
             $('.sidenav').sidenav();
-            
-            let bookmarks = localStorage.getItem('bookmarks');
-            $("#bookmarks").html(null);
-            if (bookmarks == null || bookmarks.length == 0) {
-                $("#bookmarks").append('<li><a style="display: block; padding-left: 30px;" class="flow-text" id="noBookmarks">No bookmarks yet.</a></li>');
-            } else {
-                let bookmarkEntries = JSON.parse(bookmarks);
-                let entries = [];
-                for (let bookmark of bookmarkEntries) {
-                    entries.push(`<li><a href="/place/${bookmark.id}" style="display: block; padding-left: 30px; word-wrap: break-word;" class="flow-text waves-effect">${bookmark.name}</a></li>`);
-                }
-
-                if (entries.length > 0) {
-                    $("#bookmarks").html(entries.join(""));
-                } else {
-                    $("#bookmarks").append('<li><a style="display: block; padding-left: 30px;" class="flow-text" id="noBookmarks">No bookmarks yet.</a></li>');
-                }
-            }
         });
     </script>
-
-
 </html>
