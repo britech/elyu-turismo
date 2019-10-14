@@ -1216,6 +1216,7 @@ return function (App $app) {
                 }
                 $imageList = array_merge($imageList, [$file]);
             }
+            $imageCount = count($imageList) + (strlen($imageSrc) > 0 ? 1 : 0);
 
             $allDestinations = array_merge([], $container->poiManagementService->listPoi());
 
@@ -1223,6 +1224,7 @@ return function (App $app) {
                 'product' => $product,
                 'imageSrc' => $imageSrc,
                 'images' => $imageList,
+                'imageCount' => $imageCount,
                 'topDestinations' => $container->openDataDao->listDestinations(['limit' => 5]),
                 'products' => $container->townManagementService->listProducts([]),
                 'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
