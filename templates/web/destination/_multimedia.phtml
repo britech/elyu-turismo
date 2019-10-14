@@ -15,14 +15,19 @@
         <span style="font-weight: bold">
             Images by&nbsp;
         </span>
-        <div class="chip"><?= $poi['photoCredit']; ?></div>
+        <?php foreach(explode(',', $poi['photoCredit']) as $photoCredit): ?>
+            <div class="chip"><?= $photoCredit?></div>
+        <?php endforeach; ?>
     <?php endif; ?>
 <?php endif; ?>
 
 <?php if (strlen(trim($poi['videoLink']))): ?>
     <span style="font-weight: bold; display: block; margin-top: 50px">
         <?php if(strlen(trim($poi['videoCredit']))): ?>
-            Video by&nbsp;<div class="chip"><?= $poi['videoCredit']; ?></div>
+            Video by&nbsp;
+            <?php foreach(explode(',', $poi['videoCredit']) as $photoCredit): ?>
+                <div class="chip"><?= $photoCredit?></div>
+            <?php endforeach; ?>
         <?php else: ?>
             Video
         <?php endif; ?>

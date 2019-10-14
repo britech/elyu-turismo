@@ -42,7 +42,9 @@ use gov\pglu\tourism\util\ApplicationConstants;
                     <span style="font-weight: bold">
                         Images by&nbsp;
                     </span>
-                    <div class="chip"><?= $product['photoCredit']; ?></div>
+                    <?php foreach(explode(',', $product['photoCredit']) as $photoCredit): ?>
+                        <div class="chip"><?= $photoCredit?></div>
+                    <?php endforeach; ?>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
