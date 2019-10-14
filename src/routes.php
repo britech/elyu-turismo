@@ -1546,4 +1546,59 @@ return function (App $app) {
             return $response->withJson(['message' => 'Something went wrong. Try again later.'], 500);
         }
     });
+
+    $app->get('/search', function(Request $request, Response $response, array $args) use ($container) {
+        $entries = [];
+        $entryNumber = 1;
+        $backendEntries = [];
+        $useLocalFileSystem = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE;
+        try {
+            $destinations = $container->poiManagementService->listPoi();
+            array_walk($destinations, function($row) use (&$entries, &$backendEntries, $useLocalFileSystem, $container) {
+                list('displayable' => $displayable, 'name' => $name, 'imageName' => $image, 'id' => $id) = $row;
+                if (strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_FALSE, $displayable) == 0) {
+                    return;
+                }
+                
+                $imageSrc = strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $useLocalFileSystem) == 0 ? "/uploads/{$image}" : $image;
+                $entries = array_merge($entries, [
+                    $name => strlen(trim($imageSrc)) > 0 ? $imageSrc : null
+                ]);
+                $backendEntries = array_merge($backendEntries, [[
+                    'id' => $id,
+                    'name' => $name,
+                    'link' => $container->router->pathFor('destination', ['id' => $id])
+                ]]);
+            });
+
+            $products = $container->townManagementService->listProducts([]);
+            array_walk($products, function($row) use (&$entries, &$backendEntries, $useLocalFileSystem, $container) {
+                list('enabled' => $enabled, 'name' => $name, 'imageFile' => $image, 'id' => $id) = $row;
+                if (strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_FALSE, $enabled) == 0) {
+                    return;
+                }
+                
+                $imageSrc = strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $useLocalFileSystem) == 0 ? "/uploads/{$image}" : $image;
+                $entries = array_merge($entries, [
+                    $name => strlen(trim($imageSrc)) > 0 ? $imageSrc : null
+                ]);
+
+                $backendEntries = array_merge($backendEntries, [[
+                    'id' => $id,
+                    'name' => $name,
+                    'link' => $container->router->pathFor('product-client', ['id' => $id])
+                ]]);
+            });
+        } catch(\Exception $ex) {
+            $container->logger->error($ex);
+        }
+
+        $args = array_merge($args, [
+            'title' => 'Search',
+            'entries' => json_encode($entries),
+            'backend' => json_encode($backendEntries)
+        ]);
+
+        return $container->exploreRenderer->render($response, 'search.phtml', $args);
+    });
 };
