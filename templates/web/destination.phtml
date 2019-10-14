@@ -16,7 +16,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <h3><?= $poi['name']; ?></h3>
             <div id="addDestination" class="chip green lighten-1 white-text"  style="cursor: pointer;"><img src="/images/add-bookmark.png"/>Add to my bookmarks</div>
             <div id="removeDestination" class="chip red lighten-1 white-text hide"  style="cursor: pointer;"><img src="/images/remove-bookmark.png"/>Remove from my bookmarks</div>
-            <div id="addDestination" class="chip blue lighten-1 white-text"  style="cursor: pointer;" onclick="window.location='https://www.google.com/maps/search/?api=1&query=<?= "{$poi['latitude']},{$poi['longitude']}"?>'"><img src="/images/google-map.png"/>View in Google Maps</div>
+            <div class="chip blue lighten-1 white-text"  style="cursor: pointer;" onclick="window.location='https://www.google.com/maps/search/?api=1&query=<?= "{$poi['latitude']},{$poi['longitude']}"?>'"><img src="/images/google-map.png"/>View in Google Maps</div>
             <?php if (strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $poi['arEnabled']) == 0  && strlen(trim($poi['arLink'])) > 0): ?>
                 <div class="chip blue lighten-1 white-text" style="cursor: pointer;" onclick="window.location='<?= $poi['arLink'];?>'"><img src="/images/ar-enabled.png"/>View in AR</div>
             <?php endif;?>
