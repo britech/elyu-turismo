@@ -19,7 +19,15 @@
 <script>
     $(document).ready(function() {
         $(".autocomplete").autocomplete({
-            data: <?= $entries ?>
+            data: <?= $entries ?>,
+            onAutocomplete: function(v) {
+                let entries = JSON.parse($("#backend").val());
+                for(let entry of entries) {
+                    if (v === entry.name) {
+                        window.location = entry.link;
+                    }
+                }
+            }
         })
     })
 </script>
