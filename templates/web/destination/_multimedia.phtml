@@ -13,25 +13,21 @@
     </div>
     <?php if(strlen(trim($poi['photoCredit']))): ?>
         <span style="font-weight: bold">
-            Images by:&nbsp;
+            Images by&nbsp;
         </span>
-        <ul class="browser-default">
-            <?php foreach(explode(',', $poi['photoCredit']) as $photoCredit): ?>
-                <li><?= $photoCredit ?></li>
-            <?php endforeach; ?>
-        </ul>
+        <?php foreach(explode(',', $poi['photoCredit']) as $photoCredit): ?>
+            <div class="chip" style="height: auto;"><?= $photoCredit?></div>
+        <?php endforeach; ?>
     <?php endif; ?>
 <?php endif; ?>
 
 <?php if (strlen(trim($poi['videoLink']))): ?>
     <span style="font-weight: bold; display: block; margin-top: 50px">
         <?php if(strlen(trim($poi['videoCredit']))): ?>
-            Video by:&nbsp;
-            <ul class="browser-default">
-                <?php foreach(explode(',', $poi['videoCredit']) as $photoCredit): ?>
-                    <li><?= $photoCredit ?></li>
-                <?php endforeach; ?>
-            </ul>
+            Video by&nbsp;
+            <?php foreach(explode(',', $poi['videoCredit']) as $photoCredit): ?>
+                <div class="chip" style="height: auto;"><?= $photoCredit?></div>
+            <?php endforeach; ?>
         <?php else: ?>
             Video
         <?php endif; ?>
