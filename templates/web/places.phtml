@@ -40,23 +40,24 @@
                     <div class="collapsible-header"><i class="material-icons">photo_camera</i>Tourist Destinations</div>
                     <div class="collapsible-body">
                         <?php if (count($places) > 0): ?>
-                            <?php foreach($places as $place): ?>
-                                <div class="card-panel">
-                                    <div class="row">
-                                        <div class="col l2 m2 s4">
-                                            <img src="<?= $place['imageName'] ?>" class="responsive-img">
-                                        </div>
-                                        <div class="col l10 m10 s8">
-                                            <span style="font-weight: bold; display: block"><?= $place['name'] ?></span>
-                                            <?php if ($place['arEnabled'] == 1): ?>
+                            <div id="destinations">
+                                <input type="text" class="search" placeholder="Find a destination">
+                                <ul class="list collection">
+                                    <?php foreach($places as $place): ?>
+                                        <li class="collection-item avatar">
+                                            <img src="<?= $place['imageName'] ?>" alt="<?= $place['name'] ?>" class="circle">
+                                            <span class="title" style="display: block;">
+                                                <a href="/place/<?= $place['id']?>"><?= $place['name'] ?></a>
+                                            </span>
+                                            <?php if ($place['arEnabled'] == 1 and strlen(trim($place['arLink'])) > 0): ?>
                                                 <div class="chip blue lighten-1"><img src="/images/ar-enabled.png"/>AR Enabled</div>
                                             <?php endif;?>
                                             <p class="truncate"><?= $place['description'] ?></p>
-                                            <a href="/place/<?= $place['id']?>">View Destination</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach;?>
+                                        </li>
+                                    <?php endforeach;?>
+                                </ul>
+                                <ul class="center pagination"></ul>
+                            </div>
                         <?php else:?>
                             <p style="font-weight: bold">No Tourist Destinations available.</p>
                         <?php endif;?>
@@ -66,23 +67,24 @@
                     <div class="collapsible-header"><i class="material-icons">local_offer</i>Products</div>
                     <div class="collapsible-body">
                         <?php if (count($products) > 0): ?>
-                            <?php foreach($products as $product): ?>
-                                <div class="card-panel">
-                                    <div class="row">
-                                        <div class="col l2 m2 s4">
-                                            <img src="<?= $product['imageFile'] ?>" class="responsive-img">
-                                        </div>
-                                        <div class="col l10 m10 s8">
-                                            <span style="font-weight: bold; display: block"><?= $product['name'] ?></span>
+                            <div id="products">
+                                <input type="text" class="search" placeholder="Find a product">
+                                <ul class="list collection">
+                                    <?php foreach($products as $product): ?>
+                                        <li class="collection-item avatar">
+                                            <img src="<?= $product['imageFile'] ?>" class="circle">
+                                            <span style="display: block" class="title">
+                                                <a href="/place/<?= $product['id']?>"><?= $product['name'] ?></a>
+                                            </span>
                                             <?php if (strlen(trim($product['arLink'])) > 0): ?>
                                                 <div class="chip blue lighten-1"><img src="/images/ar-enabled.png"/>AR Enabled</div>
                                             <?php endif;?>
                                             <p class="truncate"><?= $product['description'] ?></p>
-                                            <a href="/product/<?= $product['id']?>">View Product</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach;?>
+                                        </li>
+                                    <?php endforeach;?>
+                                </ul>
+                                <ul class="center pagination"></ul>
+                            </div>
                         <?php else:?>
                             <p style="font-weight: bold">No Products available.</p>
                         <?php endif;?>
@@ -99,6 +101,7 @@
     </div>
 </div>
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 <script>
     $(document).ready(function() {
         $('.parallax').parallax();
@@ -106,5 +109,17 @@
             accordion: false
         });
         $(".materialboxed").materialbox();
+    });
+
+    let destinationList = new List('destinations', {
+        valueNames: [ 'title' ],
+        pagination: true,
+        page: 5,
+    });
+
+    let productList = new List('products', {
+        valueNames: [ 'title' ],
+        pagination: true,
+        page: 5,
     });
 </script>

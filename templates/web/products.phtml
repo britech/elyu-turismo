@@ -31,7 +31,7 @@
                             </li>
                         <?php endforeach; ?>
                     </ul>
-                    <ul class="pagination"></ul>
+                    <ul class="center pagination"></ul>
                 </div>
             <?php endif; ?>
         </div>
@@ -40,7 +40,7 @@
 </div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 <script>
-    let productList = new List(products, {
+    let productList = new List('products', {
         valueNames: [ 'title' ],
         pagination: true,
         page: 5,
