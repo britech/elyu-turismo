@@ -285,7 +285,7 @@ QUERY;
 
     public function listPoi() {
         $query = <<< QUERY
-            SELECT id, name, address, latitude, longitude, town, displayable, arEnabled
+            SELECT id, TRIM(name) as name, address, latitude, longitude, town, displayable, arEnabled, imageName
             FROM placeofinterest
 QUERY;
         try {
