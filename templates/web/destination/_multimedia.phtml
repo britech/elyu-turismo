@@ -16,7 +16,7 @@
             Images by&nbsp;
         </span>
         <?php foreach(explode(',', $poi['photoCredit']) as $photoCredit): ?>
-            <div class="chip"><?= $photoCredit?></div>
+            <div class="chip" style="height: auto;"><?= $photoCredit?></div>
         <?php endforeach; ?>
     <?php endif; ?>
 <?php endif; ?>
@@ -26,7 +26,7 @@
         <?php if(strlen(trim($poi['videoCredit']))): ?>
             Video by&nbsp;
             <?php foreach(explode(',', $poi['videoCredit']) as $photoCredit): ?>
-                <div class="chip"><?= $photoCredit?></div>
+                <div class="chip" style="height: auto;"><?= $photoCredit?></div>
             <?php endforeach; ?>
         <?php else: ?>
             Video
