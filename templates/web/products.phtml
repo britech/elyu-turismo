@@ -1,7 +1,48 @@
 <div class="container">
     <div class="row">
         <div class="col l12 m12 s12">
-        <h1 class="flow-text center-align teal-text text-darken-4" style="font-weight: bold;">Enjoy wonderful products of <span class="orange-text text-darken-4">La Union</span></h1>
+            <h1 class="flow-text center-align teal-text text-darken-4" style="font-weight: bold; margin-bottom: 20px;">Enjoy the wonderful <span class="orange-text text-darken-4">products</span> of <span class="orange-text text-darken-4">La Union</span></h1>
         </div>
     </div>
+    <div class="row">
+        <div class="col l3 m3 s3">&nbsp;</div>
+        <div class="col l6 m6 s6">
+            <?php if(count($products) == 0): ?>
+                <div class="center">
+                    <img src="/images/no_records.png" class="responsive-img"/>
+                    <span style="display: block; font-weight: bold;">Oops! There are no products to display.</span>
+                </div>
+            <?php else: ?>
+                <div id="products">
+                    <input type="text" class="search" placeholder="Find product">
+                    <ul class="list collection">
+                        <?php foreach($products as $product): ?>
+                            <li class="collection-item avatar">
+                                <img src="<?= $product['imageFile']?>" alt="<?= $product['name']?>" class="circle">
+                                <span class="title" style="display: block;">
+                                    <a href="/product/<?= $product['id'] ?>"><?= $product['name'] ?></a>
+                                </span>
+                                <?php if(strlen(trim($product['arLink'])) > 0): ?>
+                                    <div class="chip white-text teal lighten-1"><img src="/images/ar-enabled.png"/>AR Enabled</div>
+                                <?php endif; ?>
+                                <?php if(strlen(trim($product['description'])) > 0): ?>
+                                    <p class="truncate"><?= $product['description']?></p>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <ul class="pagination"></ul>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="col l3 m3 s3">&nbsp;</div>
+    </div>
 </div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+<script>
+    let productList = new List(products, {
+        valueNames: [ 'title' ],
+        pagination: true,
+        page: 5,
+    });
+</script>
