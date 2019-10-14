@@ -1237,7 +1237,7 @@ return function (App $app) {
             $container->logger->error($ex);
             return $response->withRedirect($container->router->pathFor('explore'));
         }
-    });
+    })->setName('product-client');
 
     $app->get('/discover', function(Request $request, Response $response, array $args) use ($container) {
         $places = [];
