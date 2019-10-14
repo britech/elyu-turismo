@@ -12,12 +12,14 @@
         <?php endforeach; ?>
     </div>
     <?php if(strlen(trim($poi['photoCredit']))): ?>
-        <span style="font-weight: bold">
-            Images by&nbsp;
-        </span>
-        <?php foreach(explode(',', $poi['photoCredit']) as $photoCredit): ?>
-            <div class="chip" style="height: auto;"><?= $photoCredit?></div>
-        <?php endforeach; ?>
+        <div style="margin-top: 20px;">
+            <span style="font-weight: bold">
+                Images by&nbsp;
+            </span>
+            <?php foreach(explode(',', $poi['photoCredit']) as $photoCredit): ?>
+                <div class="chip" style="height: auto;"><?= $photoCredit?></div>
+            <?php endforeach; ?>
+        </div>
     <?php endif; ?>
 <?php endif; ?>
 
