@@ -14,6 +14,10 @@ use gov\pglu\tourism\util\ApplicationConstants;
     <div class="row container">
         <div class="col l12 m12 s12">
             <h3><?= $poi['name']; ?></h3>
+            <div class="chip white-text teal darken-4">
+                <img src="/images/location.png"/>
+                <?= "Town: {$poi['town']}"  ?>
+            </div>
             <div id="addDestination" class="chip green lighten-1 white-text"  style="cursor: pointer;"><img src="/images/add-bookmark.png"/>Add to my bookmarks</div>
             <div id="removeDestination" class="chip red lighten-1 white-text hide"  style="cursor: pointer;"><img src="/images/remove-bookmark.png"/>Remove from my bookmarks</div>
             <div class="chip blue lighten-1 white-text"  style="cursor: pointer;" onclick="window.location='https://www.google.com/maps/search/?api=1&query=<?= "{$poi['latitude']},{$poi['longitude']}"?>'"><img src="/images/google-map.png"/>View in Google Maps</div>
@@ -24,9 +28,11 @@ use gov\pglu\tourism\util\ApplicationConstants;
     </div>
     <div class="row container">
         <div class="col l6 m6 s12">
-            <blockquote style="white-space: pre-line; text-align: justify;">
-                <?= strlen($poi['description']) > 0 ? $poi['description'] : "To be formulated" ?>
-            </blockquote>
+            <article style="overflow: hidden">
+                <blockquote style="white-space: pre-line; text-align: justify">
+                    <?= strlen($poi['description']) > 0 ? $poi['description'] : "To be formulated" ?>
+                </blockquote>
+            </article>
             
             <?php if(count($poi['topicTags']) > 0): ?>
                 <span style="font-weight: bold;">Tags:&nbsp;</span>
@@ -47,6 +53,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
     </div>
 </div>
 <script src="/assets/js/owl.carousel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/readmore-js@2.2.1/readmore.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $(".collapsible").collapsible({
@@ -135,5 +142,6 @@ use gov\pglu\tourism\util\ApplicationConstants;
         });
 
         $(".tooltip").tooltip();
+        $('article').readmore();
     });
 </script>
