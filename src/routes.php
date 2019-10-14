@@ -185,7 +185,8 @@ return function (App $app) {
                 && strcasecmp('closingTime', $key) != 0 && strcasecmp('scheduleNotes', $key) != 0
                 && strcasecmp('feeDescription', $key) != 0 && strcasecmp('amount', $key) != 0
                 && strcasecmp('contactValue', $key) != 0 && strcasecmp('action', $key) != 0
-                && strcasecmp('descriptionWysiwyg', $key) != 0 && strcasecmp('commuterGuideWysiwyg', $key) != 0;
+                && strcasecmp('descriptionWysiwyg', $key) != 0 && strcasecmp('commuterGuideWysiwyg', $key) != 0
+                && strcasecmp('freePrice', $key) != 0;
         }, ARRAY_FILTER_USE_KEY);
         
 
