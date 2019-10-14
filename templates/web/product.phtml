@@ -19,8 +19,8 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 <img src="/images/location.png"/>
                 <?= "Town: {$product['town']}"  ?>
             </div>
-            <div id="addDestination" class="chip green lighten-1 white-text"  style="cursor: pointer;"><img src="/images/add-bookmark.png"/>Add to my bookmarks</div>
-            <div id="removeDestination" class="chip red lighten-1 white-text hide"  style="cursor: pointer;"><img src="/images/remove-bookmark.png"/>Remove from my bookmarks</div>
+            <div id="addProduct" class="chip green lighten-1 white-text"  style="cursor: pointer;"><img src="/images/add-bookmark.png"/>Add to my bookmarks</div>
+            <div id="removeProduct" class="chip red lighten-1 white-text hide"  style="cursor: pointer;"><img src="/images/remove-bookmark.png"/>Remove from my bookmarks</div>
             <?php if (strlen(trim($product['arLink'])) > 0): ?>
                 <div class="chip blue lighten-1 white-text" style="cursor: pointer;" onclick="window.location='<?= $product['arLink'];?>'"><img src="/images/ar-enabled.png"/>View in AR</div>
             <?php endif;?>
