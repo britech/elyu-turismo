@@ -1,36 +1,66 @@
-<div class="row" style="margin-top: 20px;">
-    <div class="col s12 m12 l12">
-        <div class="center">
-            <?php if (count($images) > 0) : ?>
-                <div class="carousel carousel-slider">
-                    <?php foreach ($images as $image) : ?>
-                        <a href="#!" class="carousel-item"><img src="<?= $image ?>" class="responsive-img" alt="Image"></a>
+<?php
+
+use gov\pglu\tourism\util\ApplicationConstants;
+?>
+<link href="/assets/css/owl.carousel.min.css" rel="stylesheet"/>
+<link href="/assets/css/owl.theme.default.min.css" rel="stylesheet"/>
+<?php if(strlen(trim($imageSrc)) > 0): ?>
+    <div class="parallax-container">
+        <div class="parallax"><img src="<?= $imageSrc ?>" alt="Primary Image"></div>
+    </div>
+<?php endif;?>
+
+<div class="section white">
+    <div class="row container">
+        <div class="col l2 m2 show-on-med-and-up hide-on-small-only">&nbsp;</div>
+        <div class="col l8 m8 s12">
+            <h3><?= $product['name']; ?></h3>
+            <div class="chip white-text teal darken-4">
+                <img src="/images/location.png"/>
+                <?= "Town: {$product['town']}"  ?>
+            </div>
+            <div id="addDestination" class="chip green lighten-1 white-text"  style="cursor: pointer;"><img src="/images/add-bookmark.png"/>Add to my bookmarks</div>
+            <div id="removeDestination" class="chip red lighten-1 white-text hide"  style="cursor: pointer;"><img src="/images/remove-bookmark.png"/>Remove from my bookmarks</div>
+            <?php if (strlen(trim($product['arLink'])) > 0): ?>
+                <div class="chip blue lighten-1 white-text" style="cursor: pointer;" onclick="window.location='<?= $product['arLink'];?>'"><img src="/images/ar-enabled.png"/>View in AR</div>
+            <?php endif;?>
+
+            <blockquote style="white-space: pre-line; text-align: justify;">
+                <?= strlen($product['description']) > 0 ? $product['description'] : "To be formulated" ?>
+            </blockquote>
+
+            <?php if($imageCount > 0): ?>
+                <div class="owl-carousel owl-theme">
+                    <?php if(strlen($imageSrc) > 0): ?>
+                        <img data-src="<?= $imageSrc ?>" alt="" class="owl-lazy responsive">
+                    <?php endif; ?>
+                    <?php foreach($images as $image): ?>
+                        <img data-src="<?= $image ?>" alt="" class="owl-lazy responsive">
                     <?php endforeach; ?>
                 </div>
-            <?php else : ?>
-                <img class="responsive-img" src="<?= $imageSrc ?>" alt="No Icon Yet" />
+                <?php if(strlen(trim($product['photoCredit']))): ?>
+                    <span style="font-weight: bold">
+                        Images by&nbsp;
+                    </span>
+                    <div class="chip"><?= $product['photoCredit']; ?></div>
+                <?php endif; ?>
             <?php endif; ?>
-            <?php if (strlen(trim($imageSrc)) > 0) : ?>
-                <span class="flow-text" style="display: block;">Photo Credit: <?= strlen(trim($product['photoCredit'])) == 0 ? "Not Available" : $product['photoCredit']; ?></span>
-            <?php endif; ?>
-            <h3><?= $product['name'] ?></h3>
-            <?php if (strlen(trim($product['arLink'])) > 0) : ?>
-                <a href="<?= $product['arLink'] ?>" class="waves-effect waves-light btn blue lighten-1 tooltip" data-tooltip="View in Augmented Reality"><i class="material-icons">camera</i></a>
-            <?php endif; ?>
-            &nbsp;
-            <a href="#!" id="addProduct" class="waves-effect waves-light btn green lighten-1 tooltip" data-tooltip="Bookmark this product"><i class="material-icons">bookmark</i></a>
-            <a href="#!" id="removeProduct" class="waves-effect waves-light btn red lighten-1 hide tooltip" data-tooltip="Remove from my bookmarked products"><i class="material-icons">bookmark_border</i></a>
         </div>
-
-        <p class="flow-text" style="font-style: italic"><?= strlen(trim($product['description'])) == 0 ? "To be formulated" : $product['description']?></p>
+        <div class="col l2 m2 show-on-med-and-up hide-on-small-only">&nbsp;</div>
     </div>
 </div>
 
+<script src="/assets/js/owl.carousel.min.js"></script>
 <script>
     $(document).ready(function() {
-        $(".carousel").carousel({
-            fullWidth: true,
-            indicators: true
+        $('.parallax').parallax();
+
+        $(".owl-carousel").owlCarousel({
+            items: 1,
+            autoHeight: true,
+            lazyLoad:true,
+            loop:true,
+            margin:10
         });
 
         let product = {
