@@ -40,11 +40,13 @@ use gov\pglu\tourism\util\ApplicationConstants;
                 </div>
                 <?php if(strlen(trim($product['photoCredit']))): ?>
                     <span style="font-weight: bold">
-                        Images by&nbsp;
+                        Images by:&nbsp;
                     </span>
-                    <?php foreach(explode(',', $product['photoCredit']) as $photoCredit): ?>
-                        <div class="chip" style="height: auto;"><?= $photoCredit?></div>
-                    <?php endforeach; ?>
+                    <ul class="browser-default">
+                        <?php foreach(explode(',', $product['photoCredit']) as $photoCredit): ?>
+                            <li><?= $photoCredit; ?></li>
+                        <?php endforeach; ?>
+                    </ul>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
