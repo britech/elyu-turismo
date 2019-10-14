@@ -1524,6 +1524,14 @@ return function (App $app) {
         ]);
         return $container->exploreRenderer->render($response, 'products.phtml', $args);
     });
+
+    $app->get('/bookmarks', function(Request $request, Response $response, array $args) use ($container) {
+        $args = array_merge($args, [
+            'title' => 'My Bookmarks'
+        ]);
+        return $container->exploreRenderer->render($response, 'bookmarks.phtml', $args);
+    });
+
     $app->post('/api/bookmarks', function(Request $request, Response $response, array $args) use ($container) {
         list('destinations' => $inputDestination, 'products' => $inputProduct) = $request->getParsedBody();
         try {

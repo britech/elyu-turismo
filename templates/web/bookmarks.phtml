@@ -1,0 +1,108 @@
+<div class="container">
+    <div class="row">
+        <div class="col l12 m12 s12" style="margin-top: 20px;">
+            <h1 class="flow-text center-align teal-text text-darken-4" style="font-weight: bold; margin-bottom: 20px;">My <span class="orange-text text-darken-4">Bookmarks</span></h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l2 m2 show-on-med-and-up hide-on-small-only">&nbsp;</div>
+        <div class="col l8 m8 s12">
+            <div id="no-bookmarks" class="center">
+                <div class="center">
+                    <img src="/images/no_records.png" class="responsive-img" />
+                    <span style="display: block; font-weight: bold;">Oops! You don't have bookmarked items yet.</span>
+                </div>
+            </div>
+
+            <div id="bookmark" class="hide">
+                <input class="search" placeholder="Find a destination or product" />
+                <ul class="list collection" id="bookmarks">
+
+                </ul>
+                <ul class="center pagination"></ul>
+            </div>
+        </div>
+        <div class="col l2 m2 show-on-med-and-up hide-on-small-only">&nbsp;</div>
+    </div>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+<script>
+    $(document).ready(function() {
+        let bookmarks = localStorage.getItem('bookmarks');
+        if (bookmarks == null || bookmarks.length == 0) {
+            $("#no-bookmarks").removeClass('hide');
+            return;
+        } else {
+            $("#no-bookmarks").addClass('hide');
+            $("#bookmark").removeClass('hide');
+        }
+
+        let bookmarkEntries = JSON.parse(bookmarks);
+        let destinations = bookmarkEntries.filter(bookmark => bookmark.type === 'destination').map(bookmark => bookmark.id);
+        let products = bookmarkEntries.filter(bookmark => bookmark.type === 'product').map(bookmark => bookmark.id);
+
+        let entries = [];
+        $.ajax({
+            type: 'post',
+            url: '/api/bookmarks',
+            data: {
+                destinations: destinations,
+                products: products
+            },
+            dataType: 'json',
+            success: function(result) {
+                for(let destination of result.destinations) {
+                    if(!destination.enabled) {
+                        continue
+                    }
+
+                    let image = `<image src="${destination.imageSrc}" alt="${destination.name}" class="circle"/>`;
+                    let title = `<span class="title" style="display: block;"><a href="/place/${destination.id}">${destination.name}</a></span>`;
+                    
+                    let arTag = '';
+                    if (destination.arEnabled) {
+                        arTag = `<div class="chip white-text teal lighten-1"><img src="/images/ar-enabled.png"/>AR Enabled</div>`
+                    }
+
+                    let description = '';
+                    if (destination.description != null && destination.description.trim().length > 0) {
+                        description = `<p class="truncate">${destination.description}</p>`
+                    }
+
+                    let item = `<li class="collection-item avatar">${image} ${title} ${arTag} ${description}</li>`
+                    entries.push(item);
+                }
+
+                for(let product of result.products) {
+                    if(!product.enabled) {
+                        continue
+                    }
+
+                    let image = `<image src="${product.imageSrc}" alt="${product.name}" class="circle"/>`;
+                    let title = `<span class="title" style="display: block;"><a href="/product/${product.id}">${product.name}</a></span>`;
+                    
+                    let arTag = '';
+                    if (product.arEnabled) {
+                        arTag = `<div class="chip white-text teal lighten-1"><img src="/images/ar-enabled.png"/>AR Enabled</div>`
+                    }
+
+                    let description = '';
+                    if (product.description != null && product.description.trim().length > 0) {
+                        description = `<p class="truncate">${product.description}</p>`
+                    }
+
+                    let item = `<li class="collection-item avatar">${image} ${title} ${arTag} ${description}</li>`
+                    entries.push(item);
+                }
+
+                $("#bookmarks").html(entries.join());
+
+                let bookmarkContainer = new List('bookmark', {
+                    valueNames: [ 'title' ],
+                    pagination: true,
+                    page: 5
+                });
+            }
+        })
+    })
+</script>
