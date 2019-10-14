@@ -1524,4 +1524,18 @@ return function (App $app) {
         ]);
         return $container->exploreRenderer->render($response, 'products.phtml', $args);
     });
+    $app->post('/api/bookmarks', function(Request $request, Response $response, array $args) use ($container) {
+        list('destinations' => $inputDestination, 'products' => $inputProduct) = $request->getParsedBody();
+        try {
+            $destinations = $container->visitorService->listTaggedDestinations(isset($inputDestination) ? $inputDestination : []);
+            $products = $container->visitorService->listTaggedProducts(isset($inputProduct) ? $inputProduct : []);
+            return $response->withJson([
+                'destinations' => $destinations,
+                'products' => $products
+            ], 200);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            return $response->withJson(['message' => 'Something went wrong. Try again later.'], 500);
+        }
+    });
 };

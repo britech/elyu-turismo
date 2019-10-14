@@ -9,4 +9,8 @@ interface VisitorDao {
     public function listComments($placeOfInterest);
 
     public function removeComment($id);
+
+    public function listTaggedDestinations(array $destinations);
+
+    public function listTaggedProducts(array $products);
 }
