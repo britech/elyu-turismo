@@ -16,7 +16,7 @@
             <form action="/open-data/hits" method="post" style="margin-top: 20px;" id="hitsReportForm">
                 <input type="hidden" id="poiListBackend" value='<?= $destinationsBackend ?>' />
                 <div class="input-field">
-                    <p class="tooltip" data-position="top" data-tooltip="Use this option to filter the places of interest you want in your report">Places of Interest</p>
+                    <p class="tooltip" data-position="top" data-tooltip="Use this option to only include the tourist destinations in the report">Tourist Destinations</p>
                     <div class="poi"></div>
                     <input type="hidden" name="places" />
                 </div>
@@ -69,8 +69,8 @@
         });
 
         $(".poi").chips({
-            placeholder: 'Place of Interest',
-            secondaryPlaceholder: 'Place of Interest',
+            placeholder: 'Tourist Destinations',
+            secondaryPlaceholder: 'Tourist Destinations',
             autocompleteOptions: {
                 data: <?= $destinationAutocomplete ?>
             },
