@@ -324,6 +324,18 @@ INSERT INTO town (name,tourismCircuit,description,descriptionWysiwyg,commuterGui
 ,('Rosario','South East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('Tubao','South East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
+CREATE TABLE `complaint` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `poi` int(11) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `mobileNumber` varchar(20) DEFAULT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `complain_FK` (`poi`),
+  CONSTRAINT `complain_FK` FOREIGN KEY (`poi`) REFERENCES `complaint` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
 --
 -- Dumping routines for database 'tourism'
 --
