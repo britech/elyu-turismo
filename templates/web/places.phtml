@@ -9,9 +9,11 @@
         <div class="col l12 m12 s12">
             <img src="/images/<?= strtolower(implode('-', explode('_', $townParam))) ?>.jpg" class="responsive-img" alt="banner"/>
             
-            <p style="white-space: pre-line; text-align: justify; margin-top: 0px; padding-top: 0px;">
-                <?= strlen(trim($town['description'])) ? trim($town['description']) : "To be defined." ?>
-            </p>
+            <article style="overflow: hidden">
+                <p style="white-space: pre-line; text-align: justify; margin-top: 0px; padding-top: 0px;">
+                    <?= strlen(trim($town['description'])) ? trim($town['description']) : "To be defined." ?>
+                </p>
+            </article>
             
             <ul class="collapsible expandable">
                 <li>
@@ -102,6 +104,7 @@
 </div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/readmore-js@2.2.1/readmore.min.js"></script>
 <script>
     $(document).ready(function() {
         $('.parallax').parallax();
@@ -109,6 +112,7 @@
             accordion: false
         });
         $(".materialboxed").materialbox();
+        $('article').readmore();
     });
 
     let destinationList = new List('destinations', {
