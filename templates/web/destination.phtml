@@ -24,6 +24,7 @@ use gov\pglu\tourism\util\ApplicationConstants;
             <?php if (strcasecmp(ApplicationConstants::INDICATOR_NUMERIC_TRUE, $poi['arEnabled']) == 0  && strlen(trim($poi['arLink'])) > 0): ?>
                 <div class="chip blue lighten-1 white-text" style="cursor: pointer;" onclick="window.location='<?= $poi['arLink'];?>'"><img src="/images/ar-enabled.png"/>View in AR</div>
             <?php endif;?>
+            <div id="reportContent" class="chip red ligthen-1 white-text modal-trigger" data-target="report-modal" style="cursor: pointer"><img src="/images/report-issue.png"/>Report Content</div>
         </div>
     </div>
     <div class="row container">
@@ -50,6 +51,38 @@ use gov\pglu\tourism\util\ApplicationConstants;
         <div class="col l6 m6 show-on-med-and-up hide-on-small-only">
             <?php include 'destination/_multimedia.phtml' ?>
         </div>
+    </div>
+</div>
+<div id="report-modal" class="modal">
+    <div class="modal-content">
+        <h4>Report Content</h4>
+        <p>Provide the following detail for intellectual property or copyright claim to ensure proper citation of multimedia components hosted in this page.</p>
+        <form action="/report" method="post">
+            <div class="input-field" style="margin-top: 30px;">
+                <input type="text" class="validate" name="description" required />
+                <label>Indicate your intellectual property or copyright claim</label>
+            </div>
+            <div class="input-field" style="margin-top: 30px;">
+                <input type="text" class="validate" name="name" required />
+                <label>Name</label>
+            </div>
+            <div class="input-field" style="margin-top: 30px;">
+                <input type="email" class="validate" name="emailAddress" />
+                <label>Email Address</label>
+            </div>
+            <div class="input-field" style="margin-top: 30px;">
+                <input type="text" class="validate" name="mobileNumber" />
+                <label>Mobile Number</label>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label>
+                    <input type="checkbox" name="userConsent" class="validate" required/>
+                    <span>I agree with the <span style="text-decoration: underline; cursor: pointer" onclick="window.location='/privacy'">Privacy and Usage Policy</span>.</span>
+                </label>
+            </div>
+            <input type="hidden" name="poi" value="<?= $id?>"/>
+            <button type="submit" class="btn green lighten-1">Submit Report</button>
+        </form>
     </div>
 </div>
 <script src="/assets/js/owl.carousel.min.js"></script>
@@ -143,5 +176,17 @@ use gov\pglu\tourism\util\ApplicationConstants;
 
         $(".tooltip").tooltip();
         $('article').readmore();
+        $('.modal').modal({
+            onCloseEnd: function() {
+                $("[name=description],[name=name],[name=emailAddress],[name=contactNumber]").val(null);
+                $("[name=userConsent]").prop('checked', false);
+            }
+        });
+
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
     });
 </script>

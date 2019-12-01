@@ -1171,7 +1171,9 @@ return function (App $app) {
                 'products' => $container->townManagementService->listProducts([]),
                 'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($allDestinations, 'name'),
                 'destinationsBackend' => count($allDestinations) == 0 ? '[]' : json_encode($allDestinations),
-                'title' => "Explore {$poi['town']}"
+                'title' => "Explore {$poi['town']}",
+                'id' => $id,
+                ApplicationConstants::NOTIFICATION_KEY => $container->flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
             ]);
 
             if ($poi['displayable'] == ApplicationConstants::INDICATOR_NUMERIC_TRUE) {
@@ -1604,5 +1606,27 @@ return function (App $app) {
         ]);
 
         return $container->exploreRenderer->render($response, 'search.phtml', $args);
+    });
+
+    $app->post('/report', function(Request $request, Response $response, array $args) use ($container) {
+        list('poi' => $poi) = $request->getParsedBody();
+        
+        $input = array_filter($request->getParsedBody(), function($key) {
+            return strcasecmp('poi', $key) == 0 || strcasecmp('name', $key) == 0 
+                || strcasecmp('description', $key) == 0 || strcasecmp('mobileNumber', $key) == 0
+                || strcasecmp('emailAddress', $key) == 0;
+        }, ARRAY_FILTER_USE_KEY);
+
+        try {
+            $container->visitorService->addComplaint($input);
+            $container->flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Your report has been filed and will be examined for further assessment.');
+            return $response->withRedirect($container->router->pathFor('destination', [
+                'id' => $poi
+            ]));
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            $container->flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Your request cannot be processed. Please try again later');
+            return $response->withRedirect($container->router->pathFor('home'));
+        }
     });
 };

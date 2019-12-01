@@ -170,6 +170,33 @@ QUERY;
         }
     }
 
+    public function addComplaint(array $map) {
+        $query = <<<INSERT_QUERY
+        INSERT INTO complaint(poi, 
+            description,
+            name,
+            emailAddress,
+            mobileNumber)
+            VALUES(
+                :poi,
+                :description,
+                :name,
+                :emailAddress,
+                :mobileNumber)
+INSERT_QUERY;
+        
+        try {
+            $this->pdo->beginTransaction();
+            
+            $statement = $this->pdo->prepare($query);
+            $statement->execute($map);
+
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
     public function __set($name, $value) {
         $this->$name = $value;
     }
