@@ -328,13 +328,14 @@ CREATE TABLE `complaint` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `poi` int(11) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
+  `emailAddress` varchar(255) DEFAULT NULL,
   `mobileNumber` varchar(20) DEFAULT NULL,
   `description` text NOT NULL,
   `active` tinyint(4) DEFAULT '1',
+  `dateCreated` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `complain_FK` (`poi`),
-  CONSTRAINT `complain_FK` FOREIGN KEY (`poi`) REFERENCES `complaint` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+  KEY `complaint_FK` (`poi`),
+  CONSTRAINT `complaint_FK` FOREIGN KEY (`poi`) REFERENCES `placeofinterest` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 --
