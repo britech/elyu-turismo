@@ -1509,28 +1509,10 @@ return function (App $app) {
     });
 
     $app->get('/privacy', function(Request $request, Response $response, array $args) use ($container) {
-        // $topDestinations = [];
-        // $products = [];
-        // $destinations = [];
-        // try {
-        //     $topDestinations = array_merge([], $container->openDataDao->listDestinations(['limit' => 5]));
-        //     $products = $container->townManagementService->listProducts([]);
-        //     $destinations = array_merge([], $container->poiManagementService->listPoi());
-        // } catch (\Exception $ex) {
-        //     $container->logger->error($ex);
-        // }
-
-        // $args = array_merge($args, [
-        //     'title' => 'ELYU Turismo',
-        //     'topDestinations' => $topDestinations,
-        //     'products' => $products,
-        //     'destinationAutocomplete' => ApplicationUtils::convertArrayToAutocompleteData($destinations, 'name'),
-        //     'destinationsBackend' => count($destinations) == 0 ? '[]' : json_encode($destinations),
-        // ]);
-
-        // return $container->exploreRenderer->render($response, 'privacy.phtml', $args);
-
-        return $response->withRedirect($container->router->pathFor('home'));
+        $args = array_merge($args, [
+            'title' => 'Privacy and Usage Policy'
+        ]);
+        return $container->exploreRenderer->render($response, 'privacy.phtml', $args);
     });
 
     $app->get('/products', function(Request $request, Response $response, array $args) use ($container) {
