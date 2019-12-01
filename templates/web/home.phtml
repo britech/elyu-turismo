@@ -101,5 +101,11 @@
 <script>
     $(document).ready(function() {
         $('.parallax').parallax();
+
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
     });
 </script>

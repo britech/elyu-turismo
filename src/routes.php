@@ -1052,7 +1052,8 @@ return function (App $app) {
     $app->get('/home', function(Request $request, Response $response, array $args) use ($container) {
         $args = array_merge($args, [
             'title' => 'Explore La Union',
-            'link' => '/home'
+            'link' => '/home',
+            ApplicationConstants::NOTIFICATION_KEY => $container->flash->getFirstMessage(ApplicationConstants::NOTIFICATION_KEY)
         ]);
         return $container->exploreRenderer->render($response, 'home.phtml', $args);
     })->setName('home');
