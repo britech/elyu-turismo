@@ -197,6 +197,49 @@ INSERT_QUERY;
             throw $ex;
         }
     }
+
+    public function updateComplaint(array $map) {
+        $query = "UPDATE complaint SET active=:active WHERE id=:id";
+        try {
+            $this->pdo->beginTransaction();
+            
+            $statement = $this->pdo->prepare($query);
+            $statement->execute($map);
+
+            $this->pdo->commit();
+        } catch (\PDOException $ex) {
+            $this->pdo->rollBack();
+            throw $ex;
+        }
+    }
+
+    public function listComplaints() {
+        $query = <<<QUERY
+            SELECT t1.id as complaintId,
+                t1.name as complainant,
+                t1.description,
+                t2.name as poiName,
+                emailAddress,
+                mobileNumber,
+                CASE WHEN t1.active=1 THEN 'OPEN' ELSE 'CLOSED' END as status,
+                DATE_FORMAT(t1.dateCreated, "%M %e, %Y") as dateFiled
+            FROM complaint t1
+            JOIN placeofinterest t2 ON t1.poi = t2.id
+            ORDER BY dateCreated DESC, poiName ASC
+QUERY;
+        try {
+           $this->pdo->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+           $statement = $this->pdo->prepare($query);
+           $statement->execute();
+           $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+           return $result;
+        } catch (\PDOException $ex) {
+            throw $ex;
+        } finally {
+            $this->pdo->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+        }
+    }
+
     public function __set($name, $value) {
         $this->$name = $value;
     }
