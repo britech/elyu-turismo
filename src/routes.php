@@ -1045,6 +1045,32 @@ return function (App $app) {
         }
     });
 
+    $app->get('/cpanel/complaints', function(Request $request, Response $response, array $args) use ($container) {
+        $complaints = [];
+        try {
+            $complaints = array_merge($complaints, $container->visitorService->listComplaints());
+            $args = array_merge($args, [
+                'complaints' => json_encode($complaints)
+            ]);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+        }
+        return $container->cpanelRenderer->render($response, 'complaints/index.phtml', $args);
+    })->setName('complaint-home');
+
+    $app->get('/complaint/close/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        try {
+            $container->visitorService->updateComplaint([
+                'active' => 0,
+                'id' => $id
+            ]);
+        } catch (\PDOException $ex) {
+            $container->logger->error($ex);
+        }
+        return $response->withRedirect($container->router->pathFor('complaint-home'));
+    });
+
     $app->get('/', function(Request $request, Response $response, array $args) use ($container) {
         return $container->webRenderer->render($response, 'index.phtml', $args);
     });

@@ -1,0 +1,108 @@
+<h2>Content Claims</h2>
+<div id="complaints" style="margin-top: 50px; margin-bottom: 20px;"></div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        <?php if (isset($notification)) : ?>
+            M.toast({
+                html: '<?= $notification ?>'
+            });
+        <?php endif; ?>
+
+        $("#complaints").jqxDataTable({
+            width: '100%',
+            theme: 'material',
+            filterable: true,
+            selectionMode: 'singleRow',
+            pageable: true,
+            pagerMode: 'advanced',
+            pageSizeOptions: ['10', '50', '100'],
+            altRows: true,
+            sortable: true,
+            source: new $.jqx.dataAdapter({
+                localData: <?= $complaints ?>,
+                dataType: 'array',
+                dataFields: [{
+                        name: 'complaintId',
+                        type: 'number'
+                    },
+                    {
+                        name: 'poiName',
+                        type: 'string'
+                    },
+                    {
+                        name: 'complainant',
+                        type: 'string'
+                    },
+                    {
+                        name: 'description',
+                        type: 'string'
+                    },
+                    {
+                        name: 'emailAddress',
+                        type: 'string'
+                    },
+                    {
+                        name: 'mobileNumber',
+                        type: 'string'
+                    },
+                    {
+                        name: 'status',
+                        type: 'string'
+                    },
+                    {
+                        name: 'dateFiled',
+                        type: 'string'
+                    }
+                ]
+            }),
+            columns: [{
+                text: 'Tourist Destination',
+                dataField: 'poiName',
+                width: '15%',
+                align: 'center',
+                cellsRenderer: function(row, column, value, rowData) {
+                    return `<span class="tooltip" data-tooltip="${rowData.poiName}">${rowData.poiName}</span>`
+                }
+            }, {
+                text: 'Date Filed',
+                filterable: false,
+                dataField: 'dateFiled',
+                width: '15%',
+                align: 'center',
+            }, {
+                text: "Complainant",
+                width: '20%',
+                align: 'center',
+                cellsRenderer: function(row, column, value, rowData) {
+                    return `Name: ${rowData.complainant}<br/>Mobile Number: ${rowData.mobileNumber}<br/>Email Address: ${rowData.emailAddress}`
+                }
+            }, {
+                text: 'Description',
+                dataField: 'description',
+                width: '30%',
+                align: 'center',
+            }, {
+                text: 'Status',
+                dataField: 'status',
+                width: '10%',
+                align: 'center',
+            }, {
+                text: 'Actions',
+                filterable: false,
+                sortable: false,
+                cellsAlign: 'center',
+                align: 'center',
+                width: '10%',
+                cellsRenderer: function(row, column, value, rowData) {
+                    if (rowData.status === 'CLOSED') {
+                        return 'No applicable actions.'
+                    } else {
+                        return `<a href="/complaint/close/${rowData.complaintId}">Mark as resolved</a>`
+                    }
+                }
+            }]
+        });
+
+        $('.tooltip').tooltip();
+    });
+</script>
