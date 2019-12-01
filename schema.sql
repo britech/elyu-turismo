@@ -331,6 +331,7 @@ CREATE TABLE `complaint` (
   `email` varchar(255) DEFAULT NULL,
   `mobileNumber` varchar(20) DEFAULT NULL,
   `description` text NOT NULL,
+  `active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `complain_FK` (`poi`),
   CONSTRAINT `complain_FK` FOREIGN KEY (`poi`) REFERENCES `complaint` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
