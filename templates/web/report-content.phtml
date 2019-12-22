@@ -1,0 +1,31 @@
+<div class="container">
+    <h4>Report Content</h4>
+    <p>Provide the following detail for intellectual property or copyright claim to ensure proper citation of multimedia components hosted in this page.</p>
+    <p>Tourist Destination: <span style="font-weight: bold"><?= $poi['name']?></span></p>
+    <form action="/report" method="post">
+        <div class="input-field" style="margin-top: 30px;">
+            <textarea class="materialize-textarea" name="description" required></textarea>
+            <label>Indicate your intellectual property or copyright claim</label>
+        </div>
+        <div class="input-field" style="margin-top: 30px;">
+            <input type="text" class="validate" name="name" required />
+            <label>Name</label>
+        </div>
+        <div class="input-field" style="margin-top: 30px;">
+            <input type="email" class="validate" name="emailAddress" />
+            <label>Email Address</label>
+        </div>
+        <div class="input-field" style="margin-top: 30px;">
+            <input type="text" class="validate" name="mobileNumber" />
+            <label>Mobile Number</label>
+        </div>
+        <div style="margin-bottom: 20px;">
+            <label>
+                <input type="checkbox" name="userConsent" class="validate" required />
+                <span>I agree with the <span style="text-decoration: underline; cursor: pointer" onclick="window.location='/privacy'">Privacy and Usage Policy</span>.</span>
+            </label>
+        </div>
+        <input type="hidden" name="poi" value="<?= $id ?>" />
+        <button type="submit" class="btn green lighten-1" style="margin-bottom: 10px;">Submit Report</button>
+    </form>
+</div>

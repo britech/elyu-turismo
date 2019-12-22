@@ -1616,6 +1616,23 @@ return function (App $app) {
         return $container->exploreRenderer->render($response, 'search.phtml', $args);
     });
 
+    $app->get('/report/{id}', function(Request $request, Response $response, array $args) use ($container) {
+        list('id' => $id) = $args;
+        try {
+            $poi = $container->poiManagementService->getPoi($id);
+
+            $args = array_merge($args, [
+                'title' => 'Report Content',
+                'poi' => $poi
+            ]);
+            return $container->exploreRenderer->render($response, 'report-content.phtml', $args);
+        } catch (\Exception $ex) {
+            $container->logger->error($ex);
+            $container->flash->addMessage(ApplicationConstants::NOTIFICATION_KEY, 'Your request cannot be processed. Please try again later');
+            return $response->withRedirect($container->router->pathFor('home'));
+        }
+    });
+
     $app->post('/report', function(Request $request, Response $response, array $args) use ($container) {
         list('poi' => $poi) = $request->getParsedBody();
         
