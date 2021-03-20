@@ -187,6 +187,7 @@ QUERY;
             ORDER BY visitorCount DESC
             {$limitClause}
 QUERY;
+        $this->logger->debug("Executing query: {$query}");
         try {
             $statement = $this->pdo->prepare($query);
             $statement->execute($map);
