@@ -190,7 +190,12 @@ QUERY;
         $this->logger->debug("Executing query: {$query}");
         try {
             $statement = $this->pdo->prepare($query);
-            $statement->execute($map);
+            if (is_null($town)) {
+                $statement->execute();
+            } else {
+                $statement->execute($map);
+            }
+            
             $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
             array_walk($rows, function(&$row) {
                 list('town' => $town) = $row;
