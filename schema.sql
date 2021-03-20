@@ -300,29 +300,28 @@ CREATE TABLE `town` (
   `photoCredits` text,
   PRIMARY KEY (`id`),
   KEY `town_name_IDX` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO town (name,tourismCircuit,description,descriptionWysiwyg,commuterGuide,commuterGuideWysiwyg,otherDetails,otherDetailsWysiwyg,bannerImage,linkImage,photoCredits) VALUES 
-('Balaoan','North',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Bangar','North',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Luna','North',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Santol','North',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Sudipen','North',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Bacnotan','Central',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('San Fernando','Central',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('San Juan','Central',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('San Gabriel','Central',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Bauang','Central East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Bagulin','Central East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Burgos','Central East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Naguilian','Central East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Agoo','South',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Aringay','South',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Caba','South',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Santo Tomas','South',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Pugo','South East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Rosario','South East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-,('Tubao','South East',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Balaoan','North');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Bangar','North');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Luna','North');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Santol','North');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Sudipen','North');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Bacnotan','Central');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'San Fernando','Central');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'San Juan','Central');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'San Gabriel','Central');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Bauang','Central East');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Bagulin','Central East');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Burgos','Central East');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Naguilian','Central East');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Agoo','South');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Aringay','South');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Caba','South');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Santo Tomas','South');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Pugo','South East');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Rosario','South East');
+INSERT INTO town(`id`, `name`, `tourismCircuit`) VALUES(null, 'Tubao','South East');
 
 CREATE TABLE `complaint` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -336,7 +335,7 @@ CREATE TABLE `complaint` (
   PRIMARY KEY (`id`),
   KEY `complaint_FK` (`poi`),
   CONSTRAINT `complaint_FK` FOREIGN KEY (`poi`) REFERENCES `placeofinterest` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping routines for database 'tourism'
