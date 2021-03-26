@@ -73,9 +73,8 @@ class TownManagementDaoImpl implements TownManagementDao {
     }
 
     public function listProducts(array $criteria) {
-        list('town' => $town) = $criteria;
-        $whereClause = strlen(trim($town)) == 0 ? "" : "WHERE town=:town";
-        $params = strlen(trim($town)) == 0 ? [] : ['town' => $town];
+        $whereClause = !array_key_exists('town', $criteria) ? "" : "WHERE town=:town";
+        $params = !array_key_exists('town', $criteria) ? [] : ['town' => $criteria['town']];
         try {
             $statement = $this->pdo->prepare("SELECT * FROM townproduct {$whereClause} ORDER by name ASC");
             $statement->execute($params);
