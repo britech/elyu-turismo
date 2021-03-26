@@ -773,10 +773,15 @@ return function (App $app) {
             $result = $container->townManagementService->listProducts([]);
             $products = [];
             foreach($result as $entry) {
-                list('imageFile' => $primaryImage) = $entry;
+                list('imageFile' => $primaryImage, 'id' => $id, 'name' => $name, 'arLink' => $arLink, 'town' => $town) = $entry;
                 $imageSrc = intval(getenv('USE_LOCAL_FILESYSTEM')) == ApplicationConstants::INDICATOR_NUMERIC_TRUE ? "/uploads/{$primaryImage}" : $primaryImage;
-                $product = array_merge($entry, ['imageFile' => $imageSrc]);
-                $products = array_merge($products, [$product]);
+                $products = array_merge($products, [[
+                    'id' => $id,
+                    'name' => $name,
+                    'town' => $town,
+                    'arLink' => $arLink,
+                    'imageFile' => $imageSrc
+                ]]);
             }
             $args = array_merge($args, [
                 'products' => count($products) == 0 ? '[]' : json_encode($products),
